@@ -16,9 +16,13 @@ class StartPageChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('KMITL FITNESS')
-      ),
+      body: 
+        Container(
+          child: Center(
+            child: Text('KMITL FITNESS',style:TextStyle(color: Colors.black))
+          ),
+         
+        ),
     );
   }
 }
