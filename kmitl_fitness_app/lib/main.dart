@@ -11,7 +11,7 @@ class KmitlFitnessApp extends StatelessWidget {
     return MaterialApp(
       title: 'KMITL FITNESS',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.orange[900],
       ),
       home: StartPage(),
     );
