@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -41,11 +42,12 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(100),
                       ),
+                      borderSide: BorderSide.none,
                     ),
                     prefixIcon: Icon(Icons.person),
                     hintText: 'Email Address',
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: Colors.grey[200],
                   ),
                 ),
               ),
@@ -61,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(100),
                       ),
+                      borderSide: BorderSide.none,
                     ),
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
@@ -68,10 +71,12 @@ class _LoginPageState extends State<LoginPage> {
                       icon: _isHidden
                           ? Icon(Icons.visibility_off)
                           : Icon(Icons.visibility),
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
                     ),
                     hintText: 'Password',
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: Colors.grey[200],
                   ),
                   obscureText: _isHidden,
                 ),
