@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
-class Navigation extends StatefulWidget {
+class NavigationWidget extends StatelessWidget {
+  const NavigationWidget({Key key}) : super(key: key);
+
   @override
-  _NavigationState createState() => _NavigationState();
+  Widget build(BuildContext context) {
+    return NavigationChild();
+  }
+}
+class NavigationChild extends StatefulWidget {
+  @override
+  _NavigationStateChild createState() => _NavigationStateChild();
 }
 
-class _NavigationState extends State<Navigation> {
+class _NavigationStateChild extends State<NavigationChild> {
   int _selectedIndex = 0;
   final _pageOptions = [
     HomePage(),

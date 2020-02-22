@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({Key key}) : super(key: key);
@@ -43,7 +44,13 @@ class StartPageChild extends StatelessWidget {
                   textColor: Colors.white,
                   child: Text('Login',style: TextStyle(
                       color: Colors.white, fontFamily: 'Roboto', fontSize: 20,)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                        )
+                    );
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(34.0),
                       side: BorderSide(color: Colors.transparent))),
@@ -55,7 +62,13 @@ class StartPageChild extends StatelessWidget {
                   textColor: Color.fromARGB(255,255, 111, 0),
                   child: Text('Sign up',style: TextStyle(
                       color: Color.fromARGB(255,255, 111, 0), fontFamily: 'Roboto', fontSize: 20,)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SignupPage(),
+                        )
+                    );
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(34.0),
                       side: BorderSide(color: Colors.transparent))),
