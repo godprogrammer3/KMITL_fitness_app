@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({Key key}) : super(key: key);
@@ -72,6 +73,9 @@ class StartPageChild extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(34.0),
                       side: BorderSide(color: Colors.transparent))),
+
+              ListItem(title:"Hello Widget"),
+              ListItem(title:"Hello Widget"),
             ],
           ),
         ),
