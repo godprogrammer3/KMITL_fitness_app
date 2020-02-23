@@ -62,8 +62,6 @@ class StartPageChild extends StatelessWidget {
                       borderRadius: new BorderRadius.circular(34.0),
                       side: BorderSide(color: Colors.transparent))),
 
-              ListItem(title:"Hello Widget"),
-              ListItem(title:"Hello Widget"),
             ],
           ),
         ),
