@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
 
-
-class LockerPage extends StatelessWidget {
-  const LockerPage({Key key}) : super(key: key);
-
+class LockerPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return LockerPageChild();
-  }
-}
-class LockerPageChild extends StatefulWidget {
-  @override
-  _LockerPageStateChild createState() => _LockerPageStateChild();
+  _LockerPageState createState() => _LockerPageState();
 }
 
-class _LockerPageStateChild extends State<LockerPageChild> {
+class _LockerPageState extends State<LockerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

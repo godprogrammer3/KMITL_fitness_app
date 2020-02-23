@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
 
-class  TreadmillPage extends StatelessWidget {
-  const TreadmillPage({Key key}) : super(key: key);
-
+class TreadmillPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return TreadmillPageChild();
-  }
-}
-class TreadmillPageChild extends StatefulWidget {
-  @override
-  _TreadmillPageStateChild createState() => _TreadmillPageStateChild();
+  _TreadmillPageState createState() => _TreadmillPageState();
 }
 
-class _TreadmillPageStateChild extends State<TreadmillPageChild> {
+class _TreadmillPageState extends State<TreadmillPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
