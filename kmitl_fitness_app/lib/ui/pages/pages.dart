@@ -1,6 +1,5 @@
 export './login_page.dart';
 export './signup_page.dart'; 
-export './start_page.dart';
 export './home_page.dart';
 export './class_page.dart';
 export './locker_page.dart';
