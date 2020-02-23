@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
+  const HomePage({Key key}) : super(key: key);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  Widget build(BuildContext context) {
+    return HomePageChild();
+  }
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageChild extends StatefulWidget {
+  @override
+  _HomePageStateChild createState() => _HomePageStateChild();
+}
+
+class _HomePageStateChild extends State<HomePageChild> {
 
   @override
   Widget build(BuildContext context) {

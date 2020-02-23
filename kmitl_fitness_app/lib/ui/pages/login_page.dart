@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  Widget build(BuildContext context) {
+    return LoginPageChild();
+  }
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageChild extends StatefulWidget {
+  @override
+  _LoginPageStateChild createState() => _LoginPageStateChild();
+}
+
+class _LoginPageStateChild extends State<LoginPageChild> {
   bool _isHidden = true;
 
   void _toggleVisibility() {
@@ -89,7 +99,11 @@ class _LoginPageState extends State<LoginPage> {
                 width: 300,
                 height: 50,
                 child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => NavigationWidget(),
+                      ));
+                    },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
                         side: BorderSide(color: Colors.transparent)),
