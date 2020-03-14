@@ -59,7 +59,11 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       FlatButton(
-                        onPressed: () => {},
+                        onPressed: () => {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LockerPage2(),
+                          ))
+                        },
                         color: Colors.grey[300],
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
