@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
-class LockerPage2 extends StatelessWidget {
-  const LockerPage2({Key key}) : super(key: key);
+class LockerPageDetail extends StatelessWidget {
+  const LockerPageDetail({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return LockerPage2Child();
+    return LockerPageDetailChild();
   }
 }
 
-class LockerPage2Child extends StatefulWidget {
+class LockerPageDetailChild extends StatefulWidget {
   @override
-  _LockerPage2StateChild createState() => _LockerPage2StateChild();
+  _LockerPageDetailStateChild createState() => _LockerPageDetailStateChild();
 }
 
-class _LockerPage2StateChild extends State<LockerPage2Child> {
+class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +25,7 @@ class _LockerPage2StateChild extends State<LockerPage2Child> {
             color: Colors.black,
         ),
         title: Text(
-          'Locker2',
+          'LockerDetail',
           style: TextStyle(color: Colors.orange[900]),
         ),
         backgroundColor: Colors.white,

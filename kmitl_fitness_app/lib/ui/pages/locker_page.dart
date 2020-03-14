@@ -60,8 +60,9 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                     children: <Widget>[
                       FlatButton(
                         onPressed: () => {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LockerPage2(),
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                            builder: (context) => LockerPageDetail(),
                           ))
                         },
                         color: Colors.grey[300],
@@ -97,7 +98,9 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 25,),
+                  SizedBox(
+                    height: 25,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -136,7 +139,9 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 25,),
+                  SizedBox(
+                    height: 25,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
