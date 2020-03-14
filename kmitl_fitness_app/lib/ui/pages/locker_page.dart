@@ -50,24 +50,125 @@ class _LockerPageStateChild extends State<LockerPageChild> {
               width: 300,
               height: 300,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50)
-                )
-              ),
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.1")],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.2")],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.3")],
+                        ),
+                      ),
                     ],
                   ),
+                  SizedBox(height: 25,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.4")],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.5")],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.6")],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 25,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.7")],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.8")],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.https), Text("No.9")],
+                        ),
+                      ),
                     ],
                   ),
                 ],
