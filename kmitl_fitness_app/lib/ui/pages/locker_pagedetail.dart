@@ -71,9 +71,14 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
             SizedBox(
               height: 20,
             ),
-            Container(
+            AnimatedContainer(
               width: 200,
               height: 50,
+              decoration: BoxDecoration(
+                  color: btColor,
+                  borderRadius: BorderRadius.all(Radius.circular(100))),
+              duration: Duration(milliseconds: 500),
+              curve: Curves.fastOutSlowIn,
               child: FlatButton(
                   onPressed: () {
                     if (lock == 1) {
@@ -95,9 +100,7 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
                     }
                   },
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      side: BorderSide(color: Colors.transparent)),
-                  color: btColor,
+                      borderRadius: BorderRadius.circular(100)),
                   child: Text(
                     btText,
                     style: TextStyle(
