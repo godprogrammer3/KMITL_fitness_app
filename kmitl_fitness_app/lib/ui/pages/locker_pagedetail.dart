@@ -17,6 +17,11 @@ class LockerPageDetailChild extends StatefulWidget {
 }
 
 class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
+  int lock = 1;
+  String bgText = "Your locker is UNLOCKED";
+  String btText = "LOCK";
+  Color btColor = Colors.orange[900];
+  IconData ctIcon = Icons.lock_open;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,13 +47,15 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Your locker is UNLOCKED",
+              bgText,
               style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Container(
               width: 200,
               height: 200,
@@ -56,25 +63,48 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
                 color: Colors.grey[300],
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.lock_open,size: 100,),
+              child: Icon(
+                ctIcon,
+                size: 100,
+              ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Container(
               width: 200,
               height: 50,
-                child: FlatButton(
-                    onPressed: () {},
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        side: BorderSide(color: Colors.transparent)),
-                    color: Colors.grey[800],
-                    child: Text(
-                      "Close",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    )),
+              child: FlatButton(
+                  onPressed: () {
+                    if (lock == 1) {
+                      setState(() {
+                        lock = 2;
+                        bgText = "Your locker is LOCKED";
+                        btText = "UNLOCK";
+                        btColor = Colors.grey[600];
+                        ctIcon = Icons.lock;
+                      });
+                    } else if (lock == 2) {
+                      setState(() {
+                        lock = 1;
+                        bgText = "Your locker is UNLOCKED";
+                        btText = "LOCK";
+                        btColor = Colors.orange[900];
+                        ctIcon = Icons.lock_open;
+                      });
+                    }
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      side: BorderSide(color: Colors.transparent)),
+                  color: btColor,
+                  child: Text(
+                    btText,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  )),
             )
           ],
         ),
