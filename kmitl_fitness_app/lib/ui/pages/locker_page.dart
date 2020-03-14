@@ -71,7 +71,7 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                             side: BorderSide(color: Colors.transparent)),
                         padding: EdgeInsets.all(10.0),
                         child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.1")],
+                          children: <Widget>[Icon(Icons.lock), Text("No.1")],
                         ),
                       ),
                       FlatButton(
@@ -82,7 +82,7 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                             side: BorderSide(color: Colors.transparent)),
                         padding: EdgeInsets.all(10.0),
                         child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.2")],
+                          children: <Widget>[Icon(Icons.lock), Text("No.2")],
                         ),
                       ),
                       FlatButton(
@@ -93,48 +93,7 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                             side: BorderSide(color: Colors.transparent)),
                         padding: EdgeInsets.all(10.0),
                         child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.3")],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: () => {},
-                        color: Colors.grey[300],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            side: BorderSide(color: Colors.transparent)),
-                        padding: EdgeInsets.all(10.0),
-                        child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.4")],
-                        ),
-                      ),
-                      FlatButton(
-                        onPressed: () => {},
-                        color: Colors.grey[300],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            side: BorderSide(color: Colors.transparent)),
-                        padding: EdgeInsets.all(10.0),
-                        child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.5")],
-                        ),
-                      ),
-                      FlatButton(
-                        onPressed: () => {},
-                        color: Colors.grey[300],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            side: BorderSide(color: Colors.transparent)),
-                        padding: EdgeInsets.all(10.0),
-                        child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.6")],
+                          children: <Widget>[Icon(Icons.lock), Text("No.3")],
                         ),
                       ),
                     ],
@@ -153,7 +112,7 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                             side: BorderSide(color: Colors.transparent)),
                         padding: EdgeInsets.all(10.0),
                         child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.7")],
+                          children: <Widget>[Icon(Icons.lock), Text("No.4")],
                         ),
                       ),
                       FlatButton(
@@ -164,7 +123,7 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                             side: BorderSide(color: Colors.transparent)),
                         padding: EdgeInsets.all(10.0),
                         child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.8")],
+                          children: <Widget>[Icon(Icons.lock), Text("No.5")],
                         ),
                       ),
                       FlatButton(
@@ -175,7 +134,48 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                             side: BorderSide(color: Colors.transparent)),
                         padding: EdgeInsets.all(10.0),
                         child: Column(
-                          children: <Widget>[Icon(Icons.https), Text("No.9")],
+                          children: <Widget>[Icon(Icons.lock), Text("No.6")],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.lock), Text("No.7")],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.lock), Text("No.8")],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () => {},
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)),
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: <Widget>[Icon(Icons.lock), Text("No.9")],
                         ),
                       ),
                     ],
