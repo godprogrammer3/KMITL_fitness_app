@@ -34,7 +34,46 @@ class _LockerPageStateChild extends State<LockerPageChild> {
           )
         ],
       ),
-      body: Center(child: Text('Locker')),
+      body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+            Text(
+              "Select a locker to reserve",
+              style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(50)
+                )
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ])),
     );
   }
 }
