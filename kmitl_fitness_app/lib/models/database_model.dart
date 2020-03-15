@@ -7,7 +7,7 @@ class DatabaseModel {
   DatabaseModel({ this.uid });
 
   // collection reference
-  final CollectionReference kmitlFitnessCollection = Firestore.instance.collection('kmitl_fitness');
+  final CollectionReference kmitlFitnessCollection = Firestore.instance.collection('UserData');
 
   Future<void> updateUserData(UserData userData) async {
     return await kmitlFitnessCollection.document(uid).setData({
