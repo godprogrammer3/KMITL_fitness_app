@@ -1,6 +1,11 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/data/entitys/user.dart';
+
+import 'package:kmitl_fitness_app/models/models.dart';
+
+
 class AuthenModel{
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -12,20 +17,7 @@ class AuthenModel{
   // auth change user stream
   Stream<User> get user {
     return _auth.onAuthStateChanged
-      //.map((FirebaseUser user) => _userFromFirebaseUser(user));
       .map(_userFromFirebaseUser);
-  }
-
-  // sign in anon
-  Future signInAnon() async {
-    try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
   }
 
   // sign in with email and password
@@ -41,13 +33,19 @@ class AuthenModel{
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future register(UserData userData,String password) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.createUserWithEmailAndPassword(email: userData.email, password: password);
       FirebaseUser user = result.user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData('0','new crew member', 100);
-      return _userFromFirebaseUser(user);
+      userData = UserData(
+        uid : user.uid,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email
+      );
+      await DatabaseModel(uid: user.uid).updateUserData(userData);
+      return User(uid: user.uid);
     } catch (error) {
       print(error.toString());
       return null;
