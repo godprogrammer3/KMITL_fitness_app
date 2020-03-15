@@ -16,6 +16,8 @@ class HomePageChild extends StatefulWidget {
 }
 
 class _HomePageStateChild extends State<HomePageChild> {
+  final List<String> items = 
+    List<String>.generate(20, (i) => "Item: ${++i}");
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,34 @@ class _HomePageStateChild extends State<HomePageChild> {
           )
         ],
       ),
-      body: Center(child: Text('Home')),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (contex, index) {
+          return SizedBox(
+            height: 320,
+            child: Card(
+              child: Column(
+                children: [
+                  Container(
+                    height: 240.0,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/example.jpg'),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text("${items[index]}",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text("${items[index]}"),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
