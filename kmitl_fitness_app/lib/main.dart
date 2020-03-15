@@ -7,13 +7,13 @@ void main() {
 
 class KmitlFitnessApp extends StatelessWidget {
   
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return MaterialApp(
       title: 'KMITL FITNESS',
       theme: ThemeData(
         primaryColor: Colors.orange[900],
       ),
-      home: LoginPage(),
+      home: ApiTestPage(),
     );
   }
 }
