@@ -18,7 +18,7 @@ class KmitlFitnessApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.orange[900],
       ),
-      home: SignupPage(),
+      home: LoginPage(),
     );
   }
 }
