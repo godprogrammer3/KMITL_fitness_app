@@ -16,16 +16,19 @@ class SignupPageChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.deepOrangeAccent,
-            title: Center(
-              child: Text("SIGN UP", style: TextStyle(fontSize: 30),),
-            ),
-          ),
+          
           body: Center(
             child: Column(
               children: <Widget>[
-                SizedBox(height: 60.0,),
+                SizedBox(height: 80.0,),
+                Text(
+                "Sign Up",
+                style: TextStyle(
+                    color: Colors.orange[900],
+                    fontSize: 60,
+                    fontWeight: FontWeight.bold),
+              ),
+                SizedBox(height: 40.0,),
 
                 Container(width: 250, height: 50, child: TextField(
                   decoration: InputDecoration(
@@ -44,7 +47,7 @@ class SignupPageChild extends StatelessWidget {
                   ),
                 )),
 
-                SizedBox(height: 30.0,),
+                SizedBox(height: 20.0,),
 
                 Container(width: 250, height: 50, child: TextField(
                   decoration: InputDecoration(
@@ -63,7 +66,7 @@ class SignupPageChild extends StatelessWidget {
                   ),
                 )),
 
-                SizedBox(height: 30.0,),
+                SizedBox(height: 20.0,),
 
                 Container(width: 250, height: 50, child: TextField(
                   decoration: InputDecoration(
@@ -83,7 +86,7 @@ class SignupPageChild extends StatelessWidget {
                   ),
                 )),
 
-                SizedBox(height: 30.0,),
+                SizedBox(height: 20.0,),
 
                 Container(width: 250, height: 50, child: TextField(
                   decoration: InputDecoration(
@@ -102,7 +105,7 @@ class SignupPageChild extends StatelessWidget {
                   ),
                 )),
 
-                SizedBox(height: 30.0,),
+                SizedBox(height: 20.0,),
 
                 Container(width: 250, height: 50, child: TextField(
                   decoration: InputDecoration(
@@ -121,20 +124,50 @@ class SignupPageChild extends StatelessWidget {
                   ),
                 )),
 
-                SizedBox(height: 40.0,),
+                SizedBox(height: 30.0,),
 
 
 
-                RaisedButton(
+               Container(
+                width: 300,
+                height: 50,
+                child: FlatButton(
+                    onPressed: () {
+                      print("sign up complete");
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                        side: BorderSide(color: Colors.transparent)),
+                    color: Colors.orange[900],
+                    child: Text(
+                      "CREATE ACCOUNT",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ),
 
+               SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Have an account ?,"),
+                  FlatButton(
+                    onPressed: () {},
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
-                  onPressed: () {
-                    print("sign up complete");
-                  },
-
-                  color: Colors.deepOrangeAccent,
-                  child: Text("CREATE ACCOUNT", style: TextStyle(color: Colors.white),),
-                )
               ],
             ),
           ));
