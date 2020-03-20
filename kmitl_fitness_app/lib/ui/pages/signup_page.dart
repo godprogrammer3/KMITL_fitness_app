@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key key}) : super(key: key);
@@ -11,7 +13,9 @@ class SignupPage extends StatelessWidget {
 
 
 class SignupPageChild extends StatelessWidget {
-  const SignupPageChild({Key key}) : super(key: key);
+  final authenModel = AuthenModel();
+  final firstName = TextEditingController(),lastName = TextEditingController(), email = TextEditingController(),password = TextEditingController();
+  SignupPageChild({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +42,12 @@ class SignupPageChild extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
+                    
 
 
 
                   ),
+                  controller: firstName,
                 )),
 
                 SizedBox(height: 30.0,),
@@ -61,6 +67,7 @@ class SignupPageChild extends StatelessWidget {
 
 
                   ),
+                  controller: lastName,
                 )),
 
                 SizedBox(height: 30.0,),
@@ -81,6 +88,7 @@ class SignupPageChild extends StatelessWidget {
 
 
                   ),
+                  controller:email,
                 )),
 
                 SizedBox(height: 30.0,),
@@ -100,6 +108,8 @@ class SignupPageChild extends StatelessWidget {
 
 
                   ),
+                  obscureText: true,
+                  controller: password,
                 )),
 
                 SizedBox(height: 30.0,),
@@ -119,6 +129,7 @@ class SignupPageChild extends StatelessWidget {
 
 
                   ),
+                  obscureText: true,
                 )),
 
                 SizedBox(height: 40.0,),
@@ -128,8 +139,15 @@ class SignupPageChild extends StatelessWidget {
                 RaisedButton(
 
 
-                  onPressed: () {
-                    print("sign up complete");
+                  onPressed: () async {
+                     final userData = UserData(firstName:firstName.text,lastName:lastName.text, email: email.text);
+                     final user = await authenModel.register(userData, password.text);
+                      if(user == null){
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text("Sorry can't create account please try again."),
+                          backgroundColor: Colors.red,
+                        ));
+                      }
                   },
 
                   color: Colors.deepOrangeAccent,

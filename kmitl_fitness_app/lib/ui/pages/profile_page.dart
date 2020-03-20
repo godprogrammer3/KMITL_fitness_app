@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key key}) : super(key: key);
 
@@ -9,15 +11,32 @@ class ProfilePage extends StatelessWidget {
 }
 
 class ProfilePageChild extends StatefulWidget {
+ 
   @override
   _ProfilePageStateChild createState() => _ProfilePageStateChild();
 }
 
 class _ProfilePageStateChild extends State<ProfilePageChild> {
+  final authenModel = AuthenModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Profile')),
+      body: Center(child:
+      RaisedButton(
+        onPressed: () async {
+          await authenModel.signOut();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return LoginPage();
+              }
+              
+            ),
+          );
+        },
+        child: Text('Log out')
+      ),
+      ),
     );
   }
 }

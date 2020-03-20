@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 class NavigationWidget extends StatelessWidget {
-  const NavigationWidget({Key key}) : super(key: key);
+  final User user;
+  NavigationWidget({Key key, this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return NavigationChild();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
@@ -18,13 +19,23 @@ class LoginPageChild extends StatefulWidget {
 
 class _LoginPageStateChild extends State<LoginPageChild> {
   bool _isHidden = true;
-
+  AuthenModel authenModel = AuthenModel();
+  TextEditingController email = TextEditingController(), password = TextEditingController();
   void _toggleVisibility() {
     setState(() {
       _isHidden = !_isHidden;
     });
   }
-
+  @override
+  void dispose() {
+    if( email == null){
+       email.dispose();
+    }
+    if( password == null){
+      password.dispose();
+    }
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +71,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                     filled: true,
                     fillColor: Colors.grey[200],
                   ),
+                  controller: email,
                 ),
               ),
               SizedBox(
@@ -90,6 +102,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                     fillColor: Colors.grey[200],
                   ),
                   obscureText: _isHidden,
+                  controller: password,
                 ),
               ),
               SizedBox(
@@ -99,10 +112,19 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                 width: 300,
                 height: 50,
                 child: FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => NavigationWidget(),
-                      ));
+                    onPressed: () async {
+                      final user = await authenModel.signInWithEmailAndPassword(email.text, password.text);
+                      if(user != null){
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => NavigationWidget(),
+                        ));
+                      }else{
+                         Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text("Sorry Incorect username or password please try again."),
+                          backgroundColor: Colors.red,
+                        ));
+                      }
+                      
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
@@ -166,7 +188,12 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                 children: <Widget>[
                   Text("Don't have an account ?"),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SignupPage(),
+                      )
+                      );
+                    },
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     child: Text(

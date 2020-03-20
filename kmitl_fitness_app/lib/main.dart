@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 import 'ui/pages/home_page.dart';
 import 'ui/pages/login_page.dart';
@@ -18,7 +22,24 @@ class KmitlFitnessApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.orange[900],
       ),
-      home: SignupPage(),
+      home: StreamProvider<User>.value(
+        value: AuthenModel().user,
+        child: SelectPage(),
+      ),
     );
+  }
+}
+
+class SelectPage extends StatelessWidget {
+  const SelectPage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+     final user = Provider.of<User>(context);
+     if( user != null ) {
+       return NavigationWidget(user:user);
+     }else{
+       return LoginPage();
+     }
   }
 }
