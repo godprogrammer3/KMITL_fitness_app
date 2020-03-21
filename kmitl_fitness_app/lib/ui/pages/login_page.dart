@@ -114,11 +114,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                 child: FlatButton(
                     onPressed: () async {
                       final user = await authenModel.signInWithEmailAndPassword(email.text, password.text);
-                      if(user != null){
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => NavigationWidget(),
-                        ));
-                      }else{
+                      if(user == null){
                          Scaffold.of(context).showSnackBar(SnackBar(
                           content: Text("Sorry Incorect username or password please try again."),
                           backgroundColor: Colors.red,

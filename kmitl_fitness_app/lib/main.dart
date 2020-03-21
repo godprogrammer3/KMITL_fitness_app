@@ -22,8 +22,8 @@ class KmitlFitnessApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.orange[900],
       ),
-      home: StreamProvider<User>.value(
-        value: AuthenModel().user,
+      home: StreamProvider<User>(
+        create: (_) =>AuthenModel().user,
         child: SelectPage(),
       ),
     );
@@ -36,8 +36,9 @@ class SelectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      final user = Provider.of<User>(context);
+     print("User stream run here");
      if( user != null ) {
-       return NavigationWidget(user:user);
+       return NavigationWidget();
      }else{
        return LoginPage();
      }

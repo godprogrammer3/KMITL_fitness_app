@@ -25,14 +25,6 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
       RaisedButton(
         onPressed: () async {
           await authenModel.signOut();
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return LoginPage();
-              }
-              
-            ),
-          );
         },
         child: Text('Log out')
       ),

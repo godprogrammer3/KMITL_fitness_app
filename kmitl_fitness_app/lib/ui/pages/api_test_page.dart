@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 class ApiTestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value(
-      value: AuthenModel().user,
+    return StreamProvider<User>(
+      create: (_) => AuthenModel().user,
       child: ApiTestPageChild(),
     );
   }
