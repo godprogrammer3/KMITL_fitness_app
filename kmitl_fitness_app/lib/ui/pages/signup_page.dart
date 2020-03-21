@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key key}) : super(key: key);
@@ -11,30 +12,39 @@ class SignupPage extends StatelessWidget {
   }
 }
 
-
 class SignupPageChild extends StatelessWidget {
   final authenModel = AuthenModel();
-  final firstName = TextEditingController(),lastName = TextEditingController(), email = TextEditingController(),password = TextEditingController();
+  final firstName = TextEditingController(),
+      lastName = TextEditingController(),
+      email = TextEditingController(),
+      password = TextEditingController();
   SignupPageChild({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          
-          body: Center(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 80.0,),
-                Text(
+        body: SingleChildScrollView(
+                  child: SafeArea(
+                    child: Center(
+      child: Column(
+            children: <Widget>[
+              SizedBox(
+                height:30.0,
+              ),
+              Text(
                 "Sign Up",
                 style: TextStyle(
                     color: Colors.orange[900],
                     fontSize: 60,
                     fontWeight: FontWeight.bold),
               ),
-                SizedBox(height: 40.0,),
-
-                  Container(width: 250, height: 50, child: TextField(
+              SizedBox(
+                height: 40.0,
+              ),
+              Container(
+                  width: 250,
+                  height: 50,
+                  child: TextField(
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person_outline),
                       hintText: "First Name",
@@ -45,17 +55,16 @@ class SignupPageChild extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      
-
-
-
                     ),
                     controller: firstName,
                   )),
-
-                  SizedBox(height: 30.0,),
-
-                  Container(width: 250, height: 50, child: TextField(
+              SizedBox(
+                height: 30.0,
+              ),
+              Container(
+                  width: 250,
+                  height: 50,
+                  child: TextField(
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person_outline),
                       hintText: "Last Name",
@@ -66,17 +75,16 @@ class SignupPageChild extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-
-
-                SizedBox(height: 20.0,),
-
                     ),
                     controller: lastName,
                   )),
-
-                  SizedBox(height: 30.0,),
-
-                  Container(width: 250, height: 50, child: TextField(
+              SizedBox(
+                height: 30.0,
+              ),
+              Container(
+                  width: 250,
+                  height: 50,
+                  child: TextField(
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.email),
                       hintText: "Email Address",
@@ -86,19 +94,17 @@ class SignupPageChild extends StatelessWidget {
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
-
                       ),
-
-                SizedBox(height: 20.0,),
-
-
                     ),
-                    controller:email,
+                    controller: email,
                   )),
-
-                  SizedBox(height: 30.0,),
-
-                  Container(width: 250, height: 50, child: TextField(
+              SizedBox(
+                height: 30.0,
+              ),
+              Container(
+                  width: 250,
+                  height: 50,
+                  child: TextField(
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock),
                       hintText: "Password (6 or more characters)",
@@ -109,18 +115,17 @@ class SignupPageChild extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-
-
-                SizedBox(height: 20.0,),
-
                     ),
                     obscureText: true,
                     controller: password,
                   )),
-
-                  SizedBox(height: 30.0,),
-
-                  Container(width: 250, height: 50, child: TextField(
+              SizedBox(
+                height: 30.0,
+              ),
+              Container(
+                  width: 250,
+                  height: 50,
+                  child: TextField(
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock),
                       hintText: "Confirm Password",
@@ -131,38 +136,30 @@ class SignupPageChild extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-
-
-                SizedBox(height: 20.0,),
-
                     ),
                     obscureText: true,
                   )),
-
-                  SizedBox(height: 40.0,),
-
-
-
-                SizedBox(height: 30.0,),
-
-
-                    onPressed: () async {
-                       final userData = UserData(firstName:firstName.text,lastName:lastName.text, email: email.text);
-                       dynamic user = await authenModel.register(userData, password.text);
-                        if(user == null){
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text("Sorry can't create account please try again."),
-                            backgroundColor: Colors.red,
-                          ));
-                        }
-                    },
-
-               Container(
+              SizedBox(height:20),
+              Container(
                 width: 300,
                 height: 50,
                 child: FlatButton(
-                    onPressed: () {
-                      print("sign up complete");
+                    onPressed: () async {
+                      final userData = UserData(
+                          firstName: firstName.text,
+                          lastName: lastName.text,
+                          email: email.text);
+                      dynamic user =
+                          await authenModel.register(userData, password.text);
+                      if (user != null) {
+                        Navigator.of(context).pop();
+                      }else{
+                         Scaffold.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("Sorry can't create account please try again."),
+                          backgroundColor: Colors.red,
+                        ));
+                      }
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
@@ -176,14 +173,15 @@ class SignupPageChild extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     )),
               ),
-
-               SizedBox(height: 10),
+              SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text("Have an account ?,"),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     child: Text(
@@ -196,9 +194,10 @@ class SignupPageChild extends StatelessWidget {
                   ),
                 ],
               ),
-
-              ],
-            ),
-          ));
+            ],
+      ),
+    ),
+          ),
+        ));
   }
 }
