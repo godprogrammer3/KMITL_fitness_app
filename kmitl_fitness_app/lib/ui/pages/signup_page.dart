@@ -165,7 +165,9 @@ class _SignupPageChildState extends State<SignupPageChild> {
                               setState(()=>_isLoading = true);
                             dynamic user =
                                 await authenModel.register(userData, password.text);
-                             setState(()=>_isLoading = false);
+                            if(this.mounted){
+                              setState(()=>_isLoading = false);
+                            }
                             if (user != null) {
                               Navigator.of(context).pop();
                             } else {

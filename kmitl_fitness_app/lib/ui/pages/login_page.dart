@@ -128,7 +128,9 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                               final user =
                                   await authenModel.signInWithEmailAndPassword(
                                       email.text, password.text);
-                              setState(() => _isLoading = false);
+                              if(this.mounted){
+                                setState(() => _isLoading = false);
+                              }
                               if (user == null) {
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   content: Text(
