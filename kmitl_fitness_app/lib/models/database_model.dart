@@ -26,9 +26,15 @@ class DatabaseModel {
         firstName:document['firstName'],
         lastName:document['lastName'],
         email:document['email'],
+        membership:document['membership'],
       );
     });
     return result;
+  }
+   Future<void> updateMembership(String membership) async {
+    return await kmitlFitnessCollection.document(uid).setData({
+      'membership': membership,
+    });
   }
 
 }
