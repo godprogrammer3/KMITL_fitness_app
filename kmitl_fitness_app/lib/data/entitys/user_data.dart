@@ -5,5 +5,6 @@ class UserData{
   final String firstName;
   final String lastName;
   final String email;
-  UserData({this.firstName, this.lastName, this.email,this.uid});
+  final String membership;
+  UserData({this.firstName, this.lastName, this.email,this.uid,this.membership});
 }
