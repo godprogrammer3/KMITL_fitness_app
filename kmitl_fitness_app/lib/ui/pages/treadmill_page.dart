@@ -15,6 +15,17 @@ class TreadmillPageChild extends StatefulWidget {
 }
 
 class _TreadmillPageStateChild extends State<TreadmillPageChild> {
+  List<String> queue = <String>['First', 'Second', 'Third', 'Fourth', 'Fifth'];
+
+  void queueUp() {
+    setState(() {
+      queue.add('You');
+      _inQueue = !_inQueue;
+    });
+  }
+
+  bool _inQueue = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,27 +115,54 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
             //Need ListView, ListTile, and Pull data from Firebase
             margin: EdgeInsets.only(top: 15, bottom: 5),
             width: 330,
-            height: 220,
+            height: 230,
             //color: Colors.black26,
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(30),
             ),
-          ),
-          FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Text(
-              'Queue Up',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: queue.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          elevation: 1,
+                          child: ListTile(
+                            title: Text(queue[index]),
+                            leading: Icon(Icons.face),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-            onPressed: () {}, //Firebase
-            color: Colors.orange[900],
-            padding: EdgeInsets.fromLTRB(120, 10, 120, 10),
+          ),
+          ButtonTheme(
+            minWidth: 330,
+            height: 50,
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                _inQueue ? 'You are in queue' : 'Queue Up',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: _inQueue ? null : queueUp, //Firebase
+              color: Colors.orange[900],
+            ),
           ),
         ],
       ),
