@@ -39,7 +39,7 @@ class SelectPage extends StatelessWidget {
      if( user != null ) {
        return NavigationWidget();
      }else{
-       return LoginPage();
+       return NavigationWidget();
      }
   }
 }
