@@ -9,3 +9,4 @@ export './profile_page.dart';
 export './api_test_page.dart';
 export './notification_page.dart';
 export './news_detail_page.dart';
+export './membership_page.dart';
