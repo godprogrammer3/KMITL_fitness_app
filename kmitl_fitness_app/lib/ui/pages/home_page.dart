@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+  final User user;
+  HomePage({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,12 @@ class _HomePageStateChild extends State<HomePageChild> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.notifications),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return NotificationPage();
+                }));
+            },
             color: Colors.orange[900],
           )
         ],
