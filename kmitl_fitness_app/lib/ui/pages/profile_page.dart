@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/pages/membership_page.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -81,7 +82,9 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
             ),
             Container(
               child: FlatButton(
-                onPressed: () => {},
+                onPressed: () => {Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MembershipPage(),
+                  ))},
                 child: Text("Membership                                                         "),
               ),
               decoration: BoxDecoration(
