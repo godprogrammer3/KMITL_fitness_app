@@ -26,21 +26,15 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         iconTheme: IconThemeData(
-          color: Colors.orange[900],
+          color: Colors.white,
         ),
         title: Text(
           'LockerDetail',
-          style: TextStyle(color: Colors.orange[900]),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.white,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {},
-            color: Colors.orange[900],
-          )
-        ],
+        backgroundColor: Colors.orange[900],
       ),
       body: Center(
         child: Column(
