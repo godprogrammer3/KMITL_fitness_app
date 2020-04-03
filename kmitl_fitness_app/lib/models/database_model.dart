@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 
 class DatabaseModel {
 
   final String uid;
-  DatabaseModel({ this.uid });
+  DatabaseModel({ 
+    @required this.uid 
+  });
 
   // collection reference
   final CollectionReference kmitlFitnessCollection = Firestore.instance.collection('UserData');
