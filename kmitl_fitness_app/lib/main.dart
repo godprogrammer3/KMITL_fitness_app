@@ -5,10 +5,6 @@ import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-import 'ui/pages/home_page.dart';
-import 'ui/pages/login_page.dart';
-import 'ui/pages/pages.dart';
-import 'ui/pages/pages.dart';
 
 void main() {
   runApp(KmitlFitnessApp());
@@ -23,7 +19,7 @@ class KmitlFitnessApp extends StatelessWidget {
         primaryColor: Colors.orange[900],
       ),
       home: StreamProvider<User>(
-        create: (_) =>AuthenModel().user,
+        create: (_) => AuthenModel().user,
         child: SelectPage(),
     ));
   }
@@ -39,7 +35,7 @@ class SelectPage extends StatelessWidget {
      if( user != null ) {
        return NavigationWidget();
      }else{
-       return NavigationWidget();
+       return LoginPage();
      }
   }
 }

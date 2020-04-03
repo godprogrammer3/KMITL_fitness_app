@@ -112,7 +112,9 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
             ),
             Container(
               child: FlatButton(
-                onPressed: () => {},
+                onPressed: () async {
+                  await authenModel.signOut();
+                },
                 child: Text(
                   "Logout",
                   style: TextStyle(
