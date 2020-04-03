@@ -33,7 +33,7 @@ class SelectPage extends StatelessWidget {
      final user = Provider.of<User>(context);
      print("User stream run here");
      if( user != null ) {
-       return NavigationWidget();
+       return NavigationWidget(user: user);
      }else{
        return LoginPage();
      }

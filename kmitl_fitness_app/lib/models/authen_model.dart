@@ -43,7 +43,12 @@ class AuthenModel{
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email, 
-        membership:'unsubscription'
+        membershipExpireDate:'unsubscription',
+        birthYear:0,
+        role:'regular_user',
+        faceId:'',
+        isHaveYellowCard:false,
+        point:0,
       );
       await DatabaseModel(uid: user.uid).updateUserData(userData);
       return User(uid: user.uid);

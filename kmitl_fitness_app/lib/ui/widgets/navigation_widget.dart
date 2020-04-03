@@ -7,23 +7,36 @@ class NavigationWidget extends StatelessWidget {
   NavigationWidget({Key key, this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return NavigationChild();
+    return NavigationChild(user: user);
   }
 }
+
 class NavigationChild extends StatefulWidget {
+  final User user;
+
+  const NavigationChild({Key key, this.user}) : super(key: key);
   @override
-  _NavigationStateChild createState() => _NavigationStateChild();
+  _NavigationStateChild createState() => _NavigationStateChild(user:user);
 }
 
 class _NavigationStateChild extends State<NavigationChild> {
+  final User user;
   int _selectedIndex = 0;
-  final _pageOptions = [
-    HomePage(),
-    ClassPage(),
-    LockerPage(),
-    TreadmillPage(),
-    ProfilePage()
-  ];
+  var _pageOptions;
+
+  _NavigationStateChild({this.user});
+
+  @override
+  void initState() {
+    super.initState();
+    _pageOptions = [
+      HomePage(),
+      ClassPage(),
+      LockerPage(),
+      TreadmillPage(user: user),
+      ProfilePage()
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -39,7 +52,9 @@ class _NavigationStateChild extends State<NavigationChild> {
         unselectedItemColor: Colors.grey,
         selectedItemColor: Colors.orange[900],
         currentIndex: _selectedIndex,
-        onTap: (index){_onItemTapped(index);},
+        onTap: (index) {
+          _onItemTapped(index);
+        },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

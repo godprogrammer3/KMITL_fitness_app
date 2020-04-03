@@ -17,7 +17,12 @@ class DatabaseModel {
       'firstName': userData.firstName,
       'lastName': userData.lastName,
       'email': userData.email,
-      'membership': userData.membership,
+      'point': userData.point,
+      'membershipExpireDate': userData.membershipExpireDate,
+      'birthYear':userData.birthYear,
+      'role': userData.role, 
+      'faceId': userData.faceId, 
+      'isHaveYellowCard': userData.isHaveYellowCard,
     });
   }
 
@@ -29,14 +34,19 @@ class DatabaseModel {
         firstName:document['firstName'],
         lastName:document['lastName'],
         email:document['email'],
-        membership:document['membership'],
+        point: document['point'],
+        membershipExpireDate:document['membershipExpireDate'],
+        birthYear:document['birthYear'],
+        role:document['role'],
+        faceId:document['faceId'],
+        isHaveYellowCard:document['isHaveYellowCard'],
       );
     });
     return result;
   }
-   Future<void> updateMembership(String membership) async {
+   Future<void> updateMembership(String membershipExpireDate) async {
     return await kmitlFitnessCollection.document(uid).setData({
-      'membership': membership,
+      'membershipExpireDate': membershipExpireDate,
     });
   }
 

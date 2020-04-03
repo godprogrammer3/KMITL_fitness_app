@@ -1,30 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 
 class TreadmillPage extends StatelessWidget {
-  const TreadmillPage({Key key}) : super(key: key);
+  final User user;
+  const TreadmillPage({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TreadmillPageChild();
+    return TreadmillPageChild(user: user);
   }
 }
 
 class TreadmillPageChild extends StatefulWidget {
+  final User user;
+
+  const TreadmillPageChild({Key key, this.user}) : super(key: key);
   @override
-  _TreadmillPageStateChild createState() => _TreadmillPageStateChild();
+  _TreadmillPageStateChild createState() =>
+      _TreadmillPageStateChild(user: user);
 }
 
 class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   List<String> queue = <String>['First', 'Second', 'Third', 'Fourth', 'Fifth'];
+  final User user;
+  TreadmillModel treadmillModel;
 
-  void queueUp() {
-    setState(() {
-      queue.add('You');
-      _inQueue = !_inQueue;
-    });
+  _TreadmillPageStateChild({this.user});
+  void queueUp() async {
+    if (this.mounted) {
+      //final result = await treadmillModel.enQueue();
+      //final result = await treadmillModel.skip();
+      //final result = await treadmillModel.cancel();
+      //final result = await treadmillModel.enQueue();
+      final result = await treadmillModel.done();
+      if(result != 0){
+        print('you cant not cancel');
+      }
+      setState(() {
+        queue.add('You');
+        _inQueue = !_inQueue;
+      });
+    }
   }
 
   bool _inQueue = false;
+  @override
+  void initState() {
+    super.initState();
+    treadmillModel = TreadmillModel(uid: user.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
