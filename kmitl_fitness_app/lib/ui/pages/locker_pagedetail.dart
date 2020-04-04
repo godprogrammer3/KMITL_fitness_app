@@ -102,6 +102,27 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   )),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: 200,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(100))),
+              child: FlatButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                  child: Text(
+                    'Return',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  )),
             )
           ],
         ),
