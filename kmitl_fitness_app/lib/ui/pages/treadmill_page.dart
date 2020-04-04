@@ -32,6 +32,8 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   ];
   List<bool> treadmillFree = [false, false, true];
 
+  _TreadmillPageStateChild({this.user});
+
   void queueUp() {
     setState(() {
       queue.add('You');
@@ -39,18 +41,21 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
       _inQueue = !_inQueue;
     });
   }
+
   void enQueue() async {
     final result = await treadmillModel.enQueue();
     if (result != 0) {
       print('you can not enqueue');
     }
   }
+
   void skip() async {
     final result = await treadmillModel.skip();
     if (result != 0) {
       print('you can not skip');
     }
   }
+
   void cancel() async {
     final result = await treadmillModel.cancel();
     if (result != 0) {
@@ -66,6 +71,8 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   }
 
   bool _inQueue = false;
+  final User user;
+  TreadmillModel treadmillModel;
   @override
   void initState() {
     super.initState();
@@ -75,89 +82,90 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Treadmill'),
-      ),
-      body: Column(
-        children: <Widget>[
-          Center(
-            child: Card(
-              margin: EdgeInsets.fromLTRB(0, 35, 0, 35),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              elevation: 5,
-              child: Container(
-                width: 330,
-                height: 140,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          'No. 1',
-                          style: TextStyle(
-                            fontSize: 20,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('Treadmill'),
+        ),
+        body: SingleChildScrollView(
+                  child: Column(children: <Widget>[
+            Center(
+              child: Card(
+                margin: EdgeInsets.fromLTRB(0, 35, 0, 35),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                elevation: 5,
+                child: Container(
+                  width: 330,
+                  height: 140,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'No. 1',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: treadmillFree[0]
+                                  ? Colors.lightGreenAccent[700]
+                                  : Colors.black26,
+                            ),
+                          ),
+                          Icon(
+                            Icons.directions_run,
                             color: treadmillFree[0]
                                 ? Colors.lightGreenAccent[700]
                                 : Colors.black26,
+                            size: 75,
                           ),
-                        ),
-                        Icon(
-                          Icons.directions_run,
-                          color: treadmillFree[0]
-                              ? Colors.lightGreenAccent[700]
-                              : Colors.black26,
-                          size: 75,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          'No. 2',
-                          style: TextStyle(
-                            fontSize: 20,
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'No. 2',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: treadmillFree[1]
+                                  ? Colors.lightGreenAccent[700]
+                                  : Colors.black26,
+                            ),
+                          ),
+                          Icon(
+                            Icons.directions_run,
                             color: treadmillFree[1]
                                 ? Colors.lightGreenAccent[700]
                                 : Colors.black26,
+                            size: 75,
                           ),
-                        ),
-                        Icon(
-                          Icons.directions_run,
-                          color: treadmillFree[1]
-                              ? Colors.lightGreenAccent[700]
-                              : Colors.black26,
-                          size: 75,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          'No. 3',
-                          style: TextStyle(
-                            fontSize: 20,
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'No. 3',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: treadmillFree[2]
+                                  ? Colors.lightGreenAccent[700]
+                                  : Colors.black26,
+                            ),
+                          ),
+                          Icon(
+                            Icons.directions_run,
                             color: treadmillFree[2]
                                 ? Colors.lightGreenAccent[700]
                                 : Colors.black26,
+                            size: 75,
                           ),
-                        ),
-                        Icon(
-                          Icons.directions_run,
-                          color: treadmillFree[2]
-                              ? Colors.lightGreenAccent[700]
-                              : Colors.black26,
-                          size: 75,
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -168,79 +176,85 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                 color: Colors.black54,
               ),
             ),
-          ),
-          Container(
-            //Need ListView, ListTile, and Pull data from Firebase
-            margin: EdgeInsets.only(top: 15, bottom: 5),
-            width: 330,
-            height: 230,
-            //color: Colors.black26,
-            decoration: BoxDecoration(
-              color: Colors.black12,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: queue.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+            Container(
+              //Need ListView, ListTile, and Pull data from Firebase
+              margin: EdgeInsets.only(top: 15, bottom: 5),
+              width: 330,
+              height: 230,
+              //color: Colors.black26,
+              decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: queue.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            color: color[index],
+                            elevation: 1,
+                            child: ListTile(
+                              title: Text(queue[index]),
+                              leading: Icon(Icons.face),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    ButtonTheme(
+                      minWidth: 330,
+                      height: 50,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          _inQueue ? 'You are in queue' : 'Queue Up',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
                           ),
-                          color: color[index],
-                          elevation: 1,
-                          child: ListTile(
-                            title: Text(queue[index]),
-                            leading: Icon(Icons.face),
-                          ),
-                        );
-                      },
+                        ),
+                        onPressed: _inQueue ? null : queueUp, //Firebase
+                        color: Colors.orange[900],
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            ButtonTheme(
-              minWidth: 330,
-              height: 50,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  _inQueue ? 'You are in queue' : 'Queue Up',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: _inQueue ? null : queueUp, //Firebase
-                color: Colors.orange[900],
-              ),
-            ),
             RaisedButton(
-              onPressed: (){ enQueue(); },
+              onPressed: () {
+                enQueue();
+              },
               child: Text('enQueue'),
             ),
             RaisedButton(
-              onPressed: (){ skip(); },
+              onPressed: () {
+                skip();
+              },
               child: Text('skip'),
             ),
-             RaisedButton(
-              onPressed: (){ cancel(); },
+            RaisedButton(
+              onPressed: () {
+                cancel();
+              },
               child: Text('cancel'),
             ),
             RaisedButton(
-              onPressed: (){ done(); },
+              onPressed: () {
+                done();
+              },
               child: Text('done'),
             )
-          ],
-        ),
-      ),
-    );
+          ]),
+        ));
   }
 }
