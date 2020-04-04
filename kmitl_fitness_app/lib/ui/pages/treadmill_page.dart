@@ -16,10 +16,18 @@ class TreadmillPageChild extends StatefulWidget {
 
 class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   List<String> queue = <String>['First', 'Second', 'Third', 'Fourth', 'Fifth'];
+  final color = [
+    Colors.white,
+    Colors.white,
+    Colors.white,
+    Colors.white,
+    Colors.white
+  ];
 
   void queueUp() {
     setState(() {
       queue.add('You');
+      color.add(Colors.lightGreenAccent[700]);
       _inQueue = !_inQueue;
     });
   }
@@ -133,6 +141,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
+                          color: color[index],
                           elevation: 1,
                           child: ListTile(
                             title: Text(queue[index]),
