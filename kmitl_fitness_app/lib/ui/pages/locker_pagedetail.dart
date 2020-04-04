@@ -98,10 +98,12 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
                   child: Text(
                     btText,
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  )),
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                    ),
+                  )
+              ),
             ),
             SizedBox(
               height: 20,

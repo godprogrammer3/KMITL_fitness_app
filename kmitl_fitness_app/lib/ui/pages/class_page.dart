@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'pages.dart';
+
 class ClassPage extends StatelessWidget {
   const ClassPage({Key key}) : super(key: key);
 
@@ -73,6 +75,9 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                           ),
                         ]
                       ),
+                      onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ClassPageDetail(),));
+                      },
                     ),
                   ],
                 ),
