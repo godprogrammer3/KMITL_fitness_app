@@ -8,52 +8,112 @@ class MembershipPage extends StatefulWidget {
 }
 
 class _MembershipPageState extends State<MembershipPage> {
-  final List<String> items = List<String>.generate(2, (i) => "Item: ${++i}");
+  final List<MemberPackage> memberPackages = [
+    MemberPackage(
+        title: "โปรรายวันเบาๆ",
+        detail: "ใช้งานฟิตเนสตลอดวัน \nในวันที่สมัครใช้งาน",
+        price: "฿30",
+        time: "/วัน",
+        pricePerDay: ""),
+    MemberPackage(
+        title: "โปรเดือนฟิต",
+        detail: "ใช้งานฟิตเนสตลอด 30 วัน \nนับตั้งแต่วันที่สมัครใช้งาน",
+        price: "฿500",
+        time: "/เดือน",
+        pricePerDay: "฿16.67 ต่อวัน"),
+    MemberPackage(
+        title: "โปรเปิดเทอม",
+        detail: "ใช้งานฟิตเนสตลอด 4 เดือน \nนับตั้งแต่วันที่สมัครใช้งาน",
+        price: "฿1,700",
+        time: "/4 เดือน",
+        pricePerDay: "฿14.16 ต่อวัน")
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("MemberShip"),
+        title: Text("Membership"),
       ),
       body: ListView.builder(
-        itemCount: items.length,
+        itemCount: memberPackages.length,
         itemBuilder: (contex, index) {
           return SizedBox(
-            height: 320,
+            height: 280,
             child: Card(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 240.0,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/example.jpg'),
-                        fit: BoxFit.fitWidth,
-                      ),
+              margin: EdgeInsets.all(20.0),
+              child: Container(
+                margin: EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                memberPackages[index].title,
+                                style: TextStyle(
+                                    fontFamily: 'Kanit', fontSize: 30,),
+                              ),
+                              SizedBox(height: 5.0,),
+                              Text(
+                                memberPackages[index].detail,
+                                style: TextStyle(
+                                  fontFamily: 'Kanit',
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ]),
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              memberPackages[index].price,
+                              style:
+                                  TextStyle(
+                                    fontFamily: 'Kanit', 
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                            ),
+                            Text(
+                              memberPackages[index].time,
+                              style:
+                                  TextStyle(fontFamily: 'Kanit', fontSize: 24, height: 0.75),
+                            ),
+                            SizedBox(height: 10.0),
+                            Text(
+                              memberPackages[index].pricePerDay,
+                              style:
+                                  TextStyle(fontFamily: 'Kanit', fontSize: 12),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    width: 160,
-                    height: 50,
-                    child: FlatButton(
-                        onPressed: () {},
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            side: BorderSide(color: Colors.transparent)),
-                        color: Colors.orange[900],
-                        child: Text(
-                          "BUY",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        )),
-                  ),
-                ],
+                    
+                    Container(
+                      width: 200,
+                      height: 45,
+                      child: FlatButton(
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.transparent)),
+                          color: Colors.orange[800],
+                          child: Text(
+                            "GET",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -61,4 +121,14 @@ class _MembershipPageState extends State<MembershipPage> {
       ),
     );
   }
+}
+
+class MemberPackage {
+  String title;
+  String detail;
+  String price;
+  String time;
+  String pricePerDay;
+  MemberPackage(
+      {this.title, this.detail, this.price, this.time, this.pricePerDay});
 }
