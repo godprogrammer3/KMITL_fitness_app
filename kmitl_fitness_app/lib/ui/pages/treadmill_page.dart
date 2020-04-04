@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class TreadmillPage extends StatelessWidget {
   const TreadmillPage({Key key}) : super(key: key);
@@ -35,12 +36,45 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
 
   bool _inQueue = false;
 
+  var alertStyle = AlertStyle(
+    animationType: AnimationType.fromTop,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    descStyle: TextStyle(fontWeight: FontWeight.bold),
+    animationDuration: Duration(milliseconds: 400),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0),
+      side: BorderSide(
+        color: Colors.grey,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: Colors.deepOrange,
+      fontSize: 30,
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text('Treadmill'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.timelapse),
+              onPressed: () {
+                return Alert(
+                  context: context,
+                  content: SizedBox(
+                    height: 200,
+                    width: 200,
+                  ),
+                  style: alertStyle,
+                  title: "Treadmill is ready!",
+                ).show();
+              })
+        ],
       ),
       body: Column(
         children: <Widget>[
