@@ -15,7 +15,7 @@ class TreadmillPageChild extends StatefulWidget {
 }
 
 class _TreadmillPageStateChild extends State<TreadmillPageChild> {
-  List<String> queue = <String>['First', 'Second', 'Third', 'Fourth', 'Fifth'];
+  List<String> queue = ['First', 'Second', 'Third', 'Fourth', 'Fifth'];
   final color = [
     Colors.white,
     Colors.white,
@@ -23,6 +23,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
     Colors.white,
     Colors.white
   ];
+  List<bool> treadmillFree = [false, false, true];
 
   void queueUp() {
     setState(() {
@@ -63,12 +64,16 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                           'No. 1',
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.black26,
+                            color: treadmillFree[0]
+                                ? Colors.lightGreenAccent[700]
+                                : Colors.black26,
                           ),
                         ),
                         Icon(
                           Icons.directions_run,
-                          color: Colors.black12,
+                          color: treadmillFree[0]
+                              ? Colors.lightGreenAccent[700]
+                              : Colors.black26,
                           size: 75,
                         ),
                       ],
@@ -80,12 +85,16 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                           'No. 2',
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.black26,
+                            color: treadmillFree[1]
+                                ? Colors.lightGreenAccent[700]
+                                : Colors.black26,
                           ),
                         ),
                         Icon(
                           Icons.directions_run,
-                          color: Colors.black12,
+                          color: treadmillFree[1]
+                              ? Colors.lightGreenAccent[700]
+                              : Colors.black26,
                           size: 75,
                         ),
                       ],
@@ -97,12 +106,16 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                           'No. 3',
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.lightGreenAccent[700],
+                            color: treadmillFree[2]
+                                ? Colors.lightGreenAccent[700]
+                                : Colors.black26,
                           ),
                         ),
                         Icon(
                           Icons.directions_run,
-                          color: Colors.lightGreenAccent[700],
+                          color: treadmillFree[2]
+                              ? Colors.lightGreenAccent[700]
+                              : Colors.black26,
                           size: 75,
                         ),
                       ],
