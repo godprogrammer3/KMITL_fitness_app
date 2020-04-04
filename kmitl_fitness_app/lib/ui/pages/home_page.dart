@@ -21,6 +21,14 @@ class _HomePageStateChild extends State<HomePageChild> {
   final List<String> items = List<String>.generate(20, (i) => "News: ${++i}");
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+
+  
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -29,10 +37,10 @@ class _HomePageStateChild extends State<HomePageChild> {
           IconButton(
             icon: Icon(Icons.notifications),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return NotificationPage();
-                }));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return NotificationPage();
+              }));
             },
             color: Colors.orange[900],
           )

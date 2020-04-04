@@ -10,24 +10,16 @@ class DatabaseModel {
   });
 
   // collection reference
-  final CollectionReference kmitlFitnessCollection = Firestore.instance.collection('UserData');
+  final CollectionReference userDataCollection = Firestore.instance.collection('UserData');
 
-  Future<void> updateUserData(UserData userData) async {
-    return await kmitlFitnessCollection.document(uid).setData({
-      'firstName': userData.firstName,
-      'lastName': userData.lastName,
-      'email': userData.email,
-      'point': userData.point,
-      'membershipExpireDate': userData.membershipExpireDate,
-      'birthYear':userData.birthYear,
-      'role': userData.role, 
-      'faceId': userData.faceId, 
-      'isHaveYellowCard': userData.isHaveYellowCard,
-    });
+  Future<void> setUserData(Map<String, dynamic> updateData) async {
+    return await userDataCollection.document(uid).setData(updateData);
   }
-
+  Future<void> updateUserData(Map<String, dynamic> updateData) async {
+    return await userDataCollection.document(uid).updateData(updateData);
+  }
   Future<UserData> getUserData() async {
-    UserData result = await kmitlFitnessCollection.document(uid).get().then((documentSnapshot){
+    UserData result = await userDataCollection.document(uid).get().then((documentSnapshot){
       Map document = documentSnapshot.data;
       return UserData(
         uid:uid,
@@ -45,7 +37,7 @@ class DatabaseModel {
     return result;
   }
    Future<void> updateMembership(String membershipExpireDate) async {
-    return await kmitlFitnessCollection.document(uid).setData({
+    return await userDataCollection.document(uid).setData({
       'membershipExpireDate': membershipExpireDate,
     });
   }

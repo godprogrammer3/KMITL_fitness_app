@@ -19,10 +19,10 @@ class TreadmillModel {
         if (treadmillStatusSnapshot.documents[i]['user'] == this.uid) {
           return -1;
         }
-        if (treadmillStatusSnapshot.documents[i]['isAvailable'] == true) {
+        if (treadmillStatusSnapshot.documents[i]['user'] == '') {
           await treadmillStatusCollection
               .document(i.toString())
-              .setData({'isAvailable': false, 'user': this.uid});
+              .updateData({'user': this.uid});
           return 0;
           break;
         }

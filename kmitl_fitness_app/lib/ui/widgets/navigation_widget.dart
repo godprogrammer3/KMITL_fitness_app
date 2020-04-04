@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
+import 'package:kmitl_fitness_app/main.dart';
 
 class NavigationWidget extends StatelessWidget {
   final User user;
@@ -16,7 +17,7 @@ class NavigationChild extends StatefulWidget {
 
   const NavigationChild({Key key, this.user}) : super(key: key);
   @override
-  _NavigationStateChild createState() => _NavigationStateChild(user:user);
+  _NavigationStateChild createState() => _NavigationStateChild(user: user);
 }
 
 class _NavigationStateChild extends State<NavigationChild> {
@@ -29,6 +30,7 @@ class _NavigationStateChild extends State<NavigationChild> {
   @override
   void initState() {
     super.initState();
+    initFirebaseMessaging();
     _pageOptions = [
       HomePage(),
       ClassPage(),
@@ -42,6 +44,29 @@ class _NavigationStateChild extends State<NavigationChild> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void initFirebaseMessaging() {
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessageInNavigation: $message");
+        setState(() {
+          _selectedIndex = 3;
+        });
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunchInNavigation: $message");
+        setState(() {
+          _selectedIndex = 3;
+        });
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResumeInNavigation: $message");
+        setState(() {
+          _selectedIndex = 3;
+        });
+      },
+    );
   }
 
   @override
