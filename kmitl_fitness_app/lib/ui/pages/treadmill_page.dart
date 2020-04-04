@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 
 class TreadmillPage extends StatelessWidget {
-  const TreadmillPage({Key key}) : super(key: key);
+  final User user;
+  const TreadmillPage({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TreadmillPageChild();
+    return TreadmillPageChild(user: user);
   }
 }
 
 class TreadmillPageChild extends StatefulWidget {
+  final User user;
+
+  const TreadmillPageChild({Key key, this.user}) : super(key: key);
   @override
-  _TreadmillPageStateChild createState() => _TreadmillPageStateChild();
+  _TreadmillPageStateChild createState() =>
+      _TreadmillPageStateChild(user: user);
 }
 
 class _TreadmillPageStateChild extends State<TreadmillPageChild> {
@@ -32,8 +39,38 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
       _inQueue = !_inQueue;
     });
   }
+  void enQueue() async {
+    final result = await treadmillModel.enQueue();
+    if (result != 0) {
+      print('you can not enqueue');
+    }
+  }
+  void skip() async {
+    final result = await treadmillModel.skip();
+    if (result != 0) {
+      print('you can not skip');
+    }
+  }
+  void cancel() async {
+    final result = await treadmillModel.cancel();
+    if (result != 0) {
+      print('you can not cancel');
+    }
+  }
+
+  void done() async {
+    final result = await treadmillModel.done();
+    if (result != 0) {
+      print('you can not done');
+    }
+  }
 
   bool _inQueue = false;
+  @override
+  void initState() {
+    super.initState();
+    treadmillModel = TreadmillModel(uid: user.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,12 +161,12 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                 ),
               ),
             ),
-          ),
-          Text(
-            'Queue',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black54,
+            Text(
+              'Queue',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.black54,
+              ),
             ),
           ),
           Container(
@@ -163,30 +200,46 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                         );
                       },
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          ButtonTheme(
-            minWidth: 330,
-            height: 50,
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                _inQueue ? 'You are in queue' : 'Queue Up',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
+                  ],
                 ),
               ),
-              onPressed: _inQueue ? null : queueUp, //Firebase
-              color: Colors.orange[900],
             ),
-          ),
-        ],
+            ButtonTheme(
+              minWidth: 330,
+              height: 50,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  _inQueue ? 'You are in queue' : 'Queue Up',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: _inQueue ? null : queueUp, //Firebase
+                color: Colors.orange[900],
+              ),
+            ),
+            RaisedButton(
+              onPressed: (){ enQueue(); },
+              child: Text('enQueue'),
+            ),
+            RaisedButton(
+              onPressed: (){ skip(); },
+              child: Text('skip'),
+            ),
+             RaisedButton(
+              onPressed: (){ cancel(); },
+              child: Text('cancel'),
+            ),
+            RaisedButton(
+              onPressed: (){ done(); },
+              child: Text('done'),
+            )
+          ],
+        ),
       ),
     );
   }
