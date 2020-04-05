@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
-import 'package:kmitl_fitness_app/models/models.dart';
-import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+
 
 import 'pages.dart';
 
@@ -27,6 +24,9 @@ class ClassPageChild extends StatefulWidget {
 
 class _ClassPageStateChild extends State<ClassPageChild> {
   final List<String> items = List<String>.generate(20, (i) => "Class: ${++i}");
+  final User user;
+
+  _ClassPageStateChild({this.user});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
