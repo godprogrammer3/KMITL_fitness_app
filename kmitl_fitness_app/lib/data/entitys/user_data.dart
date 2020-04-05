@@ -5,6 +5,11 @@ class UserData{
   final String firstName;
   final String lastName;
   final String email;
-  final String membership;
-  UserData({this.firstName, this.lastName, this.email,this.uid,this.membership});
+  final String membershipExpireDate;
+  final int point;
+  final int birthYear;
+  final String role;
+  final String faceId;
+  final bool isHaveYellowCard;
+  UserData({this.point, this.birthYear, this.role, this.faceId, this.isHaveYellowCard, this.firstName, this.lastName, this.email,this.uid,this.membershipExpireDate});
 }
