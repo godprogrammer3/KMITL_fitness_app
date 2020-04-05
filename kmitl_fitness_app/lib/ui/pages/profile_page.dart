@@ -23,104 +23,97 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'Profile',
-          style: TextStyle(color: Colors.orange[900]),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {},
-            color: Colors.orange[900],
+            icon: Icon(Icons.edit),
+            onPressed: () => {},
+            color: Colors.white,
           )
         ],
+        backgroundColor: Colors.orange[900],
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Icon(Icons.account_circle,size: 125,),
+            ),
+            Text(
+              "Membership until 02/02/20",
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 15,
+              ),
+            ),
+            SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Icon(Icons.portrait,size: 100,),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Username",
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    FlatButton(
-                      onPressed: ()=>{},
-                      child: Text("Edit Profile")
-                    )
-                  ],
+                Icon(Icons.stars,size:30,color: Colors.orange[900],),
+                Text(
+                  "300",
+                  style: TextStyle(
+                    color: Colors.grey[900],
+                    fontSize: 25,
+                  ),
                 )
               ],
             ),
-            Container(
-              child: FlatButton(
-                onPressed: () => {},
-                child: Text("Point: 200                                                             "),
-              ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
+            FlatButton(
+              onPressed: () => {},
+              child: Text(
+                "Reward",
+                style: TextStyle(
+                  color: Colors.grey[900],
+                  fontSize: 15
                 )
               ),
             ),
-            Container(
-              child: FlatButton(
-                onPressed: () => {Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MembershipPage(),
-                  ))},
-                child: Text("Membership                                                         "),
-              ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
+            FlatButton(
+              onPressed: () => {},
+              child: Text(
+                "Membership",
+                style: TextStyle(
+                  color: Colors.grey[900],
+                  fontSize: 15
                 )
               ),
             ),
-            Container(
-              child: FlatButton(
-                onPressed: () => {},
-                child: Text("About                                                                     "),
-              ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
+            FlatButton(
+              onPressed: () => {},
+              child: Text(
+                "Password",
+                style: TextStyle(
+                  color: Colors.grey[900],
+                  fontSize: 15
                 )
               ),
             ),
-            Container(
-              child: FlatButton(
-                onPressed: () async {
-                  await authenModel.signOut();
-                },
-                child: Text(
-                  "Logout",
-                  style: TextStyle(
-                    color: Colors.red
-                  ),
-                ),
+            FlatButton(
+              onPressed: () => {},
+              child: Text(
+                "About",
+                style: TextStyle(
+                  color: Colors.grey[900],
+                  fontSize: 15
+                )
+              ),
+            ),
+            FlatButton(
+              onPressed: () => {},
+              child: Text(
+                "Logout",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 15
+                )
               ),
             ),
           ],

@@ -122,15 +122,14 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                          'No. 1',
+                          Text('No. 1',
                           style: TextStyle(
                             fontSize: 20,
-                        Text(
                             color: treadmillFree[0]
                                 ? Colors.lightGreenAccent[700]
                                 : Colors.black26,
-                            size: 75,
                           ),
+                          )
                         ],
                       ),
                       Column(
@@ -266,7 +265,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
               child: Text('done'),
             )
           ]),
-        ));
+        );
   }
 }
 

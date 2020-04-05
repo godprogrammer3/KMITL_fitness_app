@@ -27,7 +27,7 @@ class NotificationPageChild extends StatelessWidget {
           leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
-                print("back");
+                Navigator.of(context).pop();
               }),
           title: (Text(
             "Notification",
@@ -38,25 +38,16 @@ class NotificationPageChild extends StatelessWidget {
         ),
         body: ListView.separated(
           itemCount: messages.length,
-          //itemCount: 21,
           separatorBuilder: (context, index) => Divider(),
           itemBuilder: (BuildContext context, int index) {
             var message = messages[index];
-            
-
             return ListTile(
-              //trailing: Text('Z'),
               title: Text(message['subject']),
-              //title: Text('Title $index'),
               isThreeLine: true,
               leading: CircleAvatar(
                   backgroundColor: Color(list[index]), child:  Icon(IconData(symbol[index], fontFamily: 'MaterialIcons')),foregroundColor: Colors.white,
-                  // child: Text(
-                  // 'UI',
-                  // style: TextStyle(color: Colors.white),
-                  //),
+
                   ),
-              //subtitle: Text('Greyhound divisively hello coldly'),
               subtitle: Text(message['body'],
                   maxLines: 2, overflow: TextOverflow.ellipsis),
             );
