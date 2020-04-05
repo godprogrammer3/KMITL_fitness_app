@@ -15,7 +15,7 @@ class PointPageChild extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              print("back");
+              Navigator.of(context).pop();
             },
             color: Colors.orange[900],
           ),

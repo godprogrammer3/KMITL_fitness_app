@@ -67,7 +67,13 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
               ],
             ),
             FlatButton(
-              onPressed: () => {},
+              onPressed: (){
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return PointPage();
+                  })
+                );
+              },
               child: Text(
                 "Reward",
                 style: TextStyle(
@@ -77,7 +83,13 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
               ),
             ),
             FlatButton(
-              onPressed: () => {},
+              onPressed: (){
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return MembershipPage();
+                  })
+                );
+              },
               child: Text(
                 "Membership",
                 style: TextStyle(
