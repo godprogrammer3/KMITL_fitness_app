@@ -46,7 +46,7 @@ class SelectPage extends StatelessWidget {
        });
        return NavigationWidget(user: user);
      }else{
-       return PointPage();
+       return NotificationPage();
      }
   }
 }
