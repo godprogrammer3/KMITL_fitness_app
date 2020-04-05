@@ -54,7 +54,7 @@ class PointPageChild extends StatelessWidget {
               primary: true,
               shrinkWrap: true,
               crossAxisCount: 2,
-              children: List.generate(20, (index) {
+              children: List.generate(4, (index) {
                 return Card(
                   elevation: 5.0,
                   child: InkWell(
