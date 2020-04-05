@@ -48,7 +48,9 @@ class NotificationPageChild extends StatelessWidget {
               //title: Text('Title $index'),
               isThreeLine: true,
               leading: CircleAvatar(
-                backgroundColor: Colors.red,
+
+  backgroundColor: Colors.red,
+
                 child: Icon(Icons.vpn_key)
                 // child: Text(
                 // 'UI',
