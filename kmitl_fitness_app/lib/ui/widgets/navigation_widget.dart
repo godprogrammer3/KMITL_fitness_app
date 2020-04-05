@@ -33,7 +33,7 @@ class _NavigationStateChild extends State<NavigationChild> {
     initFirebaseMessaging();
     _pageOptions = [
       HomePage(),
-      ClassPage(),
+      ClassPage(user:user),
       LockerPage(),
       TreadmillPage(user: user),
       ProfilePage()
