@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/async.dart';
 
@@ -217,7 +218,10 @@ class CustomDialog extends StatefulWidget {
   _CustomDialogState createState() => _CustomDialogState();
 }
 
-class _CustomDialogState extends State<CustomDialog> {
+class _CustomDialogState extends State<CustomDialog>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
+
   int _start = 30;
   int _current = 30;
 
@@ -244,6 +248,11 @@ class _CustomDialogState extends State<CustomDialog> {
   @override
   void initState() {
     super.initState();
+    controller = AnimationController(
+      duration: Duration(seconds: 30),
+      vsync: this,
+    );
+    controller.reverse(from: 1);
     startTimer();
   }
 
@@ -286,9 +295,9 @@ class _CustomDialogState extends State<CustomDialog> {
                 widget.title,
                 style: TextStyle(fontSize: 30),
               ),
-              Text(
-                _current.toString(),
-                style: TextStyle(fontSize: 30),
+              SizedBox(
+                height: 200,
+                width: 200,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -317,13 +326,36 @@ class _CustomDialogState extends State<CustomDialog> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueAccent,
+                        color: Colors.blue[700],
                       ),
                     ),
                   ),
                 ],
               )
             ],
+          ),
+        ),
+        Positioned(
+          top: 80,
+          left: 92,
+          child: SizedBox(
+            height: 150,
+            width: 150,
+            child: CircularProgressIndicator(
+              value: controller.value,
+              strokeWidth: 20,
+              backgroundColor: Colors.black26,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 135,
+          left: 150,
+          child: Text(
+            _current.toString(),
+            style: TextStyle(fontSize: 30),
+            textAlign: TextAlign.justify,
           ),
         )
       ],
