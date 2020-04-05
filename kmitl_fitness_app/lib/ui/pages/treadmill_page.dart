@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiver/async.dart';
 
 class TreadmillPage extends StatelessWidget {
   const TreadmillPage({Key key}) : super(key: key);
@@ -207,10 +208,45 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   }
 }
 
-class CustomDialog extends StatelessWidget {
+class CustomDialog extends StatefulWidget {
   final String title;
 
   CustomDialog({this.title});
+
+  @override
+  _CustomDialogState createState() => _CustomDialogState();
+}
+
+class _CustomDialogState extends State<CustomDialog> {
+  int _start = 30;
+  int _current = 30;
+
+  CountdownTimer countDownTimer = CountdownTimer(
+    Duration(seconds: 30),
+    Duration(seconds: 1),
+  );
+
+  void startTimer() {
+    var sub = countDownTimer.listen(null);
+
+    sub.onData((duration) {
+      setState(() {
+        _current = _start - duration.elapsed.inSeconds;
+      });
+    });
+
+    sub.onDone(() {
+      print("Done");
+      sub.cancel();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -247,39 +283,46 @@ class CustomDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                title,
+                widget.title,
+                style: TextStyle(fontSize: 30),
+              ),
+              Text(
+                _current.toString(),
                 style: TextStyle(fontSize: 30),
               ),
               Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'CANCEL',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
-                        ),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      countDownTimer.cancel();
+                    },
+                    child: Text(
+                      'CANCEL',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
                       ),
                     ),
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'SKIP QUEUE',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueAccent,
-                        ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      countDownTimer.cancel();
+                    },
+                    child: Text(
+                      'SKIP QUEUE',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent,
                       ),
                     ),
-                  ])
+                  ),
+                ],
+              )
             ],
           ),
         )
