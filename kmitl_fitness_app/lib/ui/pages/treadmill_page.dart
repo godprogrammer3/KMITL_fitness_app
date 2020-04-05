@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:quiver/async.dart';
 
 class TreadmillPage extends StatelessWidget {
   final User user;
@@ -21,16 +23,18 @@ class TreadmillPageChild extends StatefulWidget {
       _TreadmillPageStateChild(user: user);
 }
 
+List<String> queue = ['First', 'Second', 'Third', 'Fourth', 'Fifth'];
+final color = [
+  Colors.white,
+  Colors.white,
+  Colors.white,
+  Colors.white,
+  Colors.white
+];
+List<bool> treadmillFree = [false, false, true];
+
 class _TreadmillPageStateChild extends State<TreadmillPageChild> {
-  List<String> queue = ['First', 'Second', 'Third', 'Fourth', 'Fifth'];
-  final color = [
-    Colors.white,
-    Colors.white,
-    Colors.white,
-    Colors.white,
-    Colors.white
-  ];
-  List<bool> treadmillFree = [false, false, true];
+  bool called = false;
 
   _TreadmillPageStateChild({this.user});
 
@@ -82,39 +86,46 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Treadmill'),
-        ),
-        body: SingleChildScrollView(
-                  child: Column(children: <Widget>[
-            Center(
-              child: Card(
-                margin: EdgeInsets.fromLTRB(0, 35, 0, 35),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Treadmill'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.timelapse),
+            onPressed: () {
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) => CustomDialog(
+                  title: 'Treadmill is ready!',
                 ),
-                elevation: 5,
-                child: Container(
-                  width: 330,
-                  height: 140,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Text(
-                            'No. 1',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: treadmillFree[0]
-                                  ? Colors.lightGreenAccent[700]
-                                  : Colors.black26,
-                            ),
-                          ),
-                          Icon(
-                            Icons.directions_run,
+              );
+            },
+          )
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          Center(
+            child: Card(
+              margin: EdgeInsets.fromLTRB(0, 35, 0, 35),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              elevation: 5,
+              child: Container(
+                width: 330,
+                height: 140,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                          'No. 1',
+                          style: TextStyle(
+                            fontSize: 20,
+                        Text(
                             color: treadmillFree[0]
                                 ? Colors.lightGreenAccent[700]
                                 : Colors.black26,
@@ -256,5 +267,159 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
             )
           ]),
         ));
+  }
+}
+
+class CustomDialog extends StatefulWidget {
+  final String title;
+
+  CustomDialog({this.title});
+
+  @override
+  _CustomDialogState createState() => _CustomDialogState();
+}
+
+class _CustomDialogState extends State<CustomDialog>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
+
+  int _start = 30;
+  int _current = 30;
+
+  CountdownTimer countDownTimer = CountdownTimer(
+    Duration(seconds: 30),
+    Duration(seconds: 1),
+  );
+
+  void startTimer() {
+    var sub = countDownTimer.listen(null);
+
+    sub.onData((duration) {
+      setState(() {
+        _current = _start - duration.elapsed.inSeconds;
+      });
+    });
+
+    sub.onDone(() {
+      print("Done");
+      sub.cancel();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      duration: Duration(seconds: 30),
+      vsync: this,
+    );
+    controller.reverse(from: 1);
+    startTimer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        elevation: 5,
+        backgroundColor: Colors.transparent,
+        child: dialogContent(context),
+      ),
+    );
+  }
+
+  dialogContent(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                offset: Offset(0, 10),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                widget.title,
+                style: TextStyle(fontSize: 30),
+              ),
+              SizedBox(
+                height: 200,
+                width: 200,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      countDownTimer.cancel();
+                    },
+                    child: Text(
+                      'CANCEL',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      countDownTimer.cancel();
+                    },
+                    child: Text(
+                      'SKIP QUEUE',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        Positioned(
+          top: 80,
+          left: 92,
+          child: SizedBox(
+            height: 150,
+            width: 150,
+            child: CircularProgressIndicator(
+              value: controller.value,
+              strokeWidth: 20,
+              backgroundColor: Colors.black26,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 135,
+          left: 150,
+          child: Text(
+            _current.toString(),
+            style: TextStyle(fontSize: 30),
+            textAlign: TextAlign.center,
+          ),
+        )
+      ],
+    );
   }
 }
