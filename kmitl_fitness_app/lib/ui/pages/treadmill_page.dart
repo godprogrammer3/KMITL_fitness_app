@@ -24,6 +24,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
     Colors.white
   ];
   List<bool> treadmillFree = [false, false, true];
+  bool called = false;
 
   void queueUp() {
     setState(() {
@@ -46,11 +47,12 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
             icon: Icon(Icons.timelapse),
             onPressed: () {
               showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) => CustomDialog(
-                        title: 'Treadmill is ready!',
-                      ));
+                barrierDismissible: false,
+                context: context,
+                builder: (context) => CustomDialog(
+                  title: 'Treadmill is ready!',
+                ),
+              );
             },
           )
         ],
@@ -211,13 +213,16 @@ class CustomDialog extends StatelessWidget {
   CustomDialog({this.title});
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        elevation: 5,
+        backgroundColor: Colors.transparent,
+        child: dialogContent(context),
       ),
-      elevation: 5,
-      backgroundColor: Colors.transparent,
-      child: dialogContent(context),
     );
   }
 
