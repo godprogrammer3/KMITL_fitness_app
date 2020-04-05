@@ -16,16 +16,17 @@ class TreadmillPageChild extends StatefulWidget {
   _TreadmillPageStateChild createState() => _TreadmillPageStateChild();
 }
 
+List<String> queue = ['First', 'Second', 'Third', 'Fourth', 'Fifth'];
+final color = [
+  Colors.white,
+  Colors.white,
+  Colors.white,
+  Colors.white,
+  Colors.white
+];
+List<bool> treadmillFree = [false, false, true];
+
 class _TreadmillPageStateChild extends State<TreadmillPageChild> {
-  List<String> queue = ['First', 'Second', 'Third', 'Fourth', 'Fifth'];
-  final color = [
-    Colors.white,
-    Colors.white,
-    Colors.white,
-    Colors.white,
-    Colors.white
-  ];
-  List<bool> treadmillFree = [false, false, true];
   bool called = false;
 
   void queueUp() {
@@ -355,7 +356,7 @@ class _CustomDialogState extends State<CustomDialog>
           child: Text(
             _current.toString(),
             style: TextStyle(fontSize: 30),
-            textAlign: TextAlign.justify,
+            textAlign: TextAlign.center,
           ),
         )
       ],
