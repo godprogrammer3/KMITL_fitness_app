@@ -7,3 +7,7 @@ export './locker_page.dart';
 export './locker_pagedetail.dart';
 export './treadmill_page.dart';
 export './profile_page.dart';
+export './notification_page.dart';
+export './news_detail_page.dart';
+export './membership_page.dart';
+export './point_page.dart';

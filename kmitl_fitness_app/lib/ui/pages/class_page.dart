@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 import 'pages.dart';
 
 class ClassPage extends StatelessWidget {
-  const ClassPage({Key key}) : super(key: key);
+  final User user;
+  ClassPage({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ClassPageChild();
+    return ClassPageChild(user: user);
   }
 }
+
 class ClassPageChild extends StatefulWidget {
+  final User user;
+
+  const ClassPageChild({Key key, this.user}) : super(key: key);
   @override
-  _ClassPageStateChild createState() => _ClassPageStateChild();
+  _ClassPageStateChild createState() => _ClassPageStateChild(user: user);
 }
 
 class _ClassPageStateChild extends State<ClassPageChild> {
