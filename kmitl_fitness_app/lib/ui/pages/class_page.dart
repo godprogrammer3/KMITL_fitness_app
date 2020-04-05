@@ -26,14 +26,14 @@ class ClassPageChild extends StatefulWidget {
 class _ClassPageStateChild extends State<ClassPageChild> {
   TextEditingController titleControl, detailControl;
   File imgFile;
-  PostModel postModel;
+  ClassModel classModel;
   final User user;
 
   _ClassPageStateChild({this.user});
   @override
   void initState() {
     super.initState();
-    postModel = PostModel(uid: user.uid);
+    classModel = ClassModel(uid: user.uid);
   }
 
   @override
@@ -67,13 +67,40 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                 final Map<String, dynamic> postData = {
                   'title': 'test title',
                   'detail': 'test detail',
+                  'beginDateTime': DateTime.now(),
+                  'endDateTime': DateTime.now(),
+                  'limitPerson':10,
                 };
-                await postModel.creatPost(postData, imgFile);
+                await classModel.creatClass(postData, imgFile);
                 print("Creat post success");
               },
               child: Text('CreatPost')),
+          RaisedButton(
+              onPressed: () async {
+                final result =await classModel.reserveClass('Ti4mSW6djNPj65XrEaLV');
+                if(result != 0){
+                  print('reserve class failed');
+                  print('error code $result');
+                }else{
+                  print('reserve class success');
+                  
+                }
+              },
+              child: Text('reserve')),
+          RaisedButton(
+              onPressed: () async {
+                final result =await classModel.cancelClass('Ti4mSW6djNPj65XrEaLV');
+                if(result != 0){
+                  print('cancel class failed');
+                  print('error code $result');
+                }else{
+                  print('cancel class success');
+                  
+                }
+              },
+              child: Text('cancel')),
           StreamBuilder(
-              stream: PostModel(uid: user.uid).posts,
+              stream: ClassModel(uid: user.uid).classes,
               builder: (context, asyncSnapshot) {
                 if (asyncSnapshot.hasError) {
                   return  LoadingWidget(width: 100, height: 100);

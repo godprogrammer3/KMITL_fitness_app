@@ -27,6 +27,7 @@ class PostModel {
 
   Future<void> updatePost(
       String postId, Map<String, dynamic> updateData, File imageFile) async {
+    updateData['updatedTime'] = FieldValue.serverTimestamp();  
     if (imageFile != null) {
       StorageUploadTask uploadTask =
           storageReference.child(postId).putFile(imageFile);
@@ -43,8 +44,8 @@ class PostModel {
         imageId: doc.data['imageId'],
         detail: doc.data['detail'],
         owner: doc.data['owner'],
-        createdTime: doc.data['createdTime'].seconds,
-        updatedTime: doc.data['updatedTime'].seconds,
+        createdTime:DateTime.fromMillisecondsSinceEpoch((doc.data['createdTime'].seconds*1000+doc.data['createdTime'].nanoseconds/1000000).round()),
+        updatedTime:  DateTime.fromMillisecondsSinceEpoch((doc.data['updatedTime'].seconds*1000+doc.data['updatedTime'].nanoseconds/1000000).round()),
       );
     }).toList();
   }

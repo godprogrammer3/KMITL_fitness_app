@@ -6,8 +6,8 @@ class Post{
   final String imageId;
   final String detail;
   final String owner;
-  final int createdTime;
-  final int updatedTime;
+  final DateTime createdTime;
+  final DateTime updatedTime;
   Post({
     @required this.id, 
     @required this.title, 
