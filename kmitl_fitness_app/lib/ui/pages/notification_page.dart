@@ -27,13 +27,6 @@ class NotificationPageChild extends StatelessWidget{
               Text("Notification", style: TextStyle(color: Colors.orange[900]), textAlign: TextAlign.left,)
             ),
         backgroundColor: Colors.white,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {},
-            color: Colors.orange[900],
-          )
-        ],
       ),
       body: ListView.separated(
         //itemCount: messages.length,
