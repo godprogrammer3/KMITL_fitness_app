@@ -19,6 +19,7 @@ class PostModel {
     await document.updateData({
       'createdTime': FieldValue.serverTimestamp(),
       'updatedTime': FieldValue.serverTimestamp(),
+      'imageId':document.documentID
     });
     StorageUploadTask uploadTask =
         storageReference.child(document.documentID).putFile(imageFile);

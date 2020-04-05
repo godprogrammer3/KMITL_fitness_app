@@ -26,14 +26,14 @@ class ClassPageChild extends StatefulWidget {
 class _ClassPageStateChild extends State<ClassPageChild> {
   TextEditingController titleControl, detailControl;
   File imgFile;
-  ClassModel classModel;
+  PostModel postModel;
   final User user;
 
   _ClassPageStateChild({this.user});
   @override
   void initState() {
     super.initState();
-    classModel = ClassModel(uid: user.uid);
+    postModel = PostModel(uid: user.uid);
   }
 
   @override
@@ -65,42 +65,39 @@ class _ClassPageStateChild extends State<ClassPageChild> {
           RaisedButton(
               onPressed: () async {
                 final Map<String, dynamic> postData = {
-                  'title': 'test title',
+                  'title': 'new title',
                   'detail': 'test detail',
-                  'beginDateTime': DateTime.now(),
-                  'endDateTime': DateTime.now(),
-                  'limitPerson':10,
                 };
-                await classModel.creatClass(postData, imgFile);
+                await postModel.creatPost(postData, imgFile);
                 print("Creat post success");
               },
               child: Text('CreatPost')),
-          RaisedButton(
-              onPressed: () async {
-                final result =await classModel.reserveClass('Ti4mSW6djNPj65XrEaLV');
-                if(result != 0){
-                  print('reserve class failed');
-                  print('error code $result');
-                }else{
-                  print('reserve class success');
+          // RaisedButton(
+          //     onPressed: () async {
+          //       final result =await postModel.reserveClass('Ti4mSW6djNPj65XrEaLV');
+          //       if(result != 0){
+          //         print('reserve class failed');
+          //         print('error code $result');
+          //       }else{
+          //         print('reserve class success');
                   
-                }
-              },
-              child: Text('reserve')),
-          RaisedButton(
-              onPressed: () async {
-                final result =await classModel.cancelClass('Ti4mSW6djNPj65XrEaLV');
-                if(result != 0){
-                  print('cancel class failed');
-                  print('error code $result');
-                }else{
-                  print('cancel class success');
+          //       }
+          //     },
+          //     child: Text('reserve')),
+          // RaisedButton(
+          //     onPressed: () async {
+          //       final result =await classModel.cancelClass('Ti4mSW6djNPj65XrEaLV');
+          //       if(result != 0){
+          //         print('cancel class failed');
+          //         print('error code $result');
+          //       }else{
+          //         print('cancel class success');
                   
-                }
-              },
-              child: Text('cancel')),
+          //       }
+          //     },
+          //     child: Text('cancel')),
           StreamBuilder(
-              stream: ClassModel(uid: user.uid).classes,
+              stream: PostModel(uid: user.uid).posts,
               builder: (context, asyncSnapshot) {
                 if (asyncSnapshot.hasError) {
                   return  LoadingWidget(width: 100, height: 100);
