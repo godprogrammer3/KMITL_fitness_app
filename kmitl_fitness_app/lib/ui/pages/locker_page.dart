@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
-import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class LockerPage extends StatelessWidget {
   const LockerPage({Key key}) : super(key: key);
@@ -53,11 +52,11 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       FlatButton(
-                        onPressed: () => {
+                        onPressed: (){
                           Navigator.of(context)
                               .push(MaterialPageRoute(
                             builder: (context) => LockerPageDetail(),
-                          ))
+                          ));
                         },
                         color: Colors.grey[300],
                         shape: RoundedRectangleBorder(

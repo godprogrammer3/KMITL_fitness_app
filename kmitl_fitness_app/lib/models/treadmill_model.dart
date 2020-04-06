@@ -24,7 +24,6 @@ class TreadmillModel {
               .document(i.toString())
               .updateData({'user': this.uid});
           return 0;
-          break;
         }
       }
       final databaseModel = DatabaseModel(uid: this.uid);
@@ -50,7 +49,7 @@ class TreadmillModel {
         'queueNumber': snapshots.documents[0]['queueNumber'] + 1,
         'firstName': userData.firstName,
       });
-      return 0;
+      return 1;
     }
   }
 
@@ -64,7 +63,7 @@ class TreadmillModel {
         .limit(1);
     final snapshotMax = await queryMax.getDocuments();
     if (snapshotMax.documents[0]['queueNumber'] == snapshotMe['queueNumber']) {
-      return -1;
+      return -2;
     }
     final queryNext = treadmillQueueCollection
         .where('queueNumber', isGreaterThan: snapshotMe['queueNumber'])
@@ -77,6 +76,7 @@ class TreadmillModel {
     await treadmillQueueCollection
         .document(snapshotNext.documents[0].documentID)
         .updateData({'queueNumber': snapshotMe['queueNumber']});
+    return 0;
   }
 
   Future<int> cancel() async {
@@ -105,6 +105,7 @@ class TreadmillModel {
   List<TreadmillStatus> _treadmillStatusFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return TreadmillStatus(
+          id: doc.documentID,
           isAvailable: doc.data['isAvailable'] ?? false,
           user: doc.data['user'] ?? '');
     }).toList();
@@ -129,5 +130,18 @@ class TreadmillModel {
     return treadmillQueueCollection
         .snapshots()
         .map(_treadmillQueueFromSnapshot);
+  }
+
+  Future<int> checkValidNotifications() async {
+    final snapshot = await treadmillStatusCollection.where('user',isEqualTo: this.uid).getDocuments();
+    if( snapshot.documents.length != 0){
+      if( snapshot.documents[0]['isAvailable'] == true){
+        return 0;
+      }else{
+        return 1;
+      }
+    }else{
+      return -1;
+    }
   }
 }

@@ -6,11 +6,12 @@ import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
+import 'package:event_bus/event_bus.dart';
 FirebaseMessaging firebaseMessaging = FirebaseMessaging();
-
+EventBus eventbus = EventBus();
 void main() {
  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+ SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(new KmitlFitnessApp());
   });
@@ -42,7 +43,7 @@ class SelectPage extends StatelessWidget {
      if( user != null ) {
        firebaseMessaging.getToken().then((token) async {
          final databaseModel = DatabaseModel(uid:user.uid);
-         databaseModel.updateUserData({'fcmToken':token});
+         await databaseModel.updateUserData({'fcmToken':token});
        });
        return NavigationWidget(user: user);
      }else{

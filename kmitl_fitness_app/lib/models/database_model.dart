@@ -9,8 +9,7 @@ class DatabaseModel {
     @required this.uid 
   });
 
-  // collection reference
-  final CollectionReference userDataCollection = Firestore.instance.collection('UserData');
+  final CollectionReference userDataCollection = Firestore.instance.collection('userdata');
 
   Future<void> setUserData(Map<String, dynamic> updateData) async {
     return await userDataCollection.document(uid).setData(updateData);

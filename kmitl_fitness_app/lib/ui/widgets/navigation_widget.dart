@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/main.dart';
 
@@ -23,6 +24,7 @@ class NavigationChild extends StatefulWidget {
 class _NavigationStateChild extends State<NavigationChild> {
   final User user;
   int _selectedIndex = 0;
+  TreadmillModel treadmillModel;
   var _pageOptions;
 
   _NavigationStateChild({this.user});
@@ -30,13 +32,14 @@ class _NavigationStateChild extends State<NavigationChild> {
   @override
   void initState() {
     super.initState();
+    treadmillModel = TreadmillModel(uid: user.uid);
     initFirebaseMessaging();
     _pageOptions = [
       HomePage(),
-      ClassPage(user:user),
+      ClassPage(user: user),
       LockerPage(),
       TreadmillPage(user: user),
-      ProfilePage()
+      ProfilePage(user: user)
     ];
   }
 
@@ -48,25 +51,79 @@ class _NavigationStateChild extends State<NavigationChild> {
 
   void initFirebaseMessaging() {
     firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessageInNavigation: $message");
-        setState(() {
-          _selectedIndex = 3;
-        });
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunchInNavigation: $message");
-        setState(() {
-          _selectedIndex = 3;
-        });
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResumeInNavigation: $message");
-        setState(() {
-          _selectedIndex = 3;
-        });
-      },
-    );
+        onMessage: (Map<String, dynamic> message) async {
+      print("onMessageInNavigation: $message");
+      if (this.user != null) {
+        final result = await treadmillModel.checkValidNotifications();
+        if (result == 0) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+          final totalSeconds = DateTime.now()
+              .difference(DateTime.fromMillisecondsSinceEpoch(
+                  int.parse(message['data']['startTime'])))
+              .inSeconds;
+          print(totalSeconds);
+          print('hello');
+          await Future.delayed(Duration(milliseconds: 100));
+          eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
+        } else if (result == 1) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+        }
+      }
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print("onLaunchInNavigation: $message");
+      if (this.user != null) {
+        final result = await treadmillModel.checkValidNotifications();
+        if (result == 0) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+          final totalSeconds = DateTime.now()
+              .difference(DateTime.fromMillisecondsSinceEpoch(
+                  int.parse(message['data']['startTime'])))
+              .inSeconds;
+          print(totalSeconds);
+          print('hello');
+          await Future.delayed(Duration(milliseconds: 100));
+          eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
+        }else if (result == 1) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+        }
+      }
+    }, onResume: (Map<String, dynamic> message) async {
+      print("onResumeInNavigation: $message");
+      if (this.user != null) {
+        final result = await treadmillModel.checkValidNotifications();
+        if (result == 0) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+          final totalSeconds = DateTime.now()
+              .difference(DateTime.fromMillisecondsSinceEpoch(
+                  int.parse(message['data']['startTime'])))
+              .inSeconds;
+          print(totalSeconds);
+          print('hello');
+          await Future.delayed(Duration(milliseconds: 100));
+          eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
+        }else if (result == 1) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+        }
+      }
+    });
   }
 
   @override

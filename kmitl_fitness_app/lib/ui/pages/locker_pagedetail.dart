@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kmitl_fitness_app/ui/pages/pages.dart';
-import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class LockerPageDetail extends StatelessWidget {
   const LockerPageDetail({Key key}) : super(key: key);

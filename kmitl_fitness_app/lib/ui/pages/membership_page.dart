@@ -55,9 +55,13 @@ class _MembershipPageState extends State<MembershipPage> {
                               Text(
                                 memberPackages[index].title,
                                 style: TextStyle(
-                                    fontFamily: 'Kanit', fontSize: 30,),
+                                  fontFamily: 'Kanit',
+                                  fontSize: 30,
+                                ),
                               ),
-                              SizedBox(height: 5.0,),
+                              SizedBox(
+                                height: 5.0,
+                              ),
                               Text(
                                 memberPackages[index].detail,
                                 style: TextStyle(
@@ -68,19 +72,22 @@ class _MembershipPageState extends State<MembershipPage> {
                             ]),
                         Column(
                           children: <Widget>[
-                            Text(
-                              memberPackages[index].price,
-                              style:
-                                  TextStyle(
-                                    fontFamily: 'Kanit', 
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                            FittedBox(
+                              fit: BoxFit.fill,
+                              child: Text(
+                                memberPackages[index].price,
+                                style: TextStyle(
+                                    fontFamily: 'Kanit',
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                             Text(
                               memberPackages[index].time,
-                              style:
-                                  TextStyle(fontFamily: 'Kanit', fontSize: 24, height: 0.75),
+                              style: TextStyle(
+                                  fontFamily: 'Kanit',
+                                  fontSize: 24,
+                                  height: 0.75),
                             ),
                             SizedBox(height: 10.0),
                             Text(
@@ -92,7 +99,6 @@ class _MembershipPageState extends State<MembershipPage> {
                         )
                       ],
                     ),
-                    
                     Container(
                       width: 200,
                       height: 45,

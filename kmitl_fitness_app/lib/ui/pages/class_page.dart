@@ -39,7 +39,12 @@ class _ClassPageStateChild extends State<ClassPageChild> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.notifications),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return NotificationPage();
+                }));
+            },
             color: Colors.white,
           )
         ],

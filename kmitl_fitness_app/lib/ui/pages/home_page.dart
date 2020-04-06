@@ -32,7 +32,12 @@ class _HomePageStateChild extends State<HomePageChild> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Home',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.orange[900],
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.notifications),
@@ -42,7 +47,7 @@ class _HomePageStateChild extends State<HomePageChild> {
                 return NotificationPage();
               }));
             },
-            color: Colors.orange[900],
+            color: Colors.white,
           )
         ],
       ),
@@ -53,10 +58,10 @@ class _HomePageStateChild extends State<HomePageChild> {
             height: 320,
             child: Card(
               child: InkWell(
-                onTap: () => {
+                onTap: (){
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => NewsDetailPage(),
-                  ))
+                  ));
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
