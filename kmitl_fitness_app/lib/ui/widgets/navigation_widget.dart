@@ -64,9 +64,6 @@ class _NavigationStateChild extends State<NavigationChild> {
               .difference(DateTime.fromMillisecondsSinceEpoch(
                   int.parse(message['data']['startTime'])))
               .inSeconds;
-          print(totalSeconds);
-          print('hello');
-          await Future.delayed(Duration(milliseconds: 100));
           eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
         } else if (result == 1) {
           Navigator.of(context).popUntil((route) => route.isFirst);
@@ -88,11 +85,8 @@ class _NavigationStateChild extends State<NavigationChild> {
               .difference(DateTime.fromMillisecondsSinceEpoch(
                   int.parse(message['data']['startTime'])))
               .inSeconds;
-          print(totalSeconds);
-          print('hello');
-          await Future.delayed(Duration(milliseconds: 100));
           eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
-        }else if (result == 1) {
+        } else if (result == 1) {
           Navigator.of(context).popUntil((route) => route.isFirst);
           setState(() {
             _selectedIndex = 3;
@@ -112,11 +106,8 @@ class _NavigationStateChild extends State<NavigationChild> {
               .difference(DateTime.fromMillisecondsSinceEpoch(
                   int.parse(message['data']['startTime'])))
               .inSeconds;
-          print(totalSeconds);
-          print('hello');
-          await Future.delayed(Duration(milliseconds: 100));
           eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
-        }else if (result == 1) {
+        } else if (result == 1) {
           Navigator.of(context).popUntil((route) => route.isFirst);
           setState(() {
             _selectedIndex = 3;

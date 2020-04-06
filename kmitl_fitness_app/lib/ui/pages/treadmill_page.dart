@@ -70,197 +70,200 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
     treadmillModel = TreadmillModel(uid: user.uid);
     buttonFunction = enQueue;
     eventbus.on<ShowTreadmillPopup>().listen((event) async {
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => CustomDialog(
-            title: 'Treadmill is ready!',
-            user: user,
-            totalSecond: 30 - event.totalSecond.abs(),
-          ),
-        );
+      showAlert(context, event.totalSecond);
     });
+  }
+
+  showAlert(BuildContext context, int totalSecond) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => CustomDialog(
+        title: 'Treadmill is ready!',
+        user: user,
+        totalSecond: 30 - totalSecond.abs(),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Treadmill'),
-      ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(children: <Widget>[
-          Flexible(
-            flex: 0,
-            child: Card(
-              margin: EdgeInsets.all(20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              elevation: 5,
-              child: Container(
-                width: 330,
-                height: 140,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    StreamBuilder(
-                        stream: TreadmillModel(uid: user.uid).status,
-                        builder: (context, asyncSnapshot) {
-                          if (asyncSnapshot.hasError) {
-                            return LoadingWidget(height: 50, width: 50);
-                          } else if (asyncSnapshot.data == null) {
-                            return new Text("Empty data!");
-                          } else {
-                            List<Widget> widgets = new List<Widget>();
-                            for (var i in asyncSnapshot.data) {
-                              if (i.user == user.uid &&
-                                  i.isAvailable == false) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) => setState(() {
-                                          buttonText = 'done';
-                                          buttonFunction = done;
-                                          buttonColor = Colors.blue;
-                                        }));
-                              }
-                              widgets.add(
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Text(
-                                      'No. ' + (int.parse(i.id) + 1).toString(),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: i.user == ''
-                                            ? Colors.lightGreenAccent[700]
-                                            : Colors.black26,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.directions_run,
-                                      color: i.user == ''
-                                          ? Colors.lightGreenAccent[700]
-                                          : Colors.black26,
-                                      size: 75,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                            return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: widgets);
-                          }
-                        }),
-                  ],
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('Treadmill'),
+        ),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(children: <Widget>[
+            Flexible(
+              flex: 0,
+              child: Card(
+                margin: EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 0,
-            child: Text(
-              'Queue',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black54,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: StreamBuilder(
-                          stream: TreadmillModel(uid: user.uid).queues,
+                elevation: 5,
+                child: Container(
+                  width: 330,
+                  height: 140,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      StreamBuilder(
+                          stream: TreadmillModel(uid: user.uid).status,
                           builder: (context, asyncSnapshot) {
                             if (asyncSnapshot.hasError) {
                               return LoadingWidget(height: 50, width: 50);
                             } else if (asyncSnapshot.data == null) {
-                              return Center(
-                                  child: Text("Queue is empty.",
-                                      style: TextStyle(fontSize: 25)));
+                              return new Text("Empty data!");
                             } else {
-                              if (asyncSnapshot.data.length == 0) {
+                              List<Widget> widgets = new List<Widget>();
+                              for (var i in asyncSnapshot.data) {
+                                if (i.user == user.uid &&
+                                    i.isAvailable == false) {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) => setState(() {
+                                            buttonText = 'done';
+                                            buttonFunction = done;
+                                            buttonColor = Colors.blue;
+                                          }));
+                                }
+                                widgets.add(
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Text(
+                                        'No. ' +
+                                            (int.parse(i.id) + 1).toString(),
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: i.user == ''
+                                              ? Colors.lightGreenAccent[700]
+                                              : Colors.black26,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.directions_run,
+                                        color: i.user == ''
+                                            ? Colors.lightGreenAccent[700]
+                                            : Colors.black26,
+                                        size: 75,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                              return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: widgets);
+                            }
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 0,
+              child: Text(
+                'Queue',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: StreamBuilder(
+                            stream: TreadmillModel(uid: user.uid).queues,
+                            builder: (context, asyncSnapshot) {
+                              if (asyncSnapshot.hasError) {
+                                return LoadingWidget(height: 50, width: 50);
+                              } else if (asyncSnapshot.data == null) {
                                 return Center(
                                     child: Text("Queue is empty.",
                                         style: TextStyle(fontSize: 25)));
-                              }
-                              return ListView.builder(
-                                itemCount: asyncSnapshot.data.length,
-                                itemBuilder: (context, index) {
-                                  if (asyncSnapshot.data[index]['user'] ==
-                                      user.uid) {
-                                    if (buttonText != 'done') {
-                                      WidgetsBinding.instance
-                                          .addPostFrameCallback(
-                                              (_) => setState(() {
-                                                    buttonText = 'Cancel queue';
-                                                    buttonFunction = cancel;
-                                                    buttonColor = Colors.black;
-                                                  }));
+                              } else {
+                                if (asyncSnapshot.data.length == 0) {
+                                  return Center(
+                                      child: Text("Queue is empty.",
+                                          style: TextStyle(fontSize: 25)));
+                                }
+                                return ListView.builder(
+                                  itemCount: asyncSnapshot.data.length,
+                                  itemBuilder: (context, index) {
+                                    if (asyncSnapshot.data[index]['user'] ==
+                                        user.uid) {
+                                      if (buttonText != 'done') {
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) =>
+                                                setState(() {
+                                                  buttonText = 'Cancel queue';
+                                                  buttonFunction = cancel;
+                                                  buttonColor = Colors.black;
+                                                }));
+                                      }
                                     }
-                                  }
-                                  return Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    color: asyncSnapshot.data[index]['user'] ==
-                                            user.uid
-                                        ? Colors.lightGreenAccent[700]
-                                        : Colors.white,
-                                    elevation: 1,
-                                    child: ListTile(
-                                      title: Text(asyncSnapshot.data[index]
-                                          ['firstName']),
-                                      leading: Icon(Icons.face),
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          }),
-                    ),
-                    ButtonTheme(
-                      minWidth: 330,
-                      height: 50,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          buttonText,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                        onPressed: buttonFunction, //Firebase
-                        color: buttonColor,
+                                    return Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      color: asyncSnapshot.data[index]
+                                                  ['user'] ==
+                                              user.uid
+                                          ? Colors.lightGreenAccent[700]
+                                          : Colors.white,
+                                      elevation: 1,
+                                      child: ListTile(
+                                        title: Text(asyncSnapshot.data[index]
+                                            ['firstName']),
+                                        leading: Icon(Icons.face),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                            }),
                       ),
-                    ),
-                    onPressed: _inQueue ? null : queueUp, //Firebase
-                    color: Colors.orange[900],
+                      ButtonTheme(
+                        minWidth: 330,
+                        height: 50,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            buttonText,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: buttonFunction, //Firebase
+                          color: buttonColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ]),
-      ),
-    );
+          ]),
+        ));
   }
 }
 
@@ -298,8 +301,13 @@ class _CustomDialogState extends State<CustomDialog>
     sub.onDone(() async {
       await cancel();
       print("Done");
-      sub.cancel();
-      if (this.mounted) {
+      if (sub != null) {
+        sub.cancel();
+      }
+      if (countDownTimer != null) {
+        countDownTimer.cancel();
+      }
+      if (context != null) {
         Navigator.of(context).popUntil((route) => route.isFirst);
       }
     });
@@ -333,7 +341,12 @@ class _CustomDialogState extends State<CustomDialog>
 
   @override
   void dispose() {
-    sub.cancel();
+    if (sub != null) {
+      sub.cancel();
+    }
+    if (countDownTimer != null) {
+      countDownTimer.cancel();
+    }
     controller.dispose();
     super.dispose();
   }
@@ -422,8 +435,13 @@ class _CustomDialogState extends State<CustomDialog>
               FlatButton(
                 onPressed: () async {
                   await cancel();
+                  if (sub != null) {
+                    sub.cancel();
+                  }
+                  if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                  }
                   Navigator.of(context).popUntil((route) => route.isFirst);
-                  countDownTimer.cancel();
                 },
                 child: Text(
                   'CANCEL',
@@ -437,8 +455,13 @@ class _CustomDialogState extends State<CustomDialog>
               FlatButton(
                 onPressed: () async {
                   await skip();
+                  if (sub != null) {
+                    sub.cancel();
+                  }
+                  if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                  }
                   Navigator.of(context).popUntil((route) => route.isFirst);
-                  countDownTimer.cancel();
                 },
                 child: Text(
                   'SKIP QUEUE',
