@@ -251,9 +251,11 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                         color: buttonColor,
                       ),
                     ),
-                  ],
+                    onPressed: _inQueue ? null : queueUp, //Firebase
+                    color: Colors.orange[900],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ]),
