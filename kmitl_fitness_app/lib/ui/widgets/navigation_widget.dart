@@ -52,49 +52,53 @@ class _NavigationStateChild extends State<NavigationChild> {
   void initFirebaseMessaging() {
     firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
+      if (this.user != null) {
+        final result = await treadmillModel.checkValidNotifications();
+        if (result == 0) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+          final totalSeconds = DateTime.now()
+              .difference(DateTime.fromMillisecondsSinceEpoch(
+                  int.parse(message['data']['startTime'])))
+              .inSeconds;
+          eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
+        } else if (result == 1) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+        }
+      }
+      print("fcm received");
       print("onMessageInNavigation: $message");
-      if (this.user != null) {
-        final result = await treadmillModel.checkValidNotifications();
-        if (result == 0) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-          final totalSeconds = DateTime.now()
-              .difference(DateTime.fromMillisecondsSinceEpoch(
-                  int.parse(message['data']['startTime'])))
-              .inSeconds;
-          eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
-        } else if (result == 1) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-        }
-      }
     }, onLaunch: (Map<String, dynamic> message) async {
+      
+      if (this.user != null) {
+        final result = await treadmillModel.checkValidNotifications();
+        if (result == 0) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+          final totalSeconds = DateTime.now()
+              .difference(DateTime.fromMillisecondsSinceEpoch(
+                  int.parse(message['data']['startTime'])))
+              .inSeconds;
+          eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
+        } else if (result == 1) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          setState(() {
+            _selectedIndex = 3;
+          });
+        }
+       
+      } 
+      print("fcm received");
       print("onLaunchInNavigation: $message");
-      if (this.user != null) {
-        final result = await treadmillModel.checkValidNotifications();
-        if (result == 0) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-          final totalSeconds = DateTime.now()
-              .difference(DateTime.fromMillisecondsSinceEpoch(
-                  int.parse(message['data']['startTime'])))
-              .inSeconds;
-          eventbus.fire(ShowTreadmillPopup(totalSecond: totalSeconds));
-        } else if (result == 1) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-        }
-      }
     }, onResume: (Map<String, dynamic> message) async {
-      print("onResumeInNavigation: $message");
+    
       if (this.user != null) {
         final result = await treadmillModel.checkValidNotifications();
         if (result == 0) {
@@ -113,7 +117,9 @@ class _NavigationStateChild extends State<NavigationChild> {
             _selectedIndex = 3;
           });
         }
-      }
+      }  
+      print("fcm received");
+      print("onResumeInNavigation: $message");
     });
   }
 
