@@ -44,6 +44,11 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
     if (result != 0) {
       print('you can not cancel');
     } else {
+      setState(() {
+        buttonText = 'Queue up';
+        buttonFunction = enQueue;
+        buttonColor = Colors.orange[900];
+      });
       print('cancel success');
     }
   }
@@ -64,6 +69,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
 
   final User user;
   TreadmillModel treadmillModel;
+  bool _isCanSkip;
   @override
   void initState() {
     super.initState();
@@ -82,6 +88,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
         title: 'Treadmill is ready!',
         user: user,
         totalSecond: 30 - totalSecond.abs(),
+        isCanSkip: _isCanSkip,
       ),
     );
   }
@@ -194,19 +201,22 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                               if (asyncSnapshot.hasError) {
                                 return LoadingWidget(height: 50, width: 50);
                               } else if (asyncSnapshot.data == null) {
+                                _isCanSkip = false;
                                 return Center(
                                     child: Text("Queue is empty.",
                                         style: TextStyle(fontSize: 25)));
                               } else {
                                 if (asyncSnapshot.data.length == 0) {
+                                  _isCanSkip = false;
                                   return Center(
                                       child: Text("Queue is empty.",
                                           style: TextStyle(fontSize: 25)));
                                 }
+                                asyncSnapshot.data.sort();
                                 return ListView.builder(
                                   itemCount: asyncSnapshot.data.length,
                                   itemBuilder: (context, index) {
-                                    if (asyncSnapshot.data[index]['user'] ==
+                                    if (asyncSnapshot.data[index].user ==
                                         user.uid) {
                                       if (buttonText != 'done') {
                                         WidgetsBinding.instance
@@ -217,20 +227,21 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                                                   buttonColor = Colors.black;
                                                 }));
                                       }
+                                    } else {
+                                      _isCanSkip = true;
                                     }
                                     return Card(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20),
                                       ),
-                                      color: asyncSnapshot.data[index]
-                                                  ['user'] ==
+                                      color: asyncSnapshot.data[index].user ==
                                               user.uid
                                           ? Colors.lightGreenAccent[700]
                                           : Colors.white,
                                       elevation: 1,
                                       child: ListTile(
-                                        title: Text(asyncSnapshot.data[index]
-                                            ['firstName']),
+                                        title: Text((index+1).toString()+' '+asyncSnapshot
+                                            .data[index].firstName),
                                         leading: Icon(Icons.face),
                                       ),
                                     );
@@ -271,11 +282,12 @@ class CustomDialog extends StatefulWidget {
   final User user;
   final String title;
   final int totalSecond;
-  CustomDialog({this.title, this.user, this.totalSecond});
+  final bool isCanSkip;
+  CustomDialog({this.title, this.user, this.totalSecond, this.isCanSkip});
 
   @override
-  _CustomDialogState createState() =>
-      _CustomDialogState(user: user, totalSecond: totalSecond);
+  _CustomDialogState createState() => _CustomDialogState(
+      user: user, totalSecond: totalSecond, isCanSkip: isCanSkip);
 }
 
 class _CustomDialogState extends State<CustomDialog>
@@ -284,12 +296,12 @@ class _CustomDialogState extends State<CustomDialog>
   final int totalSecond;
   int _start = 30;
   int _current = 30;
-
+  final bool isCanSkip;
   CountdownTimer countDownTimer;
   var sub;
   final User user;
   TreadmillModel treadmillModel;
-  _CustomDialogState({this.user, this.totalSecond});
+  _CustomDialogState({this.user, this.totalSecond, this.isCanSkip});
   void startTimer() {
     sub = countDownTimer.listen(null);
 
@@ -430,50 +442,75 @@ class _CustomDialogState extends State<CustomDialog>
             ]),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              FlatButton(
-                onPressed: () async {
-                  await cancel();
-                  if (sub != null) {
-                    sub.cancel();
-                  }
-                  if (countDownTimer != null) {
-                    countDownTimer.cancel();
-                  }
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                child: Text(
-                  'CANCEL',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                  ),
-                ),
-              ),
-              FlatButton(
-                onPressed: () async {
-                  await skip();
-                  if (sub != null) {
-                    sub.cancel();
-                  }
-                  if (countDownTimer != null) {
-                    countDownTimer.cancel();
-                  }
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                child: Text(
-                  'SKIP QUEUE',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[700],
-                  ),
-                ),
-              ),
-            ],
-          )
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: (isCanSkip == true)
+                  ? <Widget>[
+                      FlatButton(
+                        onPressed: () async {
+                          await cancel();
+                          if (sub != null) {
+                            sub.cancel();
+                          }
+                          if (countDownTimer != null) {
+                            countDownTimer.cancel();
+                          }
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                        },
+                        child: Text(
+                          'CANCEL',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () async {
+                          await skip();
+                          if (sub != null) {
+                            sub.cancel();
+                          }
+                          if (countDownTimer != null) {
+                            countDownTimer.cancel();
+                          }
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                        },
+                        child: Text(
+                          'SKIP QUEUE',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue[700],
+                          ),
+                        ),
+                      )
+                    ]
+                  : <Widget>[
+                      FlatButton(
+                        onPressed: () async {
+                          await cancel();
+                          if (sub != null) {
+                            sub.cancel();
+                          }
+                          if (countDownTimer != null) {
+                            countDownTimer.cancel();
+                          }
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                        },
+                        child: Text(
+                          'CANCEL',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ])
         ],
       ),
     );

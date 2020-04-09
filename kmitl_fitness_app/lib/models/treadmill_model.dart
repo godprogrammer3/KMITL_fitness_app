@@ -120,6 +120,7 @@ class TreadmillModel {
   List<TreadmillQueue> _treadmillQueueFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return TreadmillQueue(
+        user: doc.documentID,
         queueNumber: doc.data['queueNumber'] ?? -1,
         firstName: doc.data['firstName'] ?? '',
       );
