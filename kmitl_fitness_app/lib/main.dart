@@ -8,11 +8,8 @@ import 'package:kmitl_fitness_app/util/manager/dialog_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
-import 'package:event_bus/event_bus.dart';
-
 
 FirebaseMessaging firebaseMessaging = FirebaseMessaging();
-EventBus eventbus = EventBus();
 void main() {
  setupLocator();
  WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +18,6 @@ void main() {
     runApp(new KmitlFitnessApp());
   });
 }
-
 
 class KmitlFitnessApp extends StatelessWidget {
   Widget build(BuildContext context) {
