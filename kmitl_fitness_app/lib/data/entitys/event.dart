@@ -6,3 +6,4 @@ class ShowTreadmillPopup {
     @required this.totalSecond
   });
 }
+class CloseTreadmillPopup {}

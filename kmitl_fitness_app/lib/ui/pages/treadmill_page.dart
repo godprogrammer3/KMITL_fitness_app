@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
-import 'package:quiver/async.dart';
-import 'package:kmitl_fitness_app/main.dart';
+
 
 class TreadmillPage extends StatelessWidget {
   final User user;
@@ -44,11 +45,6 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
     if (result != 0) {
       print('you can not cancel');
     } else {
-      setState(() {
-        buttonText = 'Queue up';
-        buttonFunction = enQueue;
-        buttonColor = Colors.orange[900];
-      });
       print('cancel success');
     }
   }
@@ -58,11 +54,6 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
     if (result != 0) {
       print('you can not done');
     } else {
-      setState(() {
-        buttonText = 'Queue up';
-        buttonFunction = enQueue;
-        buttonColor = Colors.orange[900];
-      });
       print('done success');
     }
   }
@@ -70,27 +61,65 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   final User user;
   TreadmillModel treadmillModel;
   bool _isCanSkip;
+  GlobalKey _popupKey;
+  StreamSubscription<List<TreadmillStatus>> treadmillStatusSubscription;
+  StreamSubscription<List<TreadmillQueue>> treadmillQueueSubscription;
+  StreamController<int> userStatusStreamController = StreamController();
   @override
   void initState() {
     super.initState();
     treadmillModel = TreadmillModel(uid: user.uid);
-    buttonFunction = enQueue;
-    eventbus.on<ShowTreadmillPopup>().listen((event) async {
-      showAlert(context, event.totalSecond);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    treadmillStatusSubscription = treadmillModel.status.listen((value) async {
+      for (var i in value) {
+        if (i.user == user.uid && i.isAvailable == true && i.startTime != null) {
+          _popupKey = GlobalKey(debugLabel: 'Treadmill popup key');
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => TreadmillShowDialog(
+              key: this._popupKey,
+              title: 'Treadmill is ready!',
+              user: this.user,
+              startTime: i.startTime,
+              isCanSkip: _isCanSkip,
+            ),
+          );
+        } else if (i.user == user.uid && i.isAvailable == false) {
+          if (_popupKey != null && _popupKey.currentContext != null) {
+            Navigator.of(_popupKey.currentContext, rootNavigator: true)
+                .popUntil((route) => route.isFirst);
+          }
+        }
+      }
+      final status = await treadmillModel.checkUserStatus();
+       if( !userStatusStreamController.isClosed){
+         userStatusStreamController.add(status);
+      }
+    });
+    treadmillQueueSubscription = treadmillModel.queues.listen((value) async {
+      if(value.length > 1){
+        _isCanSkip  = true;
+      }else{
+        _isCanSkip = false;
+      }
+      final status = await treadmillModel.checkUserStatus();
+      if( !userStatusStreamController.isClosed){
+         userStatusStreamController.add(status);
+      }
     });
   }
 
-  showAlert(BuildContext context, int totalSecond) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => CustomDialog(
-        title: 'Treadmill is ready!',
-        user: user,
-        totalSecond: 30 - totalSecond.abs(),
-        isCanSkip: _isCanSkip,
-      ),
-    );
+  @override
+  void dispose() {
+    treadmillStatusSubscription.cancel();
+    treadmillQueueSubscription.cancel();
+    userStatusStreamController.close();
+    super.dispose();
   }
 
   @override
@@ -127,15 +156,6 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                             } else {
                               List<Widget> widgets = new List<Widget>();
                               for (var i in asyncSnapshot.data) {
-                                if (i.user == user.uid &&
-                                    i.isAvailable == false) {
-                                  WidgetsBinding.instance
-                                      .addPostFrameCallback((_) => setState(() {
-                                            buttonText = 'done';
-                                            buttonFunction = done;
-                                            buttonColor = Colors.blue;
-                                          }));
-                                }
                                 widgets.add(
                                   Column(
                                     mainAxisAlignment:
@@ -216,20 +236,6 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                                 return ListView.builder(
                                   itemCount: asyncSnapshot.data.length,
                                   itemBuilder: (context, index) {
-                                    if (asyncSnapshot.data[index].user ==
-                                        user.uid) {
-                                      if (buttonText != 'done') {
-                                        WidgetsBinding.instance
-                                            .addPostFrameCallback((_) =>
-                                                setState(() {
-                                                  buttonText = 'Cancel queue';
-                                                  buttonFunction = cancel;
-                                                  buttonColor = Colors.black;
-                                                }));
-                                      }
-                                    } else {
-                                      _isCanSkip = true;
-                                    }
                                     return Card(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20),
@@ -240,8 +246,10 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                                           : Colors.white,
                                       elevation: 1,
                                       child: ListTile(
-                                        title: Text((index+1).toString()+' '+asyncSnapshot
-                                            .data[index].firstName),
+                                        title: Text((index + 1).toString() +
+                                            ' ' +
+                                            asyncSnapshot
+                                                .data[index].firstName),
                                         leading: Icon(Icons.face),
                                       ),
                                     );
@@ -250,24 +258,48 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                               }
                             }),
                       ),
-                      ButtonTheme(
-                        minWidth: 330,
-                        height: 50,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            buttonText,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: buttonFunction, //Firebase
-                          color: buttonColor,
-                        ),
-                      ),
+                      StreamBuilder(
+                          stream: userStatusStreamController.stream,
+                          builder: (BuildContext context,
+                              AsyncSnapshot asyncSnapshot) {
+                            if (asyncSnapshot.hasError) {
+                              return LoadingWidget(height: 50, width: 50);
+                            } else if (asyncSnapshot.data == null) {
+                              return LoadingWidget(height: 50, width: 50);
+                            } else {
+                              if (asyncSnapshot.data == 0) {
+                                buttonText = 'done';
+                                buttonColor = Colors.blue;
+                                buttonFunction = done;
+                              } else if (asyncSnapshot.data == 1) {
+                                buttonText = 'cancel queue';
+                                buttonColor = Colors.black;
+                                buttonFunction = cancel;
+                              } else {
+                                buttonText = 'Queue up';
+                                buttonColor = Colors.orange[900];
+                                buttonFunction = enQueue;
+                              }
+                              return ButtonTheme(
+                                minWidth: 330,
+                                height: 50,
+                                child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    buttonText,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  onPressed: buttonFunction, //Firebase
+                                  color: buttonColor,
+                                ),
+                              );
+                            }
+                          }),
                     ],
                   ),
                 ),
@@ -275,244 +307,5 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
             ),
           ]),
         ));
-  }
-}
-
-class CustomDialog extends StatefulWidget {
-  final User user;
-  final String title;
-  final int totalSecond;
-  final bool isCanSkip;
-  CustomDialog({this.title, this.user, this.totalSecond, this.isCanSkip});
-
-  @override
-  _CustomDialogState createState() => _CustomDialogState(
-      user: user, totalSecond: totalSecond, isCanSkip: isCanSkip);
-}
-
-class _CustomDialogState extends State<CustomDialog>
-    with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  final int totalSecond;
-  int _start = 30;
-  int _current = 30;
-  final bool isCanSkip;
-  CountdownTimer countDownTimer;
-  var sub;
-  final User user;
-  TreadmillModel treadmillModel;
-  _CustomDialogState({this.user, this.totalSecond, this.isCanSkip});
-  void startTimer() {
-    sub = countDownTimer.listen(null);
-
-    sub.onData((duration) {
-      setState(() {
-        _current = _start - duration.elapsed.inSeconds;
-      });
-    });
-    sub.onDone(() async {
-      await cancel();
-      print("Done");
-      if (sub != null) {
-        sub.cancel();
-      }
-      if (countDownTimer != null) {
-        countDownTimer.cancel();
-      }
-      if (context != null) {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    treadmillModel = TreadmillModel(uid: user.uid);
-    if (totalSecond != null) {
-      _current = totalSecond;
-      _start = totalSecond;
-      countDownTimer = CountdownTimer(
-        Duration(seconds: totalSecond),
-        Duration(seconds: 1),
-      );
-    } else {
-      countDownTimer = CountdownTimer(
-        Duration(seconds: 30),
-        Duration(seconds: 1),
-      );
-    }
-    controller = AnimationController(
-      duration: Duration(seconds: 30),
-      vsync: this,
-    );
-    controller.value = totalSecond != null ? totalSecond.toDouble() : 30.0;
-    controller.reverse(from: 1);
-    startTimer();
-  }
-
-  @override
-  void dispose() {
-    if (sub != null) {
-      sub.cancel();
-    }
-    if (countDownTimer != null) {
-      countDownTimer.cancel();
-    }
-    controller.dispose();
-    super.dispose();
-  }
-
-  Future<void> skip() async {
-    final result = await treadmillModel.skip();
-    if (result != 0) {
-      print('you can not skip');
-    }
-  }
-
-  Future<void> cancel() async {
-    await treadmillModel.cancel();
-    await treadmillModel.done();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        elevation: 5,
-        backgroundColor: Colors.transparent,
-        child: dialogContent(context),
-      ),
-    );
-  }
-
-  dialogContent(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10,
-            offset: Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            widget.title,
-            style: TextStyle(fontSize: 25),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            child: Stack(children: <Widget>[
-              Positioned(
-                top: 50,
-                left: 50,
-                child: SizedBox(
-                  height: 150,
-                  width: 150,
-                  child: CircularProgressIndicator(
-                    value: controller.value,
-                    strokeWidth: 20,
-                    backgroundColor: Colors.black26,
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.deepOrange),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 107,
-                left: 107,
-                child: Text(
-                  _current.toString(),
-                  style: TextStyle(fontSize: 30),
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ]),
-          ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: (isCanSkip == true)
-                  ? <Widget>[
-                      FlatButton(
-                        onPressed: () async {
-                          await cancel();
-                          if (sub != null) {
-                            sub.cancel();
-                          }
-                          if (countDownTimer != null) {
-                            countDownTimer.cancel();
-                          }
-                          Navigator.of(context)
-                              .popUntil((route) => route.isFirst);
-                        },
-                        child: Text(
-                          'CANCEL',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                      FlatButton(
-                        onPressed: () async {
-                          await skip();
-                          if (sub != null) {
-                            sub.cancel();
-                          }
-                          if (countDownTimer != null) {
-                            countDownTimer.cancel();
-                          }
-                          Navigator.of(context)
-                              .popUntil((route) => route.isFirst);
-                        },
-                        child: Text(
-                          'SKIP QUEUE',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue[700],
-                          ),
-                        ),
-                      )
-                    ]
-                  : <Widget>[
-                      FlatButton(
-                        onPressed: () async {
-                          await cancel();
-                          if (sub != null) {
-                            sub.cancel();
-                          }
-                          if (countDownTimer != null) {
-                            countDownTimer.cancel();
-                          }
-                          Navigator.of(context)
-                              .popUntil((route) => route.isFirst);
-                        },
-                        child: Text(
-                          'CANCEL',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ])
-        ],
-      ),
-    );
   }
 }

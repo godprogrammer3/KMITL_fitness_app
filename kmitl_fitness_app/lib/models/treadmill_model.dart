@@ -67,7 +67,7 @@ class TreadmillModel {
     }
     final queryNext = treadmillQueueCollection
         .where('queueNumber', isGreaterThan: snapshotMe['queueNumber'])
-        .orderBy('queueNumber', descending: true)
+        .orderBy('queueNumber')
         .limit(1);
     final snapshotNext = await queryNext.getDocuments();
     await treadmillQueueCollection
@@ -76,6 +76,12 @@ class TreadmillModel {
     await treadmillQueueCollection
         .document(snapshotNext.documents[0].documentID)
         .updateData({'queueNumber': snapshotMe['queueNumber']});
+    final snapshotQueueMeStatus = await treadmillStatusCollection
+        .where('user', isEqualTo: this.uid)
+        .getDocuments();
+    await treadmillStatusCollection
+        .document(snapshotQueueMeStatus.documents[0].documentID)
+        .updateData({'isAvailable': true, 'user': ''});
     return 0;
   }
 
@@ -105,9 +111,15 @@ class TreadmillModel {
   List<TreadmillStatus> _treadmillStatusFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return TreadmillStatus(
-          id: doc.documentID,
-          isAvailable: doc.data['isAvailable'] ?? false,
-          user: doc.data['user'] ?? '');
+        id: doc.documentID,
+        isAvailable: doc.data['isAvailable'] ?? false,
+        user: doc.data['user'] ?? '',
+        startTime: doc.data['startTime'] == -1
+            ? null
+            : DateTime != null
+                ? DateTime.fromMillisecondsSinceEpoch(doc.data['startTime'])
+                : null,
+      );
     }).toList();
   }
 
@@ -134,15 +146,33 @@ class TreadmillModel {
   }
 
   Future<int> checkValidNotifications() async {
-    final snapshot = await treadmillStatusCollection.where('user',isEqualTo: this.uid).getDocuments();
-    if( snapshot.documents.length != 0){
-      if( snapshot.documents[0]['isAvailable'] == true){
+    final snapshot = await treadmillStatusCollection
+        .where('user', isEqualTo: this.uid)
+        .getDocuments();
+    if (snapshot.documents.length != 0) {
+      if (snapshot.documents[0]['isAvailable'] == true) {
         return 0;
-      }else{
+      } else {
         return 1;
       }
-    }else{
+    } else {
       return -1;
     }
+  }
+
+  Future<int> checkUserStatus() async {
+    final snapshotQueryStatus = await treadmillStatusCollection
+        .where('user', isEqualTo: this.uid)
+        .where('isAvailable', isEqualTo: false)
+        .getDocuments();
+    if (snapshotQueryStatus.documents.length != 0) {
+      return 0;
+    }
+    final snapshotQueryQueue =
+        await treadmillQueueCollection.document(this.uid).get();
+    if (snapshotQueryQueue.exists) {
+      return 1;
+    }
+    return 2;
   }
 }
