@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/locator.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+import 'package:kmitl_fitness_app/util/manager/dialog_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:event_bus/event_bus.dart';
+
+
 FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 EventBus eventbus = EventBus();
 void main() {
+ setupLocator();
  WidgetsFlutterBinding.ensureInitialized();
  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
@@ -25,6 +30,13 @@ class KmitlFitnessApp extends StatelessWidget {
       title: 'KMITL FITNESS',
       theme: ThemeData(
         primaryColor: Colors.orange[900],
+        accentColor: Colors.orange[900]
+      ),
+      builder: (context, widget) => Navigator(
+        onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => DialogManager(
+                  child: widget,
+                )),
       ),
       home: StreamProvider<User>(
         create: (_) => AuthenModel().user,
