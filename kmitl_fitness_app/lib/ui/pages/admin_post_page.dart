@@ -51,7 +51,12 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
             children: <Widget>[
               Card(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return AdminPostDetailPage();
+                    }));
+                  },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
