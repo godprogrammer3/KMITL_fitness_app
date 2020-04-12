@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kmitl_fitness_app/ui/pages/pages.dart';
-import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class LockerPageDetail extends StatelessWidget {
   const LockerPageDetail({Key key}) : super(key: key);
@@ -26,21 +24,15 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         iconTheme: IconThemeData(
-          color: Colors.orange[900],
+          color: Colors.white,
         ),
         title: Text(
           'LockerDetail',
-          style: TextStyle(color: Colors.orange[900]),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.white,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {},
-            color: Colors.orange[900],
-          )
-        ],
+        backgroundColor: Colors.orange[900],
       ),
       body: Center(
         child: Column(
@@ -103,6 +95,29 @@ class _LockerPageDetailStateChild extends State<LockerPageDetailChild> {
                       borderRadius: BorderRadius.circular(100)),
                   child: Text(
                     btText,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                    ),
+                  )
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: 200,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(100))),
+              child: FlatButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                  child: Text(
+                    'Return',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,

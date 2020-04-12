@@ -4,14 +4,13 @@ class LoadingWidget extends StatelessWidget {
   final double width;
   final double height;
   const LoadingWidget({Key key, this.width, this.height}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       if (this.width == null && this.height == null) {
         return CircularProgressIndicator(
-          backgroundColor: Colors.grey,
+          //backgroundColor: Colors.orange[900],
         );
       } else if (this.width == null) {
         return Container(
@@ -19,7 +18,7 @@ class LoadingWidget extends StatelessWidget {
           height: this.height,
           width: constraints.maxWidth,
           child: CircularProgressIndicator(
-            backgroundColor: Colors.grey,
+            //backgroundColor: Colors.orange[900],
           ),
         );
       } else if (this.height == null) {
@@ -28,7 +27,7 @@ class LoadingWidget extends StatelessWidget {
           height: constraints.maxHeight,
           width: this.width,
           child: CircularProgressIndicator(
-            backgroundColor: Colors.grey,
+            //backgroundColor: Colors.orange[900],
           ),
         );
       } else {
@@ -37,7 +36,7 @@ class LoadingWidget extends StatelessWidget {
           height: this.height,
           width: this.width,
           child: CircularProgressIndicator(
-            backgroundColor: Colors.grey,
+            //backgroundColor: Colors.orange[900],
           ),
         );
       }
