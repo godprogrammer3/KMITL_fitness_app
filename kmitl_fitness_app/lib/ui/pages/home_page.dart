@@ -60,7 +60,7 @@ class _HomePageStateChild extends State<HomePageChild> {
               child: InkWell(
                 onTap: (){
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => NewsDetailPage(),
+                      builder: (context) => PostDetailPage(),
                   ));
                 },
                 child: Column(
