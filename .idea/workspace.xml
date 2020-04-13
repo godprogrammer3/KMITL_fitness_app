@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f2a2281-3bfb-432f-9680-2a09a5d56649" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/kmitl_fitness_app/assets/images/flutter.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kmitl_fitness_app/assets/images/flutter.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/about_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_edit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_edit.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_management.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_management.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/pages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/pages.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,7 +38,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/AndroidStudioProjects/playaround" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/kmitl_fitness_app/assets/images" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
