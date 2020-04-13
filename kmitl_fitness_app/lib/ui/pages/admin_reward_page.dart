@@ -8,7 +8,7 @@ class AdminRewardPage extends StatefulWidget {
   }
 }
 
-class AdminRewardPageChild extends State<AdminRewardPage>  {
+class AdminRewardPageChild extends State<AdminRewardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,85 +29,64 @@ class AdminRewardPageChild extends State<AdminRewardPage>  {
           backgroundColor: Colors.orange[900],
         ),
         floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed code here!
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.orange[900],
-      ),
+          onPressed: () {
+            // Add your onPressed code here!
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.orange[900],
+        ),
         body: Container(
-          height:MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height,
           child: Column(
             children: <Widget>[
-              Flexible(
-                flex: 0,
-                child: Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.stars,
-                      color: Colors.orange[900],
-                    ),
-                    Text(
-                      "300",
-                      style: TextStyle(fontSize: 23),
-                    )
-                  ],
-                )),
-              ),
               Expanded(
                 child: Container(
-                //height: MediaQuery.of(context).size.height * 0.8,
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: <Widget>[
-                    GridView.count(
-                      physics: ScrollPhysics(),
-                      primary: true,
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      children: List.generate(3, (index) {
-                        return Card(
-                          elevation: 5.0,
-                          child: InkWell(
-                            onTap: () => {},
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: MediaQuery.of(context).size.height*0.126,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/images/example.jpg'),
-                                      fit: BoxFit.fitWidth,
+                  //height: MediaQuery.of(context).size.height * 0.8,
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: <Widget>[
+                      GridView.count(
+                        physics: ScrollPhysics(),
+                        primary: true,
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        children: List.generate(3, (index) {
+                          return Card(
+                            elevation: 5.0,
+                            child: InkWell(
+                              onTap: () => {},
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.126,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/example.jpg'),
+                                        fit: BoxFit.fitWidth,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                ListTile(
-                                  title: Text('ส่วนลด $index %',
-                                      style:
-                                          TextStyle(fontWeight: FontWeight.bold)),
-                                  subtitle: Text("ใช้  $index point"),
-                                ),
-                              ],
+                                  ListTile(
+                                    title: Text('ส่วนลด $index %',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    subtitle: Text("ใช้  $index point"),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                    ),
-                  ],
-                )),
+                          );
+                        }),
+                      ),
+                    ],
+                  )),
+                ),
               ),
-              ),
-              
             ],
           ),
         ));
   }
 }
-
-
