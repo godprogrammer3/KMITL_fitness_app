@@ -26,7 +26,7 @@ class UserModel {
         lastName:document['lastName'],
         email:document['email'],
         point: document['point'],
-        membershipExpireDate:DateTime.fromMillisecondsSinceEpoch((document['membershipExpireDate'].seconds*1000+document['membershipExpireDate'].nanoseconds/1000000).round()),
+        membershipExpireDate:null,
         birthYear:document['birthYear'],
         role:document['role'],
         faceId:document['faceId'],

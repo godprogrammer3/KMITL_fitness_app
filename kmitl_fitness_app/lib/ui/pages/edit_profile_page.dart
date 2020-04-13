@@ -134,7 +134,12 @@ class EditProfilePageChild extends State<EditProfilePage> {
               print(_email);
               print(_phoneNumber);
               print(_birthDay);
-
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }else{
+                currentFocus.unfocus();
+              }
               Navigator.of(context).pop();
             }),
         title: (Text(
