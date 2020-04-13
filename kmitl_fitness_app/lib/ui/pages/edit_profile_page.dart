@@ -126,18 +126,6 @@ class EditProfilePageChild extends State<EditProfilePage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              if (!_formKey.currentState.validate()) {
-                return;
-              }
-
-              _formKey.currentState.save();
-
-              print(_name);
-              print(_lastName);
-              print(_email);
-              print(_phoneNumber);
-              print(_birthDay);
-
               Navigator.of(context).pop();
             }),
         title: (Text(
@@ -167,16 +155,42 @@ class EditProfilePageChild extends State<EditProfilePage> {
                               'https://upload.wikimedia.org/wikipedia/en/9/98/John_Wick_TeaserPoster.jpg'),
                           backgroundColor: Colors.grey,
                         )),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     _buildName(),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     _buildLastName(),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     _buildEmail(),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     _buildPhoneNumber(),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     _buildBirthDay(),
+                    SizedBox(height: 20.0),
+                    FlatButton(
+                        color: Colors.orange[900],
+                        onPressed: () {
+                          if (!_formKey.currentState.validate()) {
+                            return;
+                          }
+
+                          _formKey.currentState.save();
+
+                          print(_name);
+                          print(_lastName);
+                          print(_email);
+                          print(_phoneNumber);
+                          print(_birthDay);
+                        },
+                        child: Text(
+                          'SAVE',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.transparent)))
                   ],
                 ))),
       ))),
