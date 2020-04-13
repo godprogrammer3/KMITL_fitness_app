@@ -13,3 +13,4 @@ export './membership_page.dart';
 export './point_page.dart';
 export './test_page.dart';
 export './edit_profile_page.dart';
+export './admin_reward_page.dart';
