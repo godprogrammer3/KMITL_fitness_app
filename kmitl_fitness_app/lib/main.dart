@@ -26,12 +26,13 @@ class KmitlFitnessApp extends StatelessWidget {
         title: 'KMITL FITNESS',
         theme: ThemeData(
             primaryColor: Colors.orange[900], accentColor: Colors.orange[900]),
-        builder: (context, widget) => Navigator(
-              onGenerateRoute: (settings) => MaterialPageRoute(
-                  builder: (context) => DialogManager(
-                        child: widget,
-                      )),
-            ),
+         builder: (context, widget) => Navigator(
+        onGenerateRoute: (settings) => MaterialPageRoute(
+          builder: (context) => DialogManager(
+            child: widget,
+          ),
+        ),
+      ),
         home: StreamProvider<User>(
           create: (_) => AuthenModel().user,
           child: SelectPage(),

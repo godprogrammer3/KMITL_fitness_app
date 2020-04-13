@@ -81,7 +81,7 @@ class TreadmillModel {
         .getDocuments();
     await treadmillStatusCollection
         .document(snapshotQueueMeStatus.documents[0].documentID)
-        .updateData({'isAvailable': true, 'user': ''});
+        .updateData({'isAvailable': true, 'user': '' , 'startTime':-1});
     return 0;
   }
 
@@ -101,7 +101,7 @@ class TreadmillModel {
     if (snapshotMe.documents.length != 0) {
       await treadmillStatusCollection
           .document(snapshotMe.documents[0].documentID)
-          .updateData({'isAvailable': true, 'user': ''});
+          .updateData({'isAvailable': true, 'user': '', 'startTime':-1});
       return 0;
     } else {
       return -1;

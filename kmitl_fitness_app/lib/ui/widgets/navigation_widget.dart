@@ -53,7 +53,7 @@ class _NavigationStateChild extends State<NavigationChild> {
         onMessage: (Map<String, dynamic> message) async {
       if (this.user != null) {
         final result = await treadmillModel.checkValidNotifications();
-        if (result == 0) {
+        if (result == 0 && _selectedIndex != 3) {
           Navigator.of(context).popUntil((route) => route.isFirst);
           setState(() {
             _selectedIndex = 3;
@@ -70,7 +70,7 @@ class _NavigationStateChild extends State<NavigationChild> {
     }, onLaunch: (Map<String, dynamic> message) async {
       if (this.user != null) {
         final result = await treadmillModel.checkValidNotifications();
-        if (result == 0) {
+        if (result == 0 && _selectedIndex != 3) {
           Navigator.of(context).popUntil((route) => route.isFirst);
           setState(() {
             _selectedIndex = 3;
@@ -82,12 +82,12 @@ class _NavigationStateChild extends State<NavigationChild> {
           });
         }
       }
-      print("fcm received");
-      print("onLaunchInNavigation: $message");
+      // print("fcm received");
+      // print("onLaunchInNavigation: $message");
     }, onResume: (Map<String, dynamic> message) async {
       if (this.user != null) {
         final result = await treadmillModel.checkValidNotifications();
-        if (result == 0) {
+        if (result == 0 && _selectedIndex != 3 ) {
           Navigator.of(context).popUntil((route) => route.isFirst);
           setState(() {
             _selectedIndex = 3;
