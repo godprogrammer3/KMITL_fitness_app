@@ -19,7 +19,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildName() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Name'),  
+      decoration: InputDecoration(labelText: 'Name'),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Name is Required';
@@ -102,13 +102,15 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildBirthDay() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Birth Day (dd/mm/yyyy)'),
+      decoration: InputDecoration(labelText: 'Birth Day (mm/dd/yyyy)'),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Birth Day is Required';
         }
 
-        if (!RegExp(r"^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$" ).hasMatch(value)) {
+        if (!RegExp(
+                r"^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$")
+            .hasMatch(value)) {
           return 'Please enter a valid Birth Day';
         }
 
@@ -157,17 +159,16 @@ class EditProfilePageChild extends State<EditProfilePage> {
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Icon(
-                              Icons.account_circle,
-                              size: 125,
-                            ),
-                          ),
+                          Center(child: CircleAvatar(radius: 60,backgroundImage: NetworkImage('https://upload.wikimedia.org/wikipedia/en/9/98/John_Wick_TeaserPoster.jpg'),backgroundColor: Colors.grey,)),
+                          SizedBox(height: 10.0),
                           _buildName(),
+                          SizedBox(height: 10.0),
                           _buildLastName(),
+                          SizedBox(height: 10.0),
                           _buildEmail(),
+                          SizedBox(height: 10.0),
                           _buildPhoneNumber(),
+                          SizedBox(height: 10.0),
                           _buildBirthDay(),
                         ],
                       ))))),
