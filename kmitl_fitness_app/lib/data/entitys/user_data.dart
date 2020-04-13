@@ -10,7 +10,8 @@ class UserData {
   final String faceId;
   final bool isHaveYellowCard;
   UserData(
-      {this.point,
+      {
+      this.point,
       this.birthYear,
       this.role,
       this.faceId,
@@ -19,5 +20,6 @@ class UserData {
       this.lastName,
       this.email,
       this.uid,
-      this.membershipExpireDate});
+      this.membershipExpireDate,
+  });
 }
