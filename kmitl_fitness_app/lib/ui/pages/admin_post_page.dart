@@ -38,7 +38,10 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return AdminPostAddingPage();
+              }));
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.orange[900],
