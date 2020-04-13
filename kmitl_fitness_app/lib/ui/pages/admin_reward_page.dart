@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/ui/pages/admin_reward_adding_page.dart';
 
 class AdminRewardPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
+    
     return AdminRewardPageChild();
   }
 }
@@ -30,8 +31,11 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // Add your onPressed code here!
-          },
+          Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return AdminRewardAddingPage();
+              }));
+        },
           child: Icon(Icons.add),
           backgroundColor: Colors.orange[900],
         ),
