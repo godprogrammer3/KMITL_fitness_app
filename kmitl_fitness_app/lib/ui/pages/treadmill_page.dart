@@ -6,7 +6,6 @@ import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
-
 class TreadmillPage extends StatelessWidget {
   final User user;
   const TreadmillPage({Key key, this.user}) : super(key: key);
@@ -34,16 +33,16 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   void enQueue() async {
     final result = await treadmillModel.enQueue();
     if (result != 0) {
-      print('you can not enqueue');
+      print('you cannot enqueue');
     } else {
-      print('enqueu success');
+      print('enqueue success');
     }
   }
 
   void cancel() async {
     final result = await treadmillModel.cancel();
     if (result != 0) {
-      print('you can not cancel');
+      print('you cannot cancel');
     } else {
       print('cancel success');
     }
@@ -52,7 +51,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   void done() async {
     final result = await treadmillModel.done();
     if (result != 0) {
-      print('you can not done');
+      print('you cannot done');
     } else {
       print('done success');
     }
@@ -76,7 +75,9 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
     super.didChangeDependencies();
     treadmillStatusSubscription = treadmillModel.status.listen((value) async {
       for (var i in value) {
-        if (i.user == user.uid && i.isAvailable == true && i.startTime != null) {
+        if (i.user == user.uid &&
+            i.isAvailable == true &&
+            i.startTime != null) {
           _popupKey = GlobalKey(debugLabel: 'Treadmill popup key');
           showDialog(
             barrierDismissible: false,
@@ -97,19 +98,19 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
         }
       }
       final status = await treadmillModel.checkUserStatus();
-       if( !userStatusStreamController.isClosed){
-         userStatusStreamController.add(status);
+      if (!userStatusStreamController.isClosed) {
+        userStatusStreamController.add(status);
       }
     });
     treadmillQueueSubscription = treadmillModel.queues.listen((value) async {
-      if(value.length > 1){
-        _isCanSkip  = true;
-      }else{
+      if (value.length > 1) {
+        _isCanSkip = true;
+      } else {
         _isCanSkip = false;
       }
       final status = await treadmillModel.checkUserStatus();
-      if( !userStatusStreamController.isClosed){
-         userStatusStreamController.add(status);
+      if (!userStatusStreamController.isClosed) {
+        userStatusStreamController.add(status);
       }
     });
   }
@@ -223,13 +224,13 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                               } else if (asyncSnapshot.data == null) {
                                 _isCanSkip = false;
                                 return Center(
-                                    child: Text("Queue is empty.",
+                                    child: Text("Queue is empty",
                                         style: TextStyle(fontSize: 25)));
                               } else {
                                 if (asyncSnapshot.data.length == 0) {
                                   _isCanSkip = false;
                                   return Center(
-                                      child: Text("Queue is empty.",
+                                      child: Text("Queue is empty",
                                           style: TextStyle(fontSize: 25)));
                                 }
                                 asyncSnapshot.data.sort();
@@ -268,11 +269,11 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                               return LoadingWidget(height: 50, width: 50);
                             } else {
                               if (asyncSnapshot.data == 0) {
-                                buttonText = 'done';
+                                buttonText = 'Done';
                                 buttonColor = Colors.blue;
                                 buttonFunction = done;
                               } else if (asyncSnapshot.data == 1) {
-                                buttonText = 'cancel queue';
+                                buttonText = 'Cancel queue';
                                 buttonColor = Colors.black;
                                 buttonFunction = cancel;
                               } else {
