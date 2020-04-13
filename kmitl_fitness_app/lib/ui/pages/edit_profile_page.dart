@@ -19,10 +19,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildName() {
     return TextFormField(
-<<<<<<< HEAD
-=======
       initialValue: _name,
->>>>>>> edit_profile_page
       decoration: InputDecoration(labelText: 'Name'),
       validator: (String value) {
         if (value.isEmpty) {
@@ -100,10 +97,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildBirthDay() {
     return TextFormField(
-<<<<<<< HEAD
-=======
       initialValue: _birthDay,
->>>>>>> edit_profile_page
       decoration: InputDecoration(labelText: 'Birth Day (mm/dd/yyyy)'),
       validator: (String value) {
         if (value.isEmpty) {
@@ -155,27 +149,6 @@ class EditProfilePageChild extends State<EditProfilePage> {
       ),
       body: SingleChildScrollView(
           child: SafeArea(
-<<<<<<< HEAD
-              child: Container(
-                  margin: EdgeInsets.all(24),
-                  child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          Center(child: CircleAvatar(radius: 60,backgroundImage: NetworkImage('https://upload.wikimedia.org/wikipedia/en/9/98/John_Wick_TeaserPoster.jpg'),backgroundColor: Colors.grey,)),
-                          SizedBox(height: 10.0),
-                          _buildName(),
-                          SizedBox(height: 10.0),
-                          _buildLastName(),
-                          SizedBox(height: 10.0),
-                          _buildEmail(),
-                          SizedBox(height: 10.0),
-                          _buildPhoneNumber(),
-                          SizedBox(height: 10.0),
-                          _buildBirthDay(),
-                        ],
-                      ))))),
-=======
               child: Center(
         child: Container(
             width: 270,
@@ -207,7 +180,6 @@ class EditProfilePageChild extends State<EditProfilePage> {
                   ],
                 ))),
       ))),
->>>>>>> edit_profile_page
     );
   }
 }
