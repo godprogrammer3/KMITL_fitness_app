@@ -36,7 +36,7 @@ class _NavigationStateChild extends State<NavigationChild> {
     _pageOptions = [
       HomePage(),
       ClassPage(user: user),
-      LockerPage(),
+      LockerPage(user: user),
       TreadmillPage(user: user),
       ProfilePage(user: user)
     ];
