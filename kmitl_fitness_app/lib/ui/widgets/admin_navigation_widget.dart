@@ -33,7 +33,7 @@ class _AdminNavigationStateChild extends State<AdminNavigationChild> {
     _pageOptions = [
       AdminStatisticPage(),
       ClassPage(user: user),
-      LockerPage(user: user),
+      AdminPostPage(user: user),
       TreadmillPage(user: user),
       AdminProfilePage(user: user)
     ];
