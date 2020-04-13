@@ -36,7 +36,7 @@ class AuthenModel {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: userData.email, password: password);
       FirebaseUser user = result.user;
-      await DatabaseModel(uid: user.uid).setUserData({
+      await UserModel(uid: user.uid).setUserData({
         'firstName': userData.firstName,
         'lastName': userData.lastName,
         'email': userData.email,

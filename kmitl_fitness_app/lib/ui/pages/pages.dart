@@ -15,3 +15,4 @@ export './test_page.dart';
 export './adminprofile_page.dart';
 export './adminpassword_page.dart';
 export './adminstatistic_page.dart';
+export './edit_profile_page.dart';

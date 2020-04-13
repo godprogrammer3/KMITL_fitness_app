@@ -38,7 +38,12 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.edit),
-            onPressed: () => {},
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return EditProfilePage();
+              }));
+            },
             color: Colors.white,
           )
         ],
@@ -112,8 +117,8 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
           ),
           FlatButton(
             onPressed: () async {
-              final databaseModel = DatabaseModel(uid: user.uid);
-              await databaseModel.updateUserData({'fcmToken': ''});
+              final userModel = UserModel(uid: user.uid);
+              await userModel.updateUserData({'fcmToken': ''});
               await authenModel.signOut();
             },
             child: Text("Logout",

@@ -5,3 +5,6 @@ export './treamill_queue.dart';
 export './post.dart';
 export './class.dart';
 export './event.dart';
+export './locker.dart';
+export './reward.dart';
+export './package.dart';
