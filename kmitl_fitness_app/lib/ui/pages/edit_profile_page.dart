@@ -1,20 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 String _name = 'John';
 String _lastName = 'Wick';
 String _email = 'johnwick123@gmail.com';
 String _phoneNumber = '0972340683';
 String _birthDay = '09/02/1964';
+File imageFile;
 
 class EditProfilePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return EditProfilePageChild();
-  }
+  State<StatefulWidget> createState() => EditProfilePageChild();
 }
 
 class EditProfilePageChild extends State<EditProfilePage> {
+  _openGallery(BuildContext context) async {
+    var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
+    this.setState(() {
+      imageFile = picture;
+    });
+    Navigator.of(context).pop();
+  }
+
+  _openCamera(BuildContext context) async {
+    var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+    this.setState(() {
+      imageFile = picture;
+    });
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _showChoiceDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Select Profile Picture", textAlign: TextAlign.center),
+            content: SingleChildScrollView(
+                child: ListBody(
+              children: <Widget>[
+                InkWell(
+                  child: Text(
+                    'Gallery',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  onTap: () {
+                    _openGallery(context);
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                  child: Text(
+                    'Camera',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  onTap: () {
+                    _openCamera(context);
+                  },
+                )
+              ],
+            )),
+          );
+        });
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildName() {
@@ -47,7 +101,6 @@ class EditProfilePageChild extends State<EditProfilePage> {
         _lastName = value;
       },
     );
-    ;
   }
 
   Widget _buildEmail() {
@@ -116,7 +169,6 @@ class EditProfilePageChild extends State<EditProfilePage> {
         _birthDay = value;
       },
     );
-    ;
   }
 
   @override
@@ -146,15 +198,26 @@ class EditProfilePageChild extends State<EditProfilePage> {
                 child: Column(
                   children: <Widget>[
                     InkWell(
-                        onTap: () {
-                          print('select image');
-                        },
-                        child: CircleAvatar(
+                      onTap: () {
+                        _showChoiceDialog(context);
+                      },
+                      child: CircleAvatar(
                           radius: 60,
-                          backgroundImage: NetworkImage(
-                              'https://upload.wikimedia.org/wikipedia/en/9/98/John_Wick_TeaserPoster.jpg'),
                           backgroundColor: Colors.grey,
-                        )),
+                          child: ClipOval(
+                            child: SizedBox(
+                              width: 180.0,
+                              height: 180.0,
+                              child: (imageFile != null)
+                                  ? Image.file(imageFile, fit: BoxFit.fill)
+                                  : Icon(
+                                      Icons.person,
+                                      color: Colors.white,
+                                      size: 100,
+                                    ),
+                            ),
+                          )),
+                    ),
                     SizedBox(height: 10.0),
                     _buildName(),
                     SizedBox(height: 10.0),
