@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+String _name = 'John';
+String _lastName = 'Wick';
+String _email = 'johnwick123@gmail.com';
+String _phoneNumber = '0972340683';
+String _birthDay = '09/02/1964';
+
 class EditProfilePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -9,24 +15,18 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class EditProfilePageChild extends State<EditProfilePage> {
-  String _name;
-  String _lastName;
-  String _email;
-  String _phoneNumber;
-  String _birthDay;
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildName() {
     return TextFormField(
+<<<<<<< HEAD
+=======
+      initialValue: _name,
+>>>>>>> edit_profile_page
       decoration: InputDecoration(labelText: 'Name'),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Name is Required';
-        }
-
-        if (!RegExp(r"^[a-z]{1,10}$").hasMatch(value)) {
-          return 'Please enter a valid Name';
         }
         return null;
       },
@@ -38,16 +38,12 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildLastName() {
     return TextFormField(
+      initialValue: _lastName,
       decoration: InputDecoration(labelText: 'Last Name'),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Last Name is Required';
         }
-
-        if (!RegExp(r"^[a-z']{2,10}$").hasMatch(value)) {
-          return 'Please enter a valid Last Name';
-        }
-
         return null;
       },
       onSaved: (String value) {
@@ -59,6 +55,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildEmail() {
     return TextFormField(
+      initialValue: _email,
       decoration: InputDecoration(labelText: 'Email'),
       validator: (String value) {
         if (value.isEmpty) {
@@ -81,6 +78,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildPhoneNumber() {
     return TextFormField(
+      initialValue: _phoneNumber,
       decoration: InputDecoration(labelText: 'Phone Number'),
       keyboardType: TextInputType.phone,
       validator: (String value) {
@@ -102,6 +100,10 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildBirthDay() {
     return TextFormField(
+<<<<<<< HEAD
+=======
+      initialValue: _birthDay,
+>>>>>>> edit_profile_page
       decoration: InputDecoration(labelText: 'Birth Day (mm/dd/yyyy)'),
       validator: (String value) {
         if (value.isEmpty) {
@@ -153,6 +155,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
       ),
       body: SingleChildScrollView(
           child: SafeArea(
+<<<<<<< HEAD
               child: Container(
                   margin: EdgeInsets.all(24),
                   child: Form(
@@ -172,6 +175,39 @@ class EditProfilePageChild extends State<EditProfilePage> {
                           _buildBirthDay(),
                         ],
                       ))))),
+=======
+              child: Center(
+        child: Container(
+            width: 270,
+            margin: EdgeInsets.all(24),
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    InkWell(
+                        onTap: () {
+                          print('select image');
+                        },
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/en/9/98/John_Wick_TeaserPoster.jpg'),
+                          backgroundColor: Colors.grey,
+                        )),
+                    SizedBox(height: 20.0),
+                    _buildName(),
+                    SizedBox(height: 20.0),
+                    _buildLastName(),
+                    SizedBox(height: 20.0),
+                    _buildEmail(),
+                    SizedBox(height: 20.0),
+                    _buildPhoneNumber(),
+                    SizedBox(height: 20.0),
+                    _buildBirthDay(),
+                  ],
+                ))),
+      ))),
+>>>>>>> edit_profile_page
     );
   }
 }
