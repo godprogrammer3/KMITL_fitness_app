@@ -55,7 +55,7 @@ class SelectPage extends StatelessWidget {
        });
        return NavigationWidget(user: user);
      }else{
-       return LoginPage();
+       return AdminStatisticPage();
      }
   }
 }
