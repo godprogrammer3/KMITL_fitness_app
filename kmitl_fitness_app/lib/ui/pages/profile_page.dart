@@ -38,7 +38,12 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.edit),
-            onPressed: () => {},
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return EditProfilePage();
+              }));
+            },
             color: Colors.white,
           )
         ],
