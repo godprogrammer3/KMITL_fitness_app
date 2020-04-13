@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
-import 'package:kmitl_fitness_app/ui/pages/membership_page.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 class AdminProfilePage extends StatelessWidget {
@@ -81,8 +80,8 @@ class _AdminProfilePageStateChild extends State<AdminProfilePageChild> {
           ),
           FlatButton(
             onPressed: () async {
-              final databaseModel = DatabaseModel(uid: user.uid);
-              await databaseModel.updateUserData({'fcmToken': ''});
+              final userModel = UserModel(uid: user.uid);
+              await userModel.updateUserData({'fcmToken': ''});
               await authenModel.signOut();
             },
             child: Text("Logout",

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
-import 'package:kmitl_fitness_app/ui/pages/membership_page.dart';
-import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class SalesData {
