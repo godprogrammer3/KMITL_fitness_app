@@ -45,7 +45,7 @@ class PostModel {
         imageId: doc.data['imageId'],
         detail: doc.data['detail'],
         owner: doc.data['owner'],
-        createdTime:DateTime.fromMillisecondsSinceEpoch((doc.data['createdTime'].seconds*1000+doc.data['createdTime'].nanoseconds/1000000).round()),
+        createdTime:  DateTime.fromMillisecondsSinceEpoch((doc.data['createdTime'].seconds*1000+doc.data['createdTime'].nanoseconds/1000000).round()),
         updatedTime:  DateTime.fromMillisecondsSinceEpoch((doc.data['updatedTime'].seconds*1000+doc.data['updatedTime'].nanoseconds/1000000).round()),
       );
     }).toList();

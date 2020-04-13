@@ -50,8 +50,8 @@ class SelectPage extends StatelessWidget {
      print("User stream run here");
      if( user != null ) {
        firebaseMessaging.getToken().then((token) async {
-         final databaseModel = DatabaseModel(uid:user.uid);
-         await databaseModel.updateUserData({'fcmToken':token});
+         final userModel = UserModel(uid:user.uid);
+         await userModel.updateUserData({'fcmToken':token});
        });
        return NavigationWidget(user: user);
      }else{

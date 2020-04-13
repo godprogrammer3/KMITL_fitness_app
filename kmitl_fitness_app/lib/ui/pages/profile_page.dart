@@ -112,8 +112,8 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
           ),
           FlatButton(
             onPressed: () async {
-              final databaseModel = DatabaseModel(uid: user.uid);
-              await databaseModel.updateUserData({'fcmToken': ''});
+              final userModel = UserModel(uid: user.uid);
+              await userModel.updateUserData({'fcmToken': ''});
               await authenModel.signOut();
             },
             child: Text("Logout",
