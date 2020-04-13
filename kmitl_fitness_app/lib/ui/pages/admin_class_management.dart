@@ -89,7 +89,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Class'),
+        title: Text('Class Management'),
       ),
       body: Container(
         child: ListView.builder(
