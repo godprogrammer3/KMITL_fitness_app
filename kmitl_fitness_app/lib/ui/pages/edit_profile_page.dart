@@ -9,7 +9,6 @@ String _birthDay = '09/02/1964';
 class EditProfilePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return EditProfilePageChild();
   }
 }
@@ -47,7 +46,6 @@ class EditProfilePageChild extends State<EditProfilePage> {
         _lastName = value;
       },
     );
-    ;
   }
 
   Widget _buildEmail() {
@@ -116,7 +114,6 @@ class EditProfilePageChild extends State<EditProfilePage> {
         _birthDay = value;
       },
     );
-    ;
   }
 
   @override
