@@ -31,10 +31,10 @@ class _AdminNavigationStateChild extends State<AdminNavigationChild> {
   void initState() {
     super.initState();
     _pageOptions = [
-      AdminStatisticPage(),
+      AdminStatisticPage(user: user),
       ClassPage(user: user),
       AdminPostPage(user: user),
-      TreadmillPage(user: user),
+      AdminRewardPage(user: user),
       AdminProfilePage(user: user)
     ];
   }
@@ -58,20 +58,20 @@ class _AdminNavigationStateChild extends State<AdminNavigationChild> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
+            icon: Icon(Icons.show_chart),
+            title: Text('Statistic'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.schedule),
+            icon: Icon(Icons.event_note),
             title: Text('Class'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.vpn_key),
-            title: Text('Locker'),
+            icon: Icon(Icons.create),
+            title: Text('Post'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.directions_run),
-            title: Text('Treadmill'),
+            icon: Icon(Icons.more_horiz),
+            title: Text('More'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

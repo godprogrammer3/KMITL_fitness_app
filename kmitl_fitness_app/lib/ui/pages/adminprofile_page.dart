@@ -35,17 +35,6 @@ class _AdminProfilePageStateChild extends State<AdminProfilePageChild> {
           'Profile',
           style: TextStyle(color: Colors.white),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AdminPasswordPage(),
-              ));
-            },
-            color: Colors.white,
-          )
-        ],
         backgroundColor: Colors.orange[900],
       ),
       body: Center(

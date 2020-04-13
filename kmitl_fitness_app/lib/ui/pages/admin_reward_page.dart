@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 
 class AdminRewardPage extends StatefulWidget {
+  final User user;
+
+  const AdminRewardPage({Key key, this.user}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return AdminRewardPageChild();
+    return AdminRewardPageChild(user:user);
   }
 }
 
 class AdminRewardPageChild extends State<AdminRewardPage> {
+  final User user;
+
+  AdminRewardPageChild({this.user});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            color: Colors.white,
-          ),
           title: Text(
             "Reward",
             style: TextStyle(color: Colors.white, fontSize: 25),
