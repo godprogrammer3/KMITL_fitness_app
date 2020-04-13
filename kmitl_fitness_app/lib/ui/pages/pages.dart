@@ -16,3 +16,7 @@ export './adminprofile_page.dart';
 export './adminpassword_page.dart';
 export './adminstatistic_page.dart';
 export './edit_profile_page.dart';
+
+export './admin_post_page.dart';
+export './admin_post_detail_page.dart';
+export './admin_post_adding_page.dart';
