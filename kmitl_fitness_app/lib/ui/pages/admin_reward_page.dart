@@ -28,6 +28,13 @@ class AdminRewardPageChild extends State<AdminRewardPage>  {
           ),
           backgroundColor: Colors.orange[900],
         ),
+        floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.orange[900],
+      ),
         body: Container(
           height:MediaQuery.of(context).size.height,
           child: Column(
@@ -62,7 +69,7 @@ class AdminRewardPageChild extends State<AdminRewardPage>  {
                       primary: true,
                       shrinkWrap: true,
                       crossAxisCount: 2,
-                      children: List.generate(19, (index) {
+                      children: List.generate(3, (index) {
                         return Card(
                           elevation: 5.0,
                           child: InkWell(
