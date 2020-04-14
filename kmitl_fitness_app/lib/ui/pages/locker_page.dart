@@ -91,7 +91,7 @@ class _LockerPageStateChild extends State<LockerPageChild> {
           if (asyncSnapshot.hasError) {
             return LoadingWidget(height: 50, width: 50);
           } else if (asyncSnapshot.data == null) {
-            return new Text("Empty data!");
+            return  Center(child: Text("Empty data!"));
           } else {
             List<Locker> lockers = new List<Locker>();
             for (var i in asyncSnapshot.data) {
@@ -162,7 +162,7 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                                     ? Colors.black
                                     : Colors.green,
                               ),
-                              Text('No ' + index.toString() + '.'),
+                              Text('No ' + (index+1).toString() + '.'),
                             ]),
                           );
                         }));
