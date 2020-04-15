@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MembershipPage extends StatefulWidget {
@@ -119,17 +120,29 @@ class _MembershipPageState extends State<MembershipPage> {
                       child: FlatButton(
                           onPressed: () async {
                             if (index == 0) {
-                              await launchURL(
-                                  'https://kmitlfitnessapp.web.app/payment?amount=3000&userId=' +
-                                      user.uid);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return PaymentPage(
+                                    url:
+                                        'https://kmitlfitnessapp.web.app/payment?amount=3000&userId=' +
+                                            user.uid+'&packageId='+index.toString());
+                              }));
                             } else if (index == 1) {
-                              await launchURL(
-                                  'https://kmitlfitnessapp.web.app/payment?amount=50000&userId=' +
-                                      user.uid);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return PaymentPage(
+                                    url:
+                                        'https://kmitlfitnessapp.web.app/payment?amount=50000&userId=' +
+                                            user.uid+'&packageId='+index.toString());
+                              }));
                             } else if (index == 2) {
-                              await launchURL(
-                                  'https://kmitlfitnessapp.web.app/payment?amount=170000&userId=' +
-                                      user.uid);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return PaymentPage(
+                                    url:
+                                        'https://kmitlfitnessapp.web.app/payment?amount=170000&userId=' +
+                                            user.uid+'&packageId='+index.toString());
+                              }));
                             }
                           },
                           shape: RoundedRectangleBorder(
