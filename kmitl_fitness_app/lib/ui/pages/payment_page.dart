@@ -23,6 +23,7 @@ class _PaymentPageChildState extends State<PaymentPageChild> {
   _PaymentPageChildState({this.url});
   @override
   Widget build(BuildContext context) {
+    print(url);
     return Scaffold(
       appBar: AppBar(
         title: Text('Payment'),

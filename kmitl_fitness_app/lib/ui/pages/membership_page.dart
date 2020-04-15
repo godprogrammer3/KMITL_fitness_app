@@ -122,10 +122,12 @@ class _MembershipPageState extends State<MembershipPage> {
                             if (index == 0) {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
-                                return PaymentPage(
-                                    url:
-                                        'https://kmitlfitnessapp.web.app/payment?amount=3000&userId=' +
-                                            user.uid+'&packageId='+index.toString());
+                                final url =
+                                    'https://kmitlfitnessapp.web.app/payment?amount=3000&userId=' +
+                                        user.uid +
+                                        '&packageId=$index' +
+                                        'xxxx';
+                                return PaymentPage(url: url);
                               }));
                             } else if (index == 1) {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -133,15 +135,19 @@ class _MembershipPageState extends State<MembershipPage> {
                                 return PaymentPage(
                                     url:
                                         'https://kmitlfitnessapp.web.app/payment?amount=50000&userId=' +
-                                            user.uid+'&packageId='+index.toString());
+                                            user.uid +
+                                            '&packageId=$index' +
+                                            'xxxx');
                               }));
                             } else if (index == 2) {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
-                                return PaymentPage(
-                                    url:
-                                        'https://kmitlfitnessapp.web.app/payment?amount=170000&userId=' +
-                                            user.uid+'&packageId='+index.toString());
+                                final url =
+                                    'https://kmitlfitnessapp.web.app/payment?amount=170000&userId=' +
+                                        user.uid +
+                                        '&packageId=$index' +
+                                        'xxxx';
+                                return PaymentPage(url: url);
                               }));
                             }
                           },
