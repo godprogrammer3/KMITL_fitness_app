@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MembershipPage extends StatefulWidget {
+  final User user;
+
+  const MembershipPage({Key key, this.user}) : super(key: key);
   @override
-  _MembershipPageState createState() => _MembershipPageState();
+  _MembershipPageState createState() => _MembershipPageState(user: user);
 }
 
 class _MembershipPageState extends State<MembershipPage> {
@@ -26,6 +31,15 @@ class _MembershipPageState extends State<MembershipPage> {
         time: "/4 เดือน",
         pricePerDay: "฿14.16 ต่อวัน")
   ];
+  final User user;
+  _MembershipPageState({this.user});
+  launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('can not launch url :' + url);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +117,21 @@ class _MembershipPageState extends State<MembershipPage> {
                       width: 200,
                       height: 45,
                       child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (index == 0) {
+                              await launchURL(
+                                  'https://kmitlfitnessapp.web.app/payment?amount=3000&userId=' +
+                                      user.uid);
+                            } else if (index == 1) {
+                              await launchURL(
+                                  'https://kmitlfitnessapp.web.app/payment?amount=50000&userId=' +
+                                      user.uid);
+                            } else if (index == 2) {
+                              await launchURL(
+                                  'https://kmitlfitnessapp.web.app/payment?amount=170000&userId=' +
+                                      user.uid);
+                            }
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.transparent)),
