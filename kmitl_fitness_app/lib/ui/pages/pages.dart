@@ -15,3 +15,4 @@ export './test_page.dart';
 export './admin_class_management.dart';
 export './admin_class_edit.dart';
 export './about_page.dart';
+export './admin_class_detail.dart';

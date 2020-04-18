@@ -1,8 +1,7 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 
 class AdminClassEdit extends StatelessWidget {
   const AdminClassEdit({Key key}) : super(key: key);
@@ -85,7 +84,7 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                     ],
                   ),
                   IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
+                    icon: Icon(Icons.arrow_back),
                     color: Colors.white,
                     onPressed: () {
                       Navigator.pop(context);

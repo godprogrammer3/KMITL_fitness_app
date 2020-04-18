@@ -49,6 +49,8 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
   final User user;
   _AdminClassManagementChildState({this.user});
 
+  Class classData;
+
   List<Classes> classes = [
     Classes(
       title: 'Yoga',
@@ -99,7 +101,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AdminClassEdit(),
+                    builder: (context) => AdminClassDetail(),
                   ));
                 },
                 child: Stack(
