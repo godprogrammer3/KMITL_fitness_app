@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/ui/pages/admin_class_edit.dart';
+import 'package:kmitl_fitness_app/ui/pages/admin_class_participants.dart';
 
 class AdminClassDetail extends StatelessWidget {
   const AdminClassDetail({Key key}) : super(key: key);
@@ -34,7 +36,7 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                     //child: Image(image: AssetImage()),
                   ),
                   IconButton(
-                    icon: Icon(Icons.arrow_back),
+                    icon: Icon(Icons.arrow_back_ios),
                     color: Colors.white,
                     onPressed: () {
                       Navigator.pop(context);
@@ -50,10 +52,9 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'ชื่อคลาส',
+                    'Class Name',
                     style: TextStyle(
                       fontSize: 40,
-                      fontFamily: 'Kanit',
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -87,8 +88,12 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                FlatButton(
-                  onPressed: () {},
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AdminClassParticipants(),
+                    ));
+                  },
                   color: Colors.orange[900],
                   child: Container(
                     height: 25,
@@ -107,8 +112,12 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                   ),
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                 ),
-                FlatButton(
-                  onPressed: () {},
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AdminClassEdit(),
+                    ));
+                  },
                   color: Colors.blue,
                   child: Container(
                     height: 25,
@@ -127,7 +136,7 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                   ),
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                 ),
-                FlatButton(
+                RaisedButton(
                   onPressed: () {},
                   color: Colors.red,
                   child: Container(
