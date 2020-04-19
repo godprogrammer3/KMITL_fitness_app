@@ -163,6 +163,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_icons">
+          <value>
+            <list>
+              <option value="C:/Flutter/.pub-cache/hosted/pub.dartlang.org/flutter_icons-1.1.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_plugin_android_lifecycle">
           <value>
             <list>
@@ -195,6 +202,13 @@
           <value>
             <list>
               <option value="C:/Flutter/.pub-cache/hosted/pub.dartlang.org/get_it-4.0.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="google_maps_flutter">
+          <value>
+            <list>
+              <option value="C:/Flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-0.5.26/lib" />
             </list>
           </value>
         </entry>
@@ -380,6 +394,34 @@
             </list>
           </value>
         </entry>
+        <entry key="url_launcher">
+          <value>
+            <list>
+              <option value="C:/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.4.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="url_launcher_macos">
+          <value>
+            <list>
+              <option value="C:/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-0.0.1+4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="url_launcher_platform_interface">
+          <value>
+            <list>
+              <option value="C:/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_platform_interface-1.0.6/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="url_launcher_web">
+          <value>
+            <list>
+              <option value="C:/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-0.1.1+1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="vector_math">
           <value>
             <list>
@@ -419,9 +461,11 @@
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.1.1+2/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-6.0.13/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-3.1.5/lib" />
+      <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/flutter_icons-1.1.0/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.6/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/flutter_svg-0.17.4/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/get_it-4.0.1/lib" />
+      <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-0.5.26/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.0+4/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-3.1.4/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/image-2.1.4/lib" />
@@ -447,6 +491,10 @@
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.1.0/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.2.11/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/typed_data-1.1.6/lib" />
+      <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.4.2/lib" />
+      <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-0.0.1+4/lib" />
+      <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_platform_interface-1.0.6/lib" />
+      <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-0.1.1+1/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.0.8/lib" />
       <root url="file://C:/Flutter/.pub-cache/hosted/pub.dartlang.org/xml-3.5.0/lib" />
       <root url="file://C:/Flutter/bin/cache/pkg/sky_engine/lib" />
