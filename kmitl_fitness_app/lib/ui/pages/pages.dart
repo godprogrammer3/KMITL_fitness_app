@@ -22,3 +22,4 @@ export './admin_post_adding_page.dart';
 export './admin_reward_page.dart';
 export './payment_page.dart';
 export './admin_more_page.dart';
+export './admin_package_page.dart';

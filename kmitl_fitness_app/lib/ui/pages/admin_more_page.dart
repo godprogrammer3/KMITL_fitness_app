@@ -6,7 +6,7 @@ class AdminMorePage extends StatelessWidget {
 
   List<Widget> _pageOption = [
     AdminRewardPage(),
-    Container()
+    AdminPackagePage()
   ];
   
   @override
