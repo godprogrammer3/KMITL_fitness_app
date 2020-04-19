@@ -39,9 +39,9 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return AdminPostAddingPage();
-              }));
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return AdminPostAddingPage();
+          }));
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.orange[900],
@@ -73,16 +73,8 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                         ),
                       ),
                       ListTile(
-                        title: Text('3 STEPS เทคนิคฟิตหุ่นให้ลีน แบบนางงาม',
-                            style: TextStyle(
-                                height: 2,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Kanit')),
-                        subtitle: Text(
-                          'ก่อนอื่นต้องยินดีกับนักเรียนของเรา น้องฟ้าใส ที่ได้รางวัล Golden Tiara Ticket ในรายการ...',
-                          style: TextStyle(fontFamily: 'Kanit'),
-                        ),
+                        title: _PostTitle(),
+                        subtitle: _PostDetail(),
                       ),
                       Divider(),
                       Text('อ่านต่อ',
@@ -101,6 +93,50 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
           );
         },
       ),
+    );
+  }
+}
+
+class _PostTitle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text('3 STEPS เทคนิคฟิตหุ่นให้ลีน แบบนางงาม',
+        style: TextStyle(
+            height: 2,
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Kanit'));
+  }
+}
+
+class _PostDetail extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '''
+ก่อนอื่นต้องยินดีกับนักเรียนของเรา น้องฟ้าใส ที่ได้รางวัล Golden Tiara Ticket ในรายการ Miss Universe Thailand 2019 เมื่อสัปดาห์ที่ผ่านมา หลายๆคนน่าจะสงสัยว่า การเป็นนางงาม ต้องเทรนยังไง กินยังไง วันนี้ เราเอา Tips มาเล่าให้ฟังกันครับ
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+From fitjunctions.com/fasaixfasai/
+''',
+      style: TextStyle(fontFamily: 'Kanit'),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
