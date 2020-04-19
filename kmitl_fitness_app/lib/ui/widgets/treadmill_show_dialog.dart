@@ -64,9 +64,12 @@ class _TreadmillShowDialogState extends State<TreadmillShowDialog>
   void initState() {
     super.initState();
     treadmillModel = TreadmillModel(uid: user.uid);
-    final totalSecond = 30-DateTime.now().difference(startTime).inSeconds;
+    var totalSecond = 30-DateTime.now().difference(startTime).inSeconds;
     print("totalSecond : ");
     print(totalSecond);
+    if(totalSecond < 0 ){
+      totalSecond = 0;
+    }
     _current = totalSecond;
     _start = totalSecond;
     countDownTimer = CountdownTimer(

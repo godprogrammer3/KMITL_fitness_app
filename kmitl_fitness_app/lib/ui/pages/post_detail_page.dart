@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AdminPostDetailPage extends StatelessWidget {
+class PostDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,9 +13,6 @@ class AdminPostDetailPage extends StatelessWidget {
           },
           color: Colors.white,
         ),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.edit), onPressed: (){})
-        ],
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),

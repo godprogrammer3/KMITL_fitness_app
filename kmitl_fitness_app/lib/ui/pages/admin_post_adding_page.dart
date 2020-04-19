@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
-import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 

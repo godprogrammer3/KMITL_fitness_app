@@ -90,6 +90,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
             ),
           );
         } else if (i.user == user.uid && i.isAvailable == false) {
+          print('close by here');
           if (_popupKey != null && _popupKey.currentContext != null) {
             Navigator.of(_popupKey.currentContext, rootNavigator: true)
                 .popUntil((route) => route.isFirst);
