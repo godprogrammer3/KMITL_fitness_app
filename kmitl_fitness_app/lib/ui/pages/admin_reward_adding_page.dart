@@ -8,6 +8,31 @@ class AdminRewardAddingPage extends StatefulWidget {
 }
 
 class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
+  createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Enter point to use"),
+            content: TextField(decoration: InputDecoration(hintText: 'POINT')),
+            actions: <Widget>[
+              MaterialButton(
+                  elevation: 5.0,
+                  child: Text("CANCEL"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              MaterialButton(
+                  elevation: 5.0,
+                  child: Text("CONFIRM"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ],
+          );
+        });
+  }
+
   Future<File> imageFile;
 
   pickImageFromGallery(ImageSource source) {
@@ -118,45 +143,27 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                       hintText: 'Detail',
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        height: 60,
-                        child: FlatButton(
-                            onPressed: () {},
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                                side: BorderSide(color: Colors.transparent)),
-                            color: Colors.black,
-                            child: Text(
-                              "DELETE",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        height: 60,
-                        child: FlatButton(
-                            onPressed: () {},
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                                side: BorderSide(color: Colors.transparent)),
-                            color: Colors.orange[900],
-                            child: Text(
-                              "SAVE",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    ],
+                  SizedBox(height: 10),
+                  Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      height: 60,
+                      child: FlatButton(
+                          onPressed: () {
+                            createAlertDialog(context);
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.transparent)),
+                          color: Colors.orange[900],
+                          child: Text(
+                            "CREATE",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
                   ),
                 ],
               ),
