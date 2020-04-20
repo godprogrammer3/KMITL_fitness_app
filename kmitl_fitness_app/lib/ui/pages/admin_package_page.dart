@@ -34,9 +34,9 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return AdminPackageAddingPage();
-              }));
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return AdminPackageAddingPage();
+          }));
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.orange[900],
@@ -111,11 +111,16 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
                       width: 200,
                       height: 45,
                       child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return AdminPackageEditingPage();
+                            }));
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.transparent)),
-                          color: Colors.orange[800],
+                          color: Colors.orange[900],
                           child: Text(
                             "EDIT",
                             style: TextStyle(
