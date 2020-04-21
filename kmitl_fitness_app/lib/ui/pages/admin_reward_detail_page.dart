@@ -2,15 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class AdminPostAddingPage extends StatefulWidget {
+class AdminRewardDetailPage extends StatefulWidget {
   @override
-  _AdminPostAddingPageState createState() => _AdminPostAddingPageState();
+  _AdminRewardDetailPageState createState() => _AdminRewardDetailPageState();
 }
 
-class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
+class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
+
+    createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Enter point to use"),
+            content: TextField(decoration: InputDecoration(hintText: 'POINT')),
+            actions: <Widget>[
+              MaterialButton(
+                  elevation: 5.0,
+                  child: Text("CANCEL"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              MaterialButton(
+                  elevation: 5.0,
+                  child: Text("CONFIRM"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ],
+          );
+        });
+  }
+
   Future<File> imageFile;
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _detailController = TextEditingController(); 
 
   pickImageFromGallery(ImageSource source) {
     setState(() {
@@ -98,7 +122,6 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                 children: <Widget>[
                   SizedBox(height: 10),
                   TextField(
-                    controller: _titleController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
@@ -110,7 +133,6 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                   ),
                   SizedBox(height: 10),
                   TextField(
-                    controller: _detailController,
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
                     decoration: InputDecoration(
@@ -122,7 +144,7 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                       hintText: 'Detail',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -134,9 +156,28 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100),
                                 side: BorderSide(color: Colors.transparent)),
+                            color: Colors.black,
+                            child: Text(
+                              "DELETE",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        height: 60,
+                        child: FlatButton(
+                            onPressed: () {
+                              createAlertDialog(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                                side: BorderSide(color: Colors.transparent)),
                             color: Colors.orange[900],
                             child: Text(
-                              "POST",
+                              "SAVE",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,

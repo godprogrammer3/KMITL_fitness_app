@@ -2,15 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class AdminPostAddingPage extends StatefulWidget {
+import 'package:kmitl_fitness_app/ui/pages/admin_post_detail_page.dart';
+
+class AdminPostEditingPage extends StatefulWidget {
   @override
-  _AdminPostAddingPageState createState() => _AdminPostAddingPageState();
+  _AdminPostEditingPageState createState() => _AdminPostEditingPageState();
 }
 
-class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
+class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
   Future<File> imageFile;
+  final _image = 'assets/images/post01.png';
+
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _detailController = TextEditingController(); 
+  final TextEditingController _detailController = TextEditingController();
+
+  final _titleText = '3 STEPS เทคนิคฟิตหุ่นให้ลีน แบบนางงาม';
+  final _detailText = '''
+ก่อนอื่นต้องยินดีกับนักเรียนของเรา น้องฟ้าใส ที่ได้รางวัล Golden Tiara Ticket ในรายการ Miss Universe Thailand 2019 เมื่อสัปดาห์ที่ผ่านมา หลายๆคนน่าจะสงสัยว่า การเป็นนางงาม ต้องเทรนยังไง กินยังไง วันนี้ เราเอา Tips มาเล่าให้ฟังกันครับ
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+From fitjunctions.com/fasaixfasai/
+''';
 
   pickImageFromGallery(ImageSource source) {
     setState(() {
@@ -42,19 +69,10 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
             ),
           ]);
         } else {
-          return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
-            Container(
-              color: Colors.grey,
-              height: MediaQuery.of(context).size.height / 2.5,
-            ),
-            Container(
-              margin: EdgeInsets.all(20),
-              child: Text(
-                'No Image Select',
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ]);
+          return Image.asset(
+            _image,
+            fit: BoxFit.cover,
+          );
         }
       },
     );
@@ -62,6 +80,9 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
 
   @override
   Widget build(BuildContext context) {
+    _titleController.text = _titleText;
+    _detailController.text = _detailText;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -77,9 +98,9 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Stack(alignment: Alignment.center, children: <Widget>[
               showImage(),
@@ -105,7 +126,6 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                           Radius.circular(10),
                         ),
                       ),
-                      hintText: 'Title',
                     ),
                   ),
                   SizedBox(height: 10),
@@ -119,38 +139,61 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                           Radius.circular(10),
                         ),
                       ),
-                      hintText: 'Detail',
                     ),
                   ),
                   SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        height: 60,
-                        child: FlatButton(
-                            onPressed: () {},
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                                side: BorderSide(color: Colors.transparent)),
-                            color: Colors.orange[900],
-                            child: Text(
-                              "POST",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
+            _Button(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _Button extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width / 2.5,
+          height: 60,
+          child: FlatButton(
+              onPressed: () {},
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                  side: BorderSide(color: Colors.transparent)),
+              color: Colors.black,
+              child: Text(
+                "DELETE",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              )),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width / 2.5,
+          height: 60,
+          child: FlatButton(
+              onPressed: () {},
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                  side: BorderSide(color: Colors.transparent)),
+              color: Colors.orange[900],
+              child: Text(
+                "SAVE",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              )),
+        ),
+      ],
     );
   }
 }
