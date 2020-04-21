@@ -33,6 +33,7 @@ class KmitlFitnessApp extends StatelessWidget {
           ),
         ),
       ),
+]
         home: StreamProvider<User>(
           create: (_) => AuthenModel().user,
           child: SelectPage(),

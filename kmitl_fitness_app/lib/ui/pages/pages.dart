@@ -1,5 +1,5 @@
 export './login_page.dart';
-export './signup_page.dart'; 
+export './signup_page.dart';
 export './home_page.dart';
 export './class_page.dart';
 export './class_pagedetail.dart';
@@ -12,6 +12,10 @@ export './post_detail_page.dart';
 export './membership_page.dart';
 export './point_page.dart';
 export './test_page.dart';
+export './admin_class_management.dart';
+export './admin_class_edit.dart';
+export './about_page.dart';
+export './admin_class_detail.dart';
 export './adminprofile_page.dart';
 export './adminpassword_page.dart';
 export './adminstatistic_page.dart';
