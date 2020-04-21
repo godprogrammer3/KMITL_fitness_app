@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
-class HomePage extends StatelessWidget {
+class AdminPostPage extends StatelessWidget {
   final User user;
-  HomePage({Key key, this.user}) : super(key: key);
+  AdminPostPage({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return HomePageChild();
+    return AdminPostPageChild();
   }
 }
 
-class HomePageChild extends StatefulWidget {
+class AdminPostPageChild extends StatefulWidget {
   @override
-  _HomePageStateChild createState() => _HomePageStateChild();
+  _AdminPostPageStateChild createState() => _AdminPostPageStateChild();
 }
 
-class _HomePageStateChild extends State<HomePageChild> {
+class _AdminPostPageStateChild extends State<AdminPostPageChild> {
   final List<String> items = List<String>.generate(3, (i) => 'i');
 
   @override
@@ -31,22 +31,20 @@ class _HomePageStateChild extends State<HomePageChild> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Home',
+          'Post',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.orange[900],
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              Navigator.of(context)
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
-                return NotificationPage();
+                return AdminPostAddingPage();
               }));
-            },
-            color: Colors.white,
-          )
-        ],
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.orange[900],
       ),
       body: ListView.builder(
         padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
@@ -57,16 +55,16 @@ class _HomePageStateChild extends State<HomePageChild> {
               Card(
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PostDetailPage(),
-                    ));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return AdminPostDetailPage();
+                    }));
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         height: 200.0,
-                        //width: 300.0,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage('assets/images/post01.png'),

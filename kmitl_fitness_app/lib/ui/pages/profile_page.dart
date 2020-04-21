@@ -99,7 +99,7 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
-                return MembershipPage();
+                return MembershipPage(user: user);
               }));
             },
             child: Text("Membership",
@@ -117,8 +117,8 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
           ),
           FlatButton(
             onPressed: () async {
-              final databaseModel = DatabaseModel(uid: user.uid);
-              await databaseModel.updateUserData({'fcmToken': ''});
+              final userModel = UserModel(uid: user.uid);
+              await userModel.updateUserData({'fcmToken': ''});
               await authenModel.signOut();
             },
             child: Text("Logout",

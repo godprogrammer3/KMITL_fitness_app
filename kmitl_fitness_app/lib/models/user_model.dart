@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 
-class DatabaseModel {
+class UserModel {
 
   final String uid;
-  DatabaseModel({ 
+  UserModel({ 
     @required this.uid 
   });
 
@@ -26,7 +26,7 @@ class DatabaseModel {
         lastName:document['lastName'],
         email:document['email'],
         point: document['point'],
-        membershipExpireDate:document['membershipExpireDate'],
+        membershipExpireDate:null,
         birthYear:document['birthYear'],
         role:document['role'],
         faceId:document['faceId'],
@@ -36,7 +36,7 @@ class DatabaseModel {
     return result;
   }
    Future<void> updateMembership(String membershipExpireDate) async {
-    return await userDataCollection.document(uid).setData({
+    return await userDataCollection.document(uid).updateData({
       'membershipExpireDate': membershipExpireDate,
     });
   }
