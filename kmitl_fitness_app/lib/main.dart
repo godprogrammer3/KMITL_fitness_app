@@ -22,21 +22,22 @@ void main() {
 class KmitlFitnessApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'KMITL FITNESS',
-      theme: ThemeData(
-          primaryColor: Colors.orange[900], accentColor: Colors.orange[900]),
-      builder: (context, widget) => Navigator(
+        debugShowCheckedModeBanner: false,
+        title: 'KMITL FITNESS',
+        theme: ThemeData(
+            primaryColor: Colors.orange[900], accentColor: Colors.orange[900]),
+         builder: (context, widget) => Navigator(
         onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => DialogManager(
-                  child: widget,
-                )),
+          builder: (context) => DialogManager(
+            child: widget,
+          ),
+        ),
       ),
-//      home: StreamProvider<User>(
-//        create: (_) => AuthenModel().user,
-//        child: SelectPage(),
-      home: AboutPage(),
-    );
+]
+        home: StreamProvider<User>(
+          create: (_) => AuthenModel().user,
+          child: SelectPage(),
+        ));
   }
 }
 
@@ -49,10 +50,33 @@ class SelectPage extends StatelessWidget {
     print("User stream run here");
     if (user != null) {
       firebaseMessaging.getToken().then((token) async {
-        final databaseModel = DatabaseModel(uid: user.uid);
-        await databaseModel.updateUserData({'fcmToken': token});
+        final userModel = UserModel(uid: user.uid);
+        await userModel.updateUserData({'fcmToken': token});
       });
-      return NavigationWidget(user: user);
+      final userModel = UserModel(uid: user.uid);
+      return FutureBuilder(
+        future: userModel.getUserData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return Scaffold(
+                body: SafeArea(
+                    child:
+                        Center(child: LoadingWidget(height: 50, width: 50))));
+          } else if (snapshot.data == null) {
+            return Scaffold(
+                body: SafeArea(
+                    child:
+                        Center(child: LoadingWidget(height: 50, width: 50))));
+          } else {
+            print(snapshot.data.role);
+            if (snapshot.data.role == 'admin') {
+              return AdminNavigationWidget(user: user);
+            } else {
+              return NavigationWidget(user: user);
+            }
+          }
+        },
+      );
     } else {
       return LoginPage();
     }

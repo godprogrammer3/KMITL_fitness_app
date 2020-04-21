@@ -26,8 +26,8 @@ class TreadmillModel {
           return 0;
         }
       }
-      final databaseModel = DatabaseModel(uid: this.uid);
-      final userData = await databaseModel.getUserData();
+      final userModel = UserModel(uid: this.uid);
+      final userData = await userModel.getUserData();
       await treadmillQueueCollection.document(this.uid).setData({
         'queueNumber': 0,
         'firstName': userData.firstName,
@@ -39,8 +39,8 @@ class TreadmillModel {
       if (snapshotCheck.exists) {
         return -1;
       }
-      final databaseModel = DatabaseModel(uid: this.uid);
-      final userData = await databaseModel.getUserData();
+      final userModel = UserModel(uid: this.uid);
+      final userData = await userModel.getUserData();
       final query = treadmillQueueCollection
           .orderBy('queueNumber', descending: true)
           .limit(1);
@@ -81,7 +81,7 @@ class TreadmillModel {
         .getDocuments();
     await treadmillStatusCollection
         .document(snapshotQueueMeStatus.documents[0].documentID)
-        .updateData({'isAvailable': true, 'user': ''});
+        .updateData({'isAvailable': true, 'user': '' , 'startTime':-1});
     return 0;
   }
 
@@ -101,7 +101,7 @@ class TreadmillModel {
     if (snapshotMe.documents.length != 0) {
       await treadmillStatusCollection
           .document(snapshotMe.documents[0].documentID)
-          .updateData({'isAvailable': true, 'user': ''});
+          .updateData({'isAvailable': true, 'user': '', 'startTime':-1});
       return 0;
     } else {
       return -1;
