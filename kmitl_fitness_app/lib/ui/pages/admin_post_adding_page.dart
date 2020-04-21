@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'dart:io';
 
+import 'package:kmitl_fitness_app/models/models.dart';
+
 class AdminPostAddingPage extends StatefulWidget {
+  final User user;
+
+  const AdminPostAddingPage({Key key, this.user}) : super(key: key);
   @override
-  _AdminPostAddingPageState createState() => _AdminPostAddingPageState();
+  _AdminPostAddingPageState createState() => _AdminPostAddingPageState(user:user);
 }
 
 class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
   Future<File> imageFile;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController(); 
+  final User user;
 
-  pickImageFromGallery(ImageSource source) {
+  _AdminPostAddingPageState({this.user});
+  pickImageFromGallery(ImageSource source) async {
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
@@ -130,7 +138,15 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                         width: MediaQuery.of(context).size.width / 2.5,
                         height: 60,
                         child: FlatButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final postModel = PostModel(uid: user.uid);
+                              Map<String, dynamic> data = {
+                                'title':_titleController.text,
+                                'detail':_detailController.text,
+                              };
+                              final realImage = await imageFile;
+                              await postModel.creatPost(data, realImage);
+                            },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100),
                                 side: BorderSide(color: Colors.transparent)),

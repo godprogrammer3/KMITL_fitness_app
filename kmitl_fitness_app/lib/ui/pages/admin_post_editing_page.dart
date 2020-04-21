@@ -2,42 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-import 'package:kmitl_fitness_app/ui/pages/admin_post_detail_page.dart';
-
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 class AdminPostEditingPage extends StatefulWidget {
+  final Post post;
+
+  const AdminPostEditingPage({Key key, this.post}) : super(key: key);
   @override
-  _AdminPostEditingPageState createState() => _AdminPostEditingPageState();
+  _AdminPostEditingPageState createState() => _AdminPostEditingPageState(post:post);
 }
 
 class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
   Future<File> imageFile;
   final _image = 'assets/images/post01.png';
-
+  final Post post;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
 
-  final _titleText = '3 STEPS เทคนิคฟิตหุ่นให้ลีน แบบนางงาม';
-  final _detailText = '''
-ก่อนอื่นต้องยินดีกับนักเรียนของเรา น้องฟ้าใส ที่ได้รางวัล Golden Tiara Ticket ในรายการ Miss Universe Thailand 2019 เมื่อสัปดาห์ที่ผ่านมา หลายๆคนน่าจะสงสัยว่า การเป็นนางงาม ต้องเทรนยังไง กินยังไง วันนี้ เราเอา Tips มาเล่าให้ฟังกันครับ
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-From fitjunctions.com/fasaixfasai/
-''';
+
+  _AdminPostEditingPageState({this.post});
 
   pickImageFromGallery(ImageSource source) {
     setState(() {
@@ -79,10 +61,13 @@ From fitjunctions.com/fasaixfasai/
   }
 
   @override
+  void initState() {
+    super.initState();
+    _titleController.text = post.title;
+    _detailController.text = post.detail;
+  }
+  @override
   Widget build(BuildContext context) {
-    _titleController.text = _titleText;
-    _detailController.text = _detailText;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(

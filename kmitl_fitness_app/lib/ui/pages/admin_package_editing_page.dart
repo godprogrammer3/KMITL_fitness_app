@@ -8,7 +8,6 @@ class AdminPackageEditingPage extends StatelessWidget {
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _pricePerDayController = TextEditingController();
-
   final List<MemberPackage> memberPackages = [
     MemberPackage(
         title: "โปรรายวันเบาๆ",

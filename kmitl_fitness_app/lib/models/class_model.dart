@@ -112,7 +112,7 @@ class ClassModel {
       return Class(
         id: doc.documentID,
         title: doc.data['title'],
-        imageId: doc.data['imageId'],
+        imageId: doc.documentID ,
         detail: doc.data['detail'],
         owner: doc.data['owner'],
         createdTime: DateTime.fromMillisecondsSinceEpoch((doc.data['createdTime'].seconds*1000+doc.data['createdTime'].nanoseconds/1000000).round()),
