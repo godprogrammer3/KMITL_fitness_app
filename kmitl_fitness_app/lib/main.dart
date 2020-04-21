@@ -33,7 +33,6 @@ class KmitlFitnessApp extends StatelessWidget {
           ),
         ),
       ),
-]
         home: StreamProvider<User>(
           create: (_) => AuthenModel().user,
           child: SelectPage(),
@@ -53,9 +52,9 @@ class SelectPage extends StatelessWidget {
         final userModel = UserModel(uid: user.uid);
         await userModel.updateUserData({'fcmToken': token});
       });
-      final userModel = UserModel(uid: user.uid);
+      final adminUserModel = UserModel(uid: user.uid);
       return FutureBuilder(
-        future: userModel.getUserData(),
+        future: adminUserModel.getUserData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return Scaffold(

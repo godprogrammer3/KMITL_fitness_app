@@ -40,7 +40,7 @@ class AuthenModel {
         'firstName': userData.firstName,
         'lastName': userData.lastName,
         'email': userData.email,
-        'membershipExpireDate': 'unsubscription',
+        'membershipExpireDate': DateTime.now(),
         'birthYear': 0,
         'role': 'regular_user',
         'faceId': '',

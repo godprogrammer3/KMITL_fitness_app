@@ -3,11 +3,13 @@ import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 class AdminMorePage extends StatelessWidget {
-
-  List<Widget> _pageOption = [
+  final User user;
+  final List<Widget> _pageOption = [
     AdminRewardPage(),
     AdminPackagePage()
   ];
+
+  AdminMorePage({Key key, this.user}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {

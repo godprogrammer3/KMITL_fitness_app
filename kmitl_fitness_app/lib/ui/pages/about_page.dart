@@ -6,9 +6,6 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:kmitl_fitness_app/models/models.dart';
-import 'package:kmitl_fitness_app/ui/pages/pages.dart';
-import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class AboutPage extends StatelessWidget {
   final User user;

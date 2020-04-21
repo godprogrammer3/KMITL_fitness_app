@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
-import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
-import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+
 
 class AdminClassManagement extends StatelessWidget {
   final User user;

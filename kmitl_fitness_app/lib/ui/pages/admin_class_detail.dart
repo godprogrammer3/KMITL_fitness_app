@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/ui/pages/admin_class_edit.dart';
 import 'package:kmitl_fitness_app/ui/pages/admin_class_participants.dart';
 

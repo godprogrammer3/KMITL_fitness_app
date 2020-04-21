@@ -32,9 +32,9 @@ class _AdminNavigationStateChild extends State<AdminNavigationChild> {
     super.initState();
     _pageOptions = [
       AdminStatisticPage(user: user),
-      ClassPage(user: user),
+      AdminClassManagement(user: user),
       AdminPostPage(user: user),
-      AdminRewardPage(user: user),
+      AdminMorePage(user: user),
       AdminProfilePage(user: user)
     ];
   }
