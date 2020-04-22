@@ -62,7 +62,7 @@ class _HomePageStateChild extends State<HomePageChild> {
           if (snapshot.hasError) {
             return LoadingWidget(height: 50, width: 50);
           } else if (snapshot.data == null) {
-            return Center(child: Text("Empty data!"));
+            return Center(child: Text("Empty"));
           } else {
             return ListView.builder(
               padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
@@ -82,7 +82,7 @@ class _HomePageStateChild extends State<HomePageChild> {
                           children: [
                             FutureBuilder(
                               future: postModel
-                                  .getImageFromImageId(snapshot.data[index].id),
+                                  .getUrlFromImageId(snapshot.data[index].id),
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 if (snapshot.hasError) {

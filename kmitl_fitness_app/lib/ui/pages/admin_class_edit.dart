@@ -1,26 +1,41 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 
 class AdminClassEdit extends StatelessWidget {
-  const AdminClassEdit({Key key}) : super(key: key);
+  final Class class_;
+  final User user;
+  AdminClassEdit({Key key, this.class_, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AdminClassEditChild();
+    return AdminClassEditChild(class_: class_, user: user);
   }
 }
 
 class AdminClassEditChild extends StatefulWidget {
+  final Class class_;
+  final User user;
+  const AdminClassEditChild({Key key, this.class_, this.user})
+      : super(key: key);
   @override
-  _AdminClassEditChildState createState() => _AdminClassEditChildState();
+  _AdminClassEditChildState createState() =>
+      _AdminClassEditChildState(class_: class_, user: user);
 }
 
 class _AdminClassEditChildState extends State<AdminClassEditChild> {
+  final Class class_;
+  final User user;
+  ClassModel classModel;
   File _image;
-  TextEditingController _title, _description;
+  TextEditingController _title = TextEditingController(),
+      _description = TextEditingController();
   TimeOfDay startTime = TimeOfDay(hour: 0, minute: 0);
   TimeOfDay endTime = TimeOfDay(hour: 0, minute: 0);
+
+  _AdminClassEditChildState({this.user, this.class_});
 
   Future<Null> selectTime(BuildContext context) async {
     final TimeOfDay picked =
@@ -50,6 +65,12 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
       _image = image;
       print('_image: $_image');
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    classModel = ClassModel(uid: user.uid);
   }
 
   @override
@@ -191,26 +212,95 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                               ),
                             ),
                             Center(
-                              child: RaisedButton(
-                                onPressed: () {},
-                                color: Colors.orange[900],
-                                child: Container(
-                                  height: 25,
-                                  width: 200,
-                                  child: Text(
-                                    'สร้างคลาส',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontFamily: 'Kanit'),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: EdgeInsets.only(top: 10, bottom: 10),
-                              ),
+                              child: (class_ != null)
+                                  ? RaisedButton(
+                                      onPressed: () async {
+                                        final nowTime = DateTime.now();
+                                        Map<String, dynamic> data = {
+                                          'title': _title.text,
+                                          'detail': _description.text,
+                                          'beginDateTime': DateTime(
+                                              nowTime.year,
+                                              nowTime.month,
+                                              nowTime.day,
+                                              startTime.hour,
+                                              startTime.minute),
+                                          'endDateTime': DateTime(
+                                              nowTime.year,
+                                              nowTime.month,
+                                              nowTime.day,
+                                              endTime.hour,
+                                              endTime.minute),
+                                          'limitPerson': 10,
+                                        };
+                                        await classModel.updateClass(class_.id,
+                                            data, _image);
+                                        print('updated class complete');
+                                        Navigator.of(context).pop();
+                                      },
+                                      color: Colors.orange[900],
+                                      child: Container(
+                                        height: 25,
+                                        width: 200,
+                                        child: Text(
+                                          'บันทึก',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontFamily: 'Kanit'),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 10, bottom: 10),
+                                    )
+                                  : RaisedButton(
+                                      onPressed: () async {
+                                        final nowTime = DateTime.now();
+                                        Map<String, dynamic> data = {
+                                          'title': _title.text,
+                                          'detail': _description.text,
+                                          'beginDateTime': DateTime(
+                                              nowTime.year,
+                                              nowTime.month,
+                                              nowTime.day,
+                                              startTime.hour,
+                                              startTime.minute),
+                                          'endDateTime': DateTime(
+                                              nowTime.year,
+                                              nowTime.month,
+                                              nowTime.day,
+                                              endTime.hour,
+                                              endTime.minute),
+                                          'limitPerson': 10,
+                                        };
+                                        await classModel.creatClass(
+                                            data, _image);
+                                        print('create class complete');
+                                        Navigator.of(context).pop();
+                                      },
+                                      color: Colors.orange[900],
+                                      child: Container(
+                                        height: 25,
+                                        width: 200,
+                                        child: Text(
+                                          'สร้างคลาส',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontFamily: 'Kanit'),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: 10, bottom: 10),
+                                    ),
                             )
                           ],
                         ),

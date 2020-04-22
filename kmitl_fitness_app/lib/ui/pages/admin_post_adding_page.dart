@@ -146,6 +146,8 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                               };
                               final realImage = await imageFile;
                               await postModel.creatPost(data, realImage);
+                              print('create post success');
+                              Navigator.of(context).pop();
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100),

@@ -84,7 +84,7 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                           children: [
                             FutureBuilder(
                               future: postModel
-                                  .getImageFromImageId(snapshot.data[index].id),
+                                  .getUrlFromImageId(snapshot.data[index].id),
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 if (snapshot.hasError) {

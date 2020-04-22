@@ -38,6 +38,7 @@ dependencies:
   google_maps_flutter: ^0.5.26
   get_it: any
   webview_flutter: ^0.3.19+9
+  intl: ^0.16.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
