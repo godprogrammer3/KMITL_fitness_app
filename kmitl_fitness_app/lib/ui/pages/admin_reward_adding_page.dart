@@ -8,31 +8,6 @@ class AdminRewardAddingPage extends StatefulWidget {
 }
 
 class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
-  createAlertDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Enter point to use"),
-            content: TextField(decoration: InputDecoration(hintText: 'POINT')),
-            actions: <Widget>[
-              MaterialButton(
-                  elevation: 5.0,
-                  child: Text("CANCEL"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
-              MaterialButton(
-                  elevation: 5.0,
-                  child: Text("CONFIRM"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  })
-            ],
-          );
-        });
-  }
-
   Future<File> imageFile;
 
   pickImageFromGallery(ImageSource source) {
@@ -132,8 +107,19 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                   ),
                   SizedBox(height: 10),
                   TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      hintText: 'Point',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
                     keyboardType: TextInputType.multiline,
-                    maxLines: 10,
+                    maxLines: 7,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
@@ -149,9 +135,7 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                       width: MediaQuery.of(context).size.width / 2.5,
                       height: 60,
                       child: FlatButton(
-                          onPressed: () {
-                            createAlertDialog(context);
-                          },
+                          onPressed: () {},
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.transparent)),
