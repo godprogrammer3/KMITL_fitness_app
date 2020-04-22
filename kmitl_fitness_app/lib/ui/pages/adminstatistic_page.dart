@@ -80,58 +80,60 @@ class _AdminStatisticPageStateChild extends State<AdminStatisticPageChild> {
         ),
         backgroundColor: Colors.orange[900],
       ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    'รายได้',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  )
-                ],
-              ),
-              SizedBox(height: 20,),
-              Container(
-                height: 150.0,
-                child: new charts.LineChart(
-                  _getSeriesData(),
-                  animate: true,
+      body: SingleChildScrollView(
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      'รายได้',
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    )
+                  ],
                 ),
-              ),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    width: 30,
+                SizedBox(height: 20,),
+                Container(
+                  height: 150.0,
+                  child: new charts.LineChart(
+                    _getSeriesData(),
+                    animate: true,
                   ),
-                  Text(
-                    'จำนวนคนเข้าใช้',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  )
-                ],
-              ),
-              SizedBox(height: 20,),
-              Container(
-                height: 150.0,
-                child: new charts.LineChart(
-                  _getSeriesData(),
-                  animate: true,
                 ),
-              ),
-            ],
-          )
-        ],
-      )),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      'จำนวนคนเข้าใช้',
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    )
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Container(
+                  height: 150.0,
+                  child: new charts.LineChart(
+                    _getSeriesData(),
+                    animate: true,
+                  ),
+                ),
+              ],
+            )
+          ],
+        )),
+      ),
     );
   }
 }
