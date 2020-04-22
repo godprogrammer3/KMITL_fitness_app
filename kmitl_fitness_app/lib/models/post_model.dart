@@ -37,6 +37,12 @@ class PostModel {
     return await postCollection.document(postId).updateData(updateData);
   }
 
+  Future<int> deletePost(String postId) async {
+    await postCollection.document(postId).delete();
+    await storageReference.child(postId).delete();
+    return 0;
+  }
+
   List<Post> _postFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
       return Post(
@@ -55,7 +61,13 @@ class PostModel {
     return postCollection.snapshots().map(_postFromSnapshot);
   }
 
-  Future<String> getImageFromImageId(String imageId) async {
-    return await storageReference.child(imageId).getDownloadURL();
+  Future<String> getUrlFromImageId(String imageId) async {
+    try{
+      final url = await storageReference.child(imageId).getDownloadURL();
+      return url;
+    }catch (error) {
+      return null;
+    }
+    
   }
 }

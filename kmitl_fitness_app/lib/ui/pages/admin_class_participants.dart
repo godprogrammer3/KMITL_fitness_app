@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 
 class AdminClassParticipants extends StatelessWidget {
   const AdminClassParticipants({Key key}) : super(key: key);

@@ -30,7 +30,7 @@ class PostDetailPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             FutureBuilder(
-              future: PostModel(uid: post.owner).getImageFromImageId(post.id),
+              future: PostModel(uid: post.owner).getUrlFromImageId(post.id),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   return Center(child: LoadingWidget(height: 50, width: 50));

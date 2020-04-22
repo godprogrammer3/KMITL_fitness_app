@@ -3,21 +3,24 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/widgets/loading_widget.dart';
+
 class AdminPostEditingPage extends StatefulWidget {
   final Post post;
 
   const AdminPostEditingPage({Key key, this.post}) : super(key: key);
   @override
-  _AdminPostEditingPageState createState() => _AdminPostEditingPageState(post:post);
+  _AdminPostEditingPageState createState() =>
+      _AdminPostEditingPageState(post: post);
 }
 
 class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
   Future<File> imageFile;
-  final _image = 'assets/images/post01.png';
   final Post post;
+  PostModel postModel;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
-
 
   _AdminPostEditingPageState({this.post});
 
@@ -51,10 +54,20 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
             ),
           ]);
         } else {
-          return Image.asset(
-            _image,
-            fit: BoxFit.cover,
-          );
+          return FutureBuilder(
+              future: PostModel(uid: post.owner).getUrlFromImageId(post.id),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: LoadingWidget(height: 50, width: 50));
+                } else if (snapshot.data == null) {
+                  return Center(child: LoadingWidget(height: 50, width: 50));
+                } else {
+                  return Image.network(
+                    snapshot.data,
+                    fit: BoxFit.fitWidth,
+                  );
+                }
+              });
         }
       },
     );
@@ -65,7 +78,9 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
     super.initState();
     _titleController.text = post.title;
     _detailController.text = post.detail;
+    postModel = PostModel(uid: post.owner);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,17 +145,14 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                 ],
               ),
             ),
-            _Button(),
+            _button(context),
           ],
         ),
       ),
     );
   }
-}
 
-class _Button extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _button(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
@@ -148,7 +160,15 @@ class _Button extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 2.5,
           height: 60,
           child: FlatButton(
-              onPressed: () {},
+              onPressed: () async {
+                final result = await postModel.deletePost(post.id);
+                if( result == 0){
+                  print('delete post success');
+                  Navigator.of(context).pop();
+                }else{
+                  print('delete post failed');
+                }
+              },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
                   side: BorderSide(color: Colors.transparent)),
@@ -165,7 +185,16 @@ class _Button extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 2.5,
           height: 60,
           child: FlatButton(
-              onPressed: () {},
+              onPressed: () async {
+                Map<String, dynamic> data = {
+                  'title': _titleController.text,
+                  'detail': _titleController.text,
+                };
+                final realImage = await imageFile;
+                await postModel.updatePost(post.id, data, realImage);
+                print('update post success');
+                Navigator.of(context).pop();
+              },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
                   side: BorderSide(color: Colors.transparent)),
