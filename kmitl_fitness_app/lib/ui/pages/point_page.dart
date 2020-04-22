@@ -26,27 +26,45 @@ class PointPageChild extends State<PointPage> {
               height: 450,
               child: Column(
                 children: <Widget>[
-                  Image(
-                    image: AssetImage('assets/images/5percent.jpg'),
+                  Stack(
+                    children: <Widget>[
+                      Center(
+                        child: Image(
+                          image: AssetImage('assets/images/5percent.jpg'),
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.fromLTRB(280, 1, 1, 1),
+                          child: IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }))
+                    ],
                   ),
                   SizedBox(height: 10),
                   Text(
                     "ส่วนลด 5%",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   Text("ใช้ 50 point"),
                   SizedBox(height: 20),
                   Text(
                       'ส่วนลดใช้กับ package membership รายเดือนจาก 500 บาท เหลือ 475 บาท'),
-                  Text('วิธีใช้',
+                  Text(
+                    'วิธีใช้',
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                   Text('กดแลกรับแล้วเข้าไปหน้าmembership ระบบจะลดราคา'),
-                  SizedBox(height: 10,),
-                  Text('เงื่อนไข',
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'เงื่อนไข',
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                   Text('- 1 สิทธิ์ / 1 ท่าน / 1 เดือน'),
                   Text('- จำกัด 1,000 สิทธิ์'),
                   SizedBox(
