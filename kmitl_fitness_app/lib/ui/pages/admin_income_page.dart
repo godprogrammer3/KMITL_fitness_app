@@ -72,33 +72,64 @@ class _AdminIncomePageStateChild extends State<AdminIncomePageChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                SizedBox(height: 20,),
-                Center(
-                  child: Text(
-                    'รายได้',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'รายได้ของเดือน',
+                style: TextStyle(
+                  fontSize: 16,
                 ),
-                SizedBox(height: 20,),
-                Container(
-                  height: 150.0,
-                  child: new charts.LineChart(
-                    _getSeriesData(),
-                    animate: true,
-                  ),
+              ),
+              DropdownButton<String>(
+                items: <String>['A', 'B', 'C', 'D'].map((String value) {
+                  return new DropdownMenuItem<String>(
+                    value: value,
+                    child: new Text(value),
+                  );
+                }).toList(),
+                onChanged: (_) {},
+              ),
+              Text(
+                '500',
+                style: TextStyle(
+                  fontSize: 16,
                 ),
-              ],
-            )
-          ],
-        )),
+              ),
+            ],
+          ),
+        ),
+        elevation: 0,
       ),
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: Text(
+              'รายได้',
+              style: TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+            child: Container(
+              height: 150.0,
+              child: new charts.LineChart(
+                _getSeriesData(),
+                animate: true,
+              ),
+            ),
+          ),
+        ],
+      )),
     );
   }
 }
