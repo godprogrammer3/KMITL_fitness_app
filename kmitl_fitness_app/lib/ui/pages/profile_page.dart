@@ -56,11 +56,45 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Icon(
-                Icons.account_circle,
-                size: 125,
-              ),
+              child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.grey,
+                  child: ClipOval(
+                    child: SizedBox(
+                      width: 180.0,
+                      height: 180.0,
+                      child: (imageFile != null)
+                          ? Image.file(imageFile, fit: BoxFit.fill)
+                          : Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 100,
+                            ),
+                    ),
+                  )),
             ),
+            Row(
+              children: <Widget>[
+                Spacer(),
+                Text(
+                  name,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                  ),
+                ),
+                SizedBox(width: 10),
+                Text(
+                  lastName,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                  ),
+                ),
+                Spacer(),
+              ],
+            ),
+            SizedBox(height: 10),
             Text(
               "Membership until 02/02/20",
               style: TextStyle(
