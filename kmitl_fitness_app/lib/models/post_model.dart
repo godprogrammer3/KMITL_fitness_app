@@ -37,12 +37,18 @@ class PostModel {
     return await postCollection.document(postId).updateData(updateData);
   }
 
-  List<Post> _postFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.documents.map((doc) {
+  Future<int> deletePost(String postId) async {
+    await postCollection.document(postId).delete();
+    await storageReference.child(postId).delete();
+    return 0;
+  }
+
+  List<Post> _postFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.documents.map((doc){
       return Post(
         id: doc.documentID,
         title: doc.data['title'],
-        imageId: doc.data['imageId'],
+        imageUrl: doc.data['imageId'],
         detail: doc.data['detail'],
         owner: doc.data['owner'],
         createdTime:  DateTime.fromMillisecondsSinceEpoch((doc.data['createdTime'].seconds*1000+doc.data['createdTime'].nanoseconds/1000000).round()),
@@ -55,8 +61,13 @@ class PostModel {
     return postCollection.snapshots().map(_postFromSnapshot);
   }
 
-  Future<Image> getImageFromImageId(String imageId) async {
-    final imageUrl = await storageReference.child(imageId).getDownloadURL();
-    return Image.network(imageUrl);
+  Future<String> getUrlFromImageId(String imageId) async {
+    try{
+      final url = await storageReference.child(imageId).getDownloadURL();
+      return url;
+    }catch (error) {
+      return null;
+    }
+    
   }
 }

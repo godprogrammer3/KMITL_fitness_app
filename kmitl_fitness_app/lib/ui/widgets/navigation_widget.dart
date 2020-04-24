@@ -34,7 +34,7 @@ class _NavigationStateChild extends State<NavigationChild> {
     treadmillModel = TreadmillModel(uid: user.uid);
     initFirebaseMessaging();
     _pageOptions = [
-      HomePage(),
+      HomePage(user:user),
       ClassPage(user: user),
       LockerPage(user: user),
       TreadmillPage(user: user),

@@ -18,22 +18,19 @@ class UserModel {
     return await userDataCollection.document(uid).updateData(updateData);
   }
   Future<UserData> getUserData() async {
-    UserData result = await userDataCollection.document(uid).get().then((documentSnapshot){
-      Map document = documentSnapshot.data;
+    final snapshot = await userDataCollection.document(uid).get();
       return UserData(
         uid:uid,
-        firstName:document['firstName'],
-        lastName:document['lastName'],
-        email:document['email'],
-        point: document['point'],
-        membershipExpireDate:null,
-        birthYear:document['birthYear'],
-        role:document['role'],
-        faceId:document['faceId'],
-        isHaveYellowCard:document['isHaveYellowCard'],
+        firstName:snapshot['firstName'],
+        lastName:snapshot['lastName'],
+        email:snapshot['email'],
+        point: snapshot['point'],
+        membershipExpireDate:DateTime.fromMillisecondsSinceEpoch((snapshot['membershipExpireDate'].seconds*1000+snapshot['membershipExpireDate'].nanoseconds/1000000).round()),
+        birthYear:snapshot['birthYear'],
+        role:snapshot['role'],
+        faceId:snapshot['faceId'],
+        isHaveYellowCard:snapshot['isHaveYellowCard'],
       );
-    });
-    return result;
   }
    Future<void> updateMembership(String membershipExpireDate) async {
     return await userDataCollection.document(uid).updateData({

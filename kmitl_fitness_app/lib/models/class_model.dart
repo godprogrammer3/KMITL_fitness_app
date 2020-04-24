@@ -112,7 +112,7 @@ class ClassModel {
       return Class(
         id: doc.documentID,
         title: doc.data['title'],
-        imageId: doc.data['imageId'],
+        imageId: doc.documentID ,
         detail: doc.data['detail'],
         owner: doc.data['owner'],
         createdTime: DateTime.fromMillisecondsSinceEpoch((doc.data['createdTime'].seconds*1000+doc.data['createdTime'].nanoseconds/1000000).round()),
@@ -129,8 +129,19 @@ class ClassModel {
     return classCollection.snapshots().map(_classFromSnapshot);
   }
 
-  Future<Image> getImageFromImageId(String imageId) async {
-    final imageUrl = await storageReference.child(imageId).getDownloadURL();
-    return Image.network(imageUrl);
+  Future<String> getUrlFromImageId(String imageId) async {
+    try{
+      final url = await storageReference.child(imageId).getDownloadURL();
+      return url;
+    }catch (error) {
+      return null;
+    }
+    
   }
+
+  Future<bool> isReserved(String classId) async {
+    final snapshotThisPerson = await classCollection.document(classId).collection('person').document(this.uid).get();
+    return snapshotThisPerson.exists;
+  }
+
 }

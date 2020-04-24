@@ -52,9 +52,9 @@ class SelectPage extends StatelessWidget {
         final userModel = UserModel(uid: user.uid);
         await userModel.updateUserData({'fcmToken': token});
       });
-      final userModel = UserModel(uid: user.uid);
+      final adminUserModel = UserModel(uid: user.uid);
       return FutureBuilder(
-        future: userModel.getUserData(),
+        future: adminUserModel.getUserData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             return Scaffold(
@@ -77,7 +77,7 @@ class SelectPage extends StatelessWidget {
         },
       );
     } else {
-      return LoginPage();
+      return PointPage();
     }
   }
 }

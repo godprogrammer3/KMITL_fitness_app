@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class PostDetailPage extends StatelessWidget {
+  final Post post;
+
+  const PostDetailPage({Key key, this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,14 +29,25 @@ class PostDetailPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Image.asset(
-              'assets/images/post01.png',
-              fit: BoxFit.cover,
+            FutureBuilder(
+              future: PostModel(uid: post.owner).getUrlFromImageId(post.id),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: LoadingWidget(height: 50, width: 50));
+                } else if (snapshot.data == null) {
+                  return Center(child: LoadingWidget(height: 50, width: 50));
+                } else {
+                  return Image.network(
+                    snapshot.data,
+                    fit: BoxFit.cover,
+                  );
+                }
+              },
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
               child: Text(
-                '3 STEPS เทคนิคฟิตหุ่นให้ลีน แบบนางงาม',
+                post.title,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 28,
@@ -42,32 +59,9 @@ class PostDetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
               child: Text(
-                '''
-ก่อนอื่นต้องยินดีกับนักเรียนของเรา น้องฟ้าใส ที่ได้รางวัล Golden Tiara Ticket ในรายการ Miss Universe Thailand 2019 เมื่อสัปดาห์ที่ผ่านมา หลายๆคนน่าจะสงสัยว่า การเป็นนางงาม ต้องเทรนยังไง กินยังไง วันนี้ เราเอา Tips มาเล่าให้ฟังกันครับ
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-From fitjunctions.com/fasaixfasai/
-''',
+                post.detail,
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontFamily: 'Kanit'
-                ),
+                    color: Colors.black, fontSize: 14, fontFamily: 'Kanit'),
               ),
             ),
           ],

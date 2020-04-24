@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
   final User user;
@@ -8,21 +10,27 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HomePageChild();
+    return HomePageChild(user: user);
   }
 }
 
 class HomePageChild extends StatefulWidget {
+  final User user;
+
+  const HomePageChild({Key key, this.user}) : super(key: key);
   @override
-  _HomePageStateChild createState() => _HomePageStateChild();
+  _HomePageStateChild createState() => _HomePageStateChild(user: user);
 }
 
 class _HomePageStateChild extends State<HomePageChild> {
   final List<String> items = List<String>.generate(3, (i) => 'i');
-
+  final User user;
+  PostModel postModel;
+  _HomePageStateChild({this.user});
   @override
   void initState() {
     super.initState();
+    postModel = PostModel(uid: user.uid);
   }
 
   @override
@@ -48,59 +56,82 @@ class _HomePageStateChild extends State<HomePageChild> {
           )
         ],
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
-        itemCount: items.length,
-        itemBuilder: (contex, index) {
-          return Column(
-            children: <Widget>[
-              Card(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PostDetailPage(),
-                    ));
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 200.0,
-                        //width: 300.0,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/post01.png'),
-                            fit: BoxFit.fill,
-                          ),
+      body: StreamBuilder(
+        stream: postModel.posts,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return LoadingWidget(height: 50, width: 50);
+          } else if (snapshot.data == null) {
+            return Center(child: Text("Empty"));
+          } else {
+            return ListView.builder(
+              padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: <Widget>[
+                    Card(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PostDetailPage(post:snapshot.data[index]),
+                          ));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FutureBuilder(
+                              future: postModel
+                                  .getUrlFromImageId(snapshot.data[index].id),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasError) {
+                                  return LoadingWidget(height: 50, width: 50);
+                                } else if (snapshot.data == null) {
+                                  return LoadingWidget(height: 50, width: 50);
+                                } else {
+                                  return Container(
+                                    height: 150.0,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(snapshot.data),
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                            ListTile(
+                              title: Text(
+                                  snapshot.data[index].title,
+                                  style: TextStyle(
+                                      height: 2,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Kanit')),
+                              subtitle: Text(snapshot.data[index].detail,
+                                style: TextStyle(fontFamily: 'Kanit'),
+                              ),
+                            ),
+                            Divider(),
+                            Text('อ่านต่อ',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Kanit',
+                                    color: Colors.orange[900])),
+                            SizedBox(height: 10.0)
+                          ],
                         ),
                       ),
-                      ListTile(
-                        title: Text('3 STEPS เทคนิคฟิตหุ่นให้ลีน แบบนางงาม',
-                            style: TextStyle(
-                                height: 2,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Kanit')),
-                        subtitle: Text(
-                          'ก่อนอื่นต้องยินดีกับนักเรียนของเรา น้องฟ้าใส ที่ได้รางวัล Golden Tiara Ticket ในรายการ...',
-                          style: TextStyle(fontFamily: 'Kanit'),
-                        ),
-                      ),
-                      Divider(),
-                      Text('อ่านต่อ',
-                          style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Kanit',
-                              color: Colors.orange[900])),
-                      SizedBox(height: 10.0)
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 10.0)
-            ],
-          );
+                    ),
+                    SizedBox(height: 10.0)
+                  ],
+                );
+              },
+            );
+          }
         },
       ),
     );

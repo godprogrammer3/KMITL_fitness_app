@@ -1,26 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'dart:io';
 
-import 'package:kmitl_fitness_app/models/models.dart';
-
-class AdminPostAddingPage extends StatefulWidget {
-  final User user;
-
-  const AdminPostAddingPage({Key key, this.user}) : super(key: key);
+class AdminRewardAddingPage extends StatefulWidget {
   @override
-  _AdminPostAddingPageState createState() => _AdminPostAddingPageState(user:user);
+  _AdminRewardAddingPageState createState() => _AdminRewardAddingPageState();
 }
 
-class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
-  Future<File> imageFile;
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _detailController = TextEditingController(); 
-  final User user;
+class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
+  createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Enter point to use"),
+            content: TextField(decoration: InputDecoration(hintText: 'POINT')),
+            actions: <Widget>[
+              MaterialButton(
+                  elevation: 5.0,
+                  child: Text("CANCEL"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              MaterialButton(
+                  elevation: 5.0,
+                  child: Text("CONFIRM"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ],
+          );
+        });
+  }
 
-  _AdminPostAddingPageState({this.user});
-  pickImageFromGallery(ImageSource source) async {
+  Future<File> imageFile;
+
+  pickImageFromGallery(ImageSource source) {
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
@@ -106,7 +121,6 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                 children: <Widget>[
                   SizedBox(height: 10),
                   TextField(
-                    controller: _titleController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
@@ -118,7 +132,6 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                   ),
                   SizedBox(height: 10),
                   TextField(
-                    controller: _detailController,
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
                     decoration: InputDecoration(
@@ -130,38 +143,27 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                       hintText: 'Detail',
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        height: 60,
-                        child: FlatButton(
-                            onPressed: () async {
-                              final postModel = PostModel(uid: user.uid);
-                              Map<String, dynamic> data = {
-                                'title':_titleController.text,
-                                'detail':_detailController.text,
-                              };
-                              final realImage = await imageFile;
-                              await postModel.creatPost(data, realImage);
-                              print('create post success');
-                              Navigator.of(context).pop();
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                                side: BorderSide(color: Colors.transparent)),
-                            color: Colors.orange[900],
-                            child: Text(
-                              "POST",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    ],
+                  SizedBox(height: 10),
+                  Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      height: 60,
+                      child: FlatButton(
+                          onPressed: () {
+                            createAlertDialog(context);
+                          },
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.transparent)),
+                          color: Colors.orange[900],
+                          child: Text(
+                            "CREATE",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
                   ),
                 ],
               ),
