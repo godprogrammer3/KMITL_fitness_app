@@ -3,33 +3,18 @@ import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 
 class AdminPackageEditingPage extends StatelessWidget {
+
+  final List<MemberPackage> memberPackages;
+  final index;
+
+  AdminPackageEditingPage(this.memberPackages, this.index);
+
+
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _pricePerDayController = TextEditingController();
-  final List<MemberPackage> memberPackages = [
-    MemberPackage(
-        title: "โปรรายวันเบาๆ",
-        detail: "ใช้งานฟิตเนสตลอดวัน \nในวันที่สมัครใช้งาน",
-        price: "฿30",
-        time: "/วัน",
-        pricePerDay: ""),
-    MemberPackage(
-        title: "โปรเดือนฟิต",
-        detail: "ใช้งานฟิตเนสตลอด 30 วัน \nนับตั้งแต่วันที่สมัครใช้งาน",
-        price: "฿500",
-        time: "/เดือน",
-        pricePerDay: "฿16.67 ต่อวัน"),
-    MemberPackage(
-        title: "โปรเปิดเทอม",
-        detail: "ใช้งานฟิตเนสตลอด 4 เดือน \nนับตั้งแต่วันที่สมัครใช้งาน",
-        price: "฿1,700",
-        time: "/4 เดือน",
-        pricePerDay: "฿14.16 ต่อวัน")
-  ]; //Sample
-
-  final index = 0; //index from widget package page
 
   @override
   Widget build(BuildContext context) {
@@ -122,22 +107,42 @@ class AdminPackageEditingPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2.5,
-                  height: 60,
-                  child: FlatButton(
-                      onPressed: () {},
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          side: BorderSide(color: Colors.transparent)),
-                      color: Colors.orange[900],
-                      child: Text(
-                        "CREATE",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 60,
+                      child: FlatButton(
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.transparent)),
+                          color: Colors.orange[900],
+                          child: Text(
+                            "DELETE",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                    Container(
+                      height: 60,
+                      child: FlatButton(
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.transparent)),
+                          color: Colors.orange[900],
+                          child: Text(
+                            "SAVE",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  ],
                 ),
               ],
             ),
