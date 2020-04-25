@@ -77,7 +77,7 @@ class SelectPage extends StatelessWidget {
         },
       );
     } else {
-      return PointPage();
+      return LoginPage();
     }
   }
 }
