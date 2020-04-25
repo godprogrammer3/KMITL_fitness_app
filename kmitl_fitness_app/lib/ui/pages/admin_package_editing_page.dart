@@ -108,16 +108,17 @@ class AdminPackageEditingPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Container(
                       height: 60,
+                      width: 140,
                       child: FlatButton(
                           onPressed: () {},
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.transparent)),
-                          color: Colors.orange[900],
+                          color: Colors.black,
                           child: Text(
                             "DELETE",
                             style: TextStyle(
@@ -128,6 +129,7 @@ class AdminPackageEditingPage extends StatelessWidget {
                     ),
                     Container(
                       height: 60,
+                      width: 140,
                       child: FlatButton(
                           onPressed: () {},
                           shape: RoundedRectangleBorder(
