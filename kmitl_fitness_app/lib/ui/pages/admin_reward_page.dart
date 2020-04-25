@@ -29,17 +29,6 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
           ),
           backgroundColor: Colors.orange[900],
         ),
-        /*
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return AdminRewardAddingPage();
-            }));
-          },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.orange[900],
-        ),*/
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -88,8 +77,8 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
-                                              'assets/images/5percent.jpg'),
-                                          fit: BoxFit.fitWidth,
+                                              'assets/images/5percent.jpg',),
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),
@@ -126,7 +115,7 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                         image: DecorationImage(
                                           image: AssetImage(
                                               'assets/images/10percent.png'),
-                                          fit: BoxFit.fitWidth,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),
@@ -163,7 +152,7 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                         image: DecorationImage(
                                           image: AssetImage(
                                               'assets/images/water.jpg'),
-                                          fit: BoxFit.fitWidth,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),
@@ -200,7 +189,7 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                         image: DecorationImage(
                                           image: AssetImage(
                                               'assets/images/sponsor.png'),
-                                          fit: BoxFit.fitWidth,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),
