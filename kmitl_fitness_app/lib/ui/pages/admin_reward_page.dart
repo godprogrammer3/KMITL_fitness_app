@@ -29,6 +29,7 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
           ),
           backgroundColor: Colors.orange[900],
         ),
+        /*
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.of(context)
@@ -38,6 +39,17 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
           },
           child: Icon(Icons.add),
           backgroundColor: Colors.orange[900],
+        ),*/
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AdminRewardAddingPage(),
+            ));
+          },
+          icon: Icon(Icons.add),
+          label: Text('Create'),
+          elevation: 10,
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -55,8 +67,8 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                         shrinkWrap: true,
                         crossAxisCount: 2,
                         children: <Widget>[
-                        Container(
-                          child: Card(
+                          Container(
+                            child: Card(
                               elevation: 5.0,
                               margin: EdgeInsets.all(5.0),
                               child: InkWell(
@@ -70,8 +82,9 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.18,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.18,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -90,9 +103,9 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                 ),
                               ),
                             ),
-                        ),
-                        Container(
-                          child: Card(
+                          ),
+                          Container(
+                            child: Card(
                               elevation: 5.0,
                               margin: EdgeInsets.all(5.0),
                               child: InkWell(
@@ -106,8 +119,9 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.18,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.18,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -126,9 +140,9 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                 ),
                               ),
                             ),
-                        ),
-                        Container(
-                          child: Card(
+                          ),
+                          Container(
+                            child: Card(
                               elevation: 5.0,
                               margin: EdgeInsets.all(5.0),
                               child: InkWell(
@@ -142,8 +156,9 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.18,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.18,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -162,9 +177,9 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                 ),
                               ),
                             ),
-                        ),
-                        Container(
-                          child: Card(
+                          ),
+                          Container(
+                            child: Card(
                               elevation: 5.0,
                               margin: EdgeInsets.all(5.0),
                               child: InkWell(
@@ -178,8 +193,9 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.18,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.18,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: AssetImage(
@@ -198,9 +214,8 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                 ),
                               ),
                             ),
-                        )
-                        ]
-                        ,
+                          )
+                        ],
                       ),
                     ],
                   )),
