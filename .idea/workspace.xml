@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f2a2281-3bfb-432f-9680-2a09a5d56649" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_edit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_edit.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_management.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_management.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_detail.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

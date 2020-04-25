@@ -17,6 +17,7 @@ class AdminClassDetailChild extends StatefulWidget {
 }
 
 class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
+  String className = 'Class Name';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +137,50 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                 ),
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        elevation: 20,
+                        title: Text(
+                          'ลบคลาส?',
+                          style: TextStyle(fontSize: 30, fontFamily: 'Kanit'),
+                        ),
+                        content: Text(
+                          'คุณแน่ใจหรือไม่ที่จะทำการลบคลาส ' + className,
+                          style: TextStyle(fontSize: 20, fontFamily: 'Kanit'),
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text(
+                              'ไม่',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Kanit',
+                                  color: Colors.black54),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          FlatButton(
+                            child: Text(
+                              'ใช่',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Kanit',
+                                  color: Colors.orange[900]),
+                            ),
+                            onPressed: () {
+                              print('Deleted');
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                   color: Colors.red,
                   child: Container(
                     height: 25,
