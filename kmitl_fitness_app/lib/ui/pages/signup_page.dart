@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key key}) : super(key: key);
@@ -20,6 +22,15 @@ class SignupPageChild extends StatefulWidget {
 }
 
 class _SignupPageChildState extends State<SignupPageChild> {
+  File faceID;
+
+  _openCamera(BuildContext context) async {
+    var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+    this.setState(() {
+      faceID = picture;
+    });
+  }
+
   final authenModel = AuthenModel();
 
   final firstName = TextEditingController(),
@@ -154,7 +165,9 @@ class _SignupPageChildState extends State<SignupPageChild> {
                   IconButton(
                       icon: Icon(Icons.center_focus_weak),
                       iconSize: 80,
-                      onPressed: () {}),
+                      onPressed: () {
+                        _openCamera(context);
+                      }),
                   Text("Add Face ID"),
                   SizedBox(height: 20),
                   Container(
