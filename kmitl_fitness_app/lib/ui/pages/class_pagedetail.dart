@@ -118,7 +118,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                   } else {
                     return (snapshot.data)
                         ? FlatButton(
-                          color: Colors.black,
+                            color: Colors.black,
                             onPressed: () async {
                               //showClassDialog(context);
                               final result =
@@ -142,16 +142,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                             ))
                         : FlatButton(
                             onPressed: () async {
-                              //showClassDialog(context);
-                              final result =
-                                  await classModel.reserveClass(class_.id);
-                              if (result == 0) {
-                                print('reserve class success');
-                                Navigator.of(context).pop();
-                              } else {
-                                print('reserve class failed');
-                                print('error code: $result');
-                              }
+                              showClassDialog(context);
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100)),
@@ -178,11 +169,20 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
   showClassDialog(BuildContext context) {
     Widget cancelButton = FlatButton(
       child: Text("CANCEL"),
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
     );
     Widget continueButton = FlatButton(
       child: Text("CONFIRM"),
-      onPressed: () {},
+      onPressed: () async {
+        final result = await classModel.reserveClass(class_.id);
+        if (result == 0) {
+          print('reserve class success');
+          Navigator.of(context, rootNavigator: true).pop();
+        } else {
+          print('reserve class failed');
+          print('error code: $result');
+        }
+      },
     );
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(

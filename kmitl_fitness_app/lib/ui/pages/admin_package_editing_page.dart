@@ -1,46 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 
-class AdminPackageEditingPage extends StatelessWidget {
+class AdminPackageEditingPage extends StatefulWidget {
+  final User user;
+  final Package package;
+  AdminPackageEditingPage({Key key, this.user, this.package}) : super(key: key); 
+  @override
+  _AdminPackageEditingPageState createState() => _AdminPackageEditingPageState(user:user,package:package);
+}
+
+class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
   final TextEditingController _titleController = TextEditingController();
+
   final TextEditingController _detailController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
+
+  final TextEditingController _periodController = TextEditingController();
+
+  final TextEditingController _totalDayController = TextEditingController();
+
   final TextEditingController _priceController = TextEditingController();
+
   final TextEditingController _pricePerDayController = TextEditingController();
-  final List<MemberPackage> memberPackages = [
-    MemberPackage(
-        title: "โปรรายวันเบาๆ",
-        detail: "ใช้งานฟิตเนสตลอดวัน \nในวันที่สมัครใช้งาน",
-        price: "฿30",
-        time: "/วัน",
-        pricePerDay: ""),
-    MemberPackage(
-        title: "โปรเดือนฟิต",
-        detail: "ใช้งานฟิตเนสตลอด 30 วัน \nนับตั้งแต่วันที่สมัครใช้งาน",
-        price: "฿500",
-        time: "/เดือน",
-        pricePerDay: "฿16.67 ต่อวัน"),
-    MemberPackage(
-        title: "โปรเปิดเทอม",
-        detail: "ใช้งานฟิตเนสตลอด 4 เดือน \nนับตั้งแต่วันที่สมัครใช้งาน",
-        price: "฿1,700",
-        time: "/4 เดือน",
-        pricePerDay: "฿14.16 ต่อวัน")
-  ]; //Sample
+  final User user;
+  final Package package;
 
-  final index = 0; //index from widget package page
-
+  _AdminPackageEditingPageState({this.user, this.package});
+  @override
+  void initState() {
+    super.initState();
+     _titleController.text = package.title;
+    _detailController.text = package.detail;
+    _priceController.text = package.price.toString();
+    _periodController.text = package.period;
+    _pricePerDayController.text = package.pricePerDay.toString();
+    _totalDayController.text = package.totalDay.toString();
+  }
   @override
   Widget build(BuildContext context) {
-
-    _titleController.text = memberPackages[index].title;
-    _detailController.text = memberPackages[index].detail;
-    _priceController.text = memberPackages[index].price;
-    _timeController.text = memberPackages[index].time;
-    _pricePerDayController.text = memberPackages[index].pricePerDay;
-
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -99,9 +98,21 @@ class AdminPackageEditingPage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 TextField(
-                  controller: _timeController,
+                  controller: _periodController,
                   decoration: InputDecoration(
-                    labelText: 'Time',
+                    labelText: 'Period',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                 SizedBox(height: 10),
+                TextField(
+                  controller: _totalDayController,
+                  decoration: InputDecoration(
+                    labelText: 'Total Day',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
@@ -126,13 +137,30 @@ class AdminPackageEditingPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 2.5,
                   height: 60,
                   child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final packageModel = PackageModel(uid: widget.user.uid);
+                        Map<String, dynamic> data = {
+                          'title':_titleController.text,
+                          'detail':_detailController.text,
+                          'period':_periodController.text,
+                          'totalDay': int.parse(_totalDayController.text),
+                          'price': double.parse(_priceController.text),
+                          'pricePerDay': double.parse(_pricePerDayController.text),
+                        };
+                        final result = await packageModel.update(widget.package.id,data);
+                        if(result == 0){
+                          print('update package success');
+                          Navigator.of(context).pop();
+                        }else{
+                           print('update package faild');
+                        }
+                      },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                           side: BorderSide(color: Colors.transparent)),
                       color: Colors.orange[900],
                       child: Text(
-                        "CREATE",
+                        "SAVE",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,

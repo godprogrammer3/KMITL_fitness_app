@@ -9,6 +9,8 @@ class Package {
   final DateTime createdTime;
   final DateTime updatedTime;
   final String owner;
+  final String period;
+  final int totalDay;
   Package({
     @required this.id,
     @required this.title,
@@ -18,5 +20,7 @@ class Package {
     @required this.createdTime,
     @required this.updatedTime,
     @required this.owner,
+    @required this.period,
+    @required this.totalDay, 
   });
 }
