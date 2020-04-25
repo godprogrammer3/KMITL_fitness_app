@@ -34,14 +34,14 @@ class _SignupPageChildState extends State<SignupPageChild> {
       child: SafeArea(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height:MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height,
           child: LoadingOverlay(
             isLoading: _isLoading,
             child: Center(
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: 30.0,
+                    height: 25.0,
                   ),
                   Text(
                     "Sign Up",
@@ -51,10 +51,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
-                    height: 40.0,
+                    height: 30.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -71,10 +71,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         controller: firstName,
                       )),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -91,10 +91,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         controller: lastName,
                       )),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -111,10 +111,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         controller: email,
                       )),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -132,10 +132,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         controller: password,
                       )),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -151,22 +151,27 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         ),
                         obscureText: true,
                       )),
+                  IconButton(
+                      icon: Icon(Icons.center_focus_weak),
+                      iconSize: 80,
+                      onPressed: () {}),
+                  Text("Add Face ID"),
                   SizedBox(height: 20),
                   Container(
-                    width: 300,
+                    width: 280,
                     height: 50,
                     child: Builder(
-                          builder: (BuildContext context) => FlatButton(
+                      builder: (BuildContext context) => FlatButton(
                           onPressed: () async {
                             final userData = UserData(
                                 firstName: firstName.text,
                                 lastName: lastName.text,
                                 email: email.text);
-                              setState(()=>_isLoading = true);
-                            dynamic user =
-                                await authenModel.register(userData, password.text);
-                            if(this.mounted){
-                              setState(()=>_isLoading = false);
+                            setState(() => _isLoading = true);
+                            dynamic user = await authenModel.register(
+                                userData, password.text);
+                            if (this.mounted) {
+                              setState(() => _isLoading = false);
                             }
                             if (user != null) {
                               Navigator.of(context).pop();
@@ -191,7 +196,6 @@ class _SignupPageChildState extends State<SignupPageChild> {
                           )),
                     ),
                   ),
-                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
