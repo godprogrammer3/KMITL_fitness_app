@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -81,8 +83,16 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
   }
 
   Future<Null> selectTime(BuildContext context) async {
-    final TimeOfDay picked =
-        await showTimePicker(context: (context), initialTime: startTime);
+    final TimeOfDay picked = await showTimePicker(
+      context: (context),
+      initialTime: startTime,
+//      builder: (BuildContext context, Widget child) {
+//        return MediaQuery(
+//          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+//          child: child,
+//        );
+//      },
+    );
 
     if (picked != null && picked != startTime) {
       print('Start Time: ${picked.format(context)}');
@@ -201,19 +211,39 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                      'เวลาเริ่ม: ' + startTime.format(context),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'Kanit',
-                                      ),
+                                    Row(
+                                      children: <Widget>[
+                                        Icon(MaterialCommunityIcons
+                                            .clock_outline),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          'เวลาเริ่ม: ' +
+                                              startTime.format(context),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Kanit',
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      'เวลาสิ้นสุด: ' + endTime.format(context),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'Kanit',
-                                      ),
+                                    Row(
+                                      children: <Widget>[
+                                        Icon(MaterialCommunityIcons
+                                            .clock_check_outline),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          'เวลาสิ้นสุด: ' +
+                                              endTime.format(context),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Kanit',
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
