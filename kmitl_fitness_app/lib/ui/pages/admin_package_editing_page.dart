@@ -1,31 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
+class AdminPackageEditingPage extends StatefulWidget {
+  final User user;
+  final Package package;
+  AdminPackageEditingPage({Key key, this.user, this.package}) : super(key: key); 
+  @override
+  _AdminPackageEditingPageState createState() => _AdminPackageEditingPageState(user:user,package:package);
+}
 
-class AdminPackageEditingPage extends StatelessWidget {
-
-  final List<MemberPackage> memberPackages;
-  final index;
-
-  AdminPackageEditingPage(this.memberPackages, this.index);
-
-
+class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _pricePerDayController = TextEditingController();
+  final TextEditingController _periodController = TextEditingController();
+  final TextEditingController _totalDayController = TextEditingController();
 
+  final TextEditingController _priceController = TextEditingController();
+
+  final TextEditingController _pricePerDayController = TextEditingController();
+  final User user;
+  final Package package;
+
+  _AdminPackageEditingPageState({this.user, this.package});
+  @override
+  void initState() {
+    super.initState();
+     _titleController.text = package.title;
+    _detailController.text = package.detail;
+    _priceController.text = package.price.toString();
+    _periodController.text = package.period;
+    _pricePerDayController.text = package.pricePerDay.toString();
+    _totalDayController.text = package.totalDay.toString();
+  }
   @override
   Widget build(BuildContext context) {
-
-    _titleController.text = memberPackages[index].title;
-    _detailController.text = memberPackages[index].detail;
-    _priceController.text = memberPackages[index].price;
-    _timeController.text = memberPackages[index].time;
-    _pricePerDayController.text = memberPackages[index].pricePerDay;
-
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -84,9 +94,21 @@ class AdminPackageEditingPage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 TextField(
-                  controller: _timeController,
+                  controller: _periodController,
                   decoration: InputDecoration(
-                    labelText: 'Time',
+                    labelText: 'Period',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                 SizedBox(height: 10),
+                TextField(
+                  controller: _totalDayController,
+                  decoration: InputDecoration(
+                    labelText: 'Total Day',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
@@ -145,6 +167,7 @@ class AdminPackageEditingPage extends StatelessWidget {
                           )),
                     ),
                   ],
+
                 ),
               ],
             ),

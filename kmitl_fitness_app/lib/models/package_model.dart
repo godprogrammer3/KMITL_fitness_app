@@ -14,7 +14,7 @@ class PackageModel {
       FirebaseStorage.instance.ref().child('package');
   PackageModel({@required this.uid});
 
-  Future<int> create(Map<String, dynamic> data, File imageFile) async {
+  Future<int> create(Map<String, dynamic> data) async {
     data['owner'] = this.uid;
     final document = await packageCollection.add(data);
     await document.updateData({
@@ -36,8 +36,8 @@ class PackageModel {
         id: doc.documentID,
         title: doc.data['title'],
         detail: doc.data['detail'],
-        price: doc.data['price'],
-        pricePerDay: doc.data['pricePerDay'],
+        price: doc.data['price'].toDouble(),
+        pricePerDay: doc.data['pricePerDay'].toDouble(),
         createdTime: DateTime.fromMillisecondsSinceEpoch(
             (doc.data['createdTime'].seconds * 1000 +
                     doc.data['createdTime'].nanoseconds / 1000000)
@@ -47,6 +47,8 @@ class PackageModel {
                     doc.data['updatedTime'].nanoseconds / 1000000)
                 .round()),
         owner: doc.data['owner'],
+        period: doc.data['period'],
+        totalDay: doc.data['totalDay'],
       );
     }).toList();
   }
@@ -55,8 +57,4 @@ class PackageModel {
     return packageCollection.snapshots().map(_packageFromSnapshot);
   }
 
-  Future<Image> getImageFromImageId(String imageId) async {
-    final imageUrl = await storageReference.child(imageId).getDownloadURL();
-    return Image.network(imageUrl);
-  }
 }

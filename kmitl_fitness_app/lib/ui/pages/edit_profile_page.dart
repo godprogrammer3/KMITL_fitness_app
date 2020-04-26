@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-String _name = 'John';
-String _lastName = 'Wick';
+String name = 'John';
+String lastName = 'Wick';
 String _email = 'johnwick123@gmail.com';
 String _phoneNumber = '0972340683';
 String _birthDay = '09/02/1964';
@@ -73,7 +73,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildName() {
     return TextFormField(
-      initialValue: _name,
+      initialValue: name,
       decoration: InputDecoration(labelText: 'Name'),
       validator: (String value) {
         if (value.isEmpty) {
@@ -82,14 +82,14 @@ class EditProfilePageChild extends State<EditProfilePage> {
         return null;
       },
       onSaved: (String value) {
-        _name = value;
+        name = value;
       },
     );
   }
 
   Widget _buildLastName() {
     return TextFormField(
-      initialValue: _lastName,
+      initialValue: lastName,
       decoration: InputDecoration(labelText: 'Last Name'),
       validator: (String value) {
         if (value.isEmpty) {
@@ -98,7 +98,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
         return null;
       },
       onSaved: (String value) {
-        _lastName = value;
+        lastName = value;
       },
     );
   }
@@ -184,8 +184,8 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
               _formKey.currentState.save();
 
-              print(_name);
-              print(_lastName);
+              print(name);
+              print(lastName);
               print(_email);
               print(_phoneNumber);
               print(_birthDay);
@@ -250,8 +250,8 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
                           _formKey.currentState.save();
 
-                          print(_name);
-                          print(_lastName);
+                          print(name);
+                          print(lastName);
                           print(_email);
                           print(_phoneNumber);
                           print(_birthDay);

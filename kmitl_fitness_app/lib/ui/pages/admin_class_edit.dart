@@ -1,8 +1,13 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class AdminClassEdit extends StatelessWidget {
   final Class class_;
@@ -37,9 +42,57 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
 
   _AdminClassEditChildState({this.user, this.class_});
 
+  bool maxPicked = false;
+  int _currentMax = 1;
+  NumberPicker maxPicker;
+
+  void _initializeNumberPickers() {
+    maxPicker = NumberPicker.integer(
+        initialValue: _currentMax,
+        minValue: 1,
+        maxValue: 20,
+        step: 1,
+        onChanged: (value) => setState(() => _currentMax = value));
+  }
+
+  Future _showMaxPickerDialog() async {
+    await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return NumberPickerDialog.integer(
+          highlightSelectedValue: true,
+          decoration: BoxDecoration(
+            border: Border.all(width: 2, color: Colors.orange[900]),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          minValue: 1,
+          maxValue: 20,
+          step: 1,
+          initialIntegerValue: _currentMax,
+        );
+      },
+    ).then((num value) {
+      if (value != null) {
+        setState(() {
+          _currentMax = value;
+          maxPicked = true;
+        });
+        maxPicker.animateInt(value);
+      }
+    });
+  }
+
   Future<Null> selectTime(BuildContext context) async {
-    final TimeOfDay picked =
-        await showTimePicker(context: (context), initialTime: startTime);
+    final TimeOfDay picked = await showTimePicker(
+      context: (context),
+      initialTime: startTime,
+//      builder: (BuildContext context, Widget child) {
+//        return MediaQuery(
+//          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+//          child: child,
+//        );
+//      },
+    );
 
     if (picked != null && picked != startTime) {
       print('Start Time: ${picked.format(context)}');
@@ -75,6 +128,7 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
 
   @override
   Widget build(BuildContext context) {
+    _initializeNumberPickers();
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraint) {
@@ -123,28 +177,33 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                         margin: EdgeInsets.only(
                             top: 20, left: 30, right: 30, bottom: 20),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Expanded(
                               flex: 0,
-                              child: TextField(
-                                maxLines: 1,
-                                controller: _title,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Kanit',
-                                ),
-                                decoration: InputDecoration(
-                                  labelText: 'ชื่อคลาส',
-                                  labelStyle: TextStyle(fontFamily: 'Kanit'),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 70,
+                                child: TextField(
+                                  maxLength: 20,
+                                  maxLines: 1,
+                                  controller: _title,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Kanit',
+                                  ),
+                                  decoration: InputDecoration(
+                                    labelText: 'ชื่อคลาส',
+                                    labelStyle: TextStyle(fontFamily: 'Kanit'),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 5,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,19 +211,39 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                      'เวลาเริ่ม: ' + startTime.format(context),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'Kanit',
-                                      ),
+                                    Row(
+                                      children: <Widget>[
+                                        Icon(MaterialCommunityIcons
+                                            .clock_outline),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          'เวลาเริ่ม: ' +
+                                              startTime.format(context),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Kanit',
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      'เวลาสิ้นสุด: ' + endTime.format(context),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'Kanit',
-                                      ),
+                                    Row(
+                                      children: <Widget>[
+                                        Icon(MaterialCommunityIcons
+                                            .clock_check_outline),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          'เวลาสิ้นสุด: ' +
+                                              endTime.format(context),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Kanit',
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -183,25 +262,61 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  padding: EdgeInsets.all(15),
+                                  padding: EdgeInsets.all(10),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  'จำนวนรับสูงสุด: ' +
+                                      (maxPicked
+                                          ? _currentMax.toString()
+                                          : 'โปรดระบุ'),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Kanit',
+                                  ),
+                                ),
+                                RaisedButton(
+                                  child: Text(
+                                    'เปลี่ยน',
+                                    style: TextStyle(
+                                        fontFamily: 'Kanit',
+                                        fontSize: 20,
+                                        color: Colors.white),
+                                  ),
+                                  color: Colors.orange[900],
+                                  onPressed: () {
+                                    _showMaxPickerDialog();
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  padding: EdgeInsets.all(10),
                                 )
                               ],
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             Expanded(
                               child: TextField(
-                                maxLines: 5,
+                                maxLength: 200,
+                                maxLines: 2,
                                 controller: _description,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 20,
                                   fontFamily: 'Kanit',
                                 ),
                                 decoration: InputDecoration(
-                                  hintText: 'รายละเอียด',
-                                  hintStyle: TextStyle(
+                                  labelText: 'รายละเอียด',
+                                  labelStyle: TextStyle(
                                     fontFamily: 'Kanit',
                                     fontSize: 20,
                                   ),
@@ -233,8 +348,8 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                               endTime.minute),
                                           'limitPerson': 10,
                                         };
-                                        await classModel.updateClass(class_.id,
-                                            data, _image);
+                                        await classModel.updateClass(
+                                            class_.id, data, _image);
                                         print('updated class complete');
                                         Navigator.of(context).pop();
                                       },

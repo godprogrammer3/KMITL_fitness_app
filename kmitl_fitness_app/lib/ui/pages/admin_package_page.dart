@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class AdminPackagePage extends StatefulWidget {
+  final User user;
+  const AdminPackagePage({Key key, this.user}) : super(key: key);
   @override
-  _AdminPackagePageState createState() => _AdminPackagePageState();
+  _AdminPackagePageState createState() => _AdminPackagePageState(user: user);
 }
 
 class _AdminPackagePageState extends State<AdminPackagePage> {
-  final List<MemberPackage> memberPackages = [
-    MemberPackage(
-        title: "โปรรายวันเบาๆ",
-        detail: "ใช้งานฟิตเนสตลอดวัน \nในวันที่สมัครใช้งาน",
-        price: "฿30",
-        time: "/วัน",
-        pricePerDay: ""),
-    MemberPackage(
-        title: "โปรเดือนฟิต",
-        detail: "ใช้งานฟิตเนสตลอด 30 วัน \nนับตั้งแต่วันที่สมัครใช้งาน",
-        price: "฿500",
-        time: "/เดือน",
-        pricePerDay: "฿16.67 ต่อวัน"),
-    MemberPackage(
-        title: "โปรเปิดเทอม",
-        detail: "ใช้งานฟิตเนสตลอด 4 เดือน \nนับตั้งแต่วันที่สมัครใช้งาน",
-        price: "฿1,700",
-        time: "/4 เดือน",
-        pricePerDay: "฿14.16 ต่อวัน")
-  ];
+  final User user;
+  PackageModel packageModel;
+  _AdminPackagePageState({this.user});
+  @override
+  void initState() {
+    super.initState();
+    packageModel = PackageModel(uid: user.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +29,7 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return AdminPackageAddingPage();
+            return AdminPackageAddingPage(user:user);
           }));
         },
         icon: Icon(Icons.add),

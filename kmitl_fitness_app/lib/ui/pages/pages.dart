@@ -33,3 +33,5 @@ export './admin_package_page.dart';
 export './admin_package_adding_page.dart';
 export './admin_package_editing_page.dart';
 export './admin_post_editing_page.dart';
+export './admin_income_page.dart';
+export './admin_userlog_page.dart';

@@ -164,7 +164,7 @@ class PointPageChild extends State<PointPage> {
                                         image: DecorationImage(
                                           image: AssetImage(
                                               'assets/images/5percent.jpg'),
-                                          fit: BoxFit.fitWidth,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),
@@ -202,7 +202,7 @@ class PointPageChild extends State<PointPage> {
                                         image: DecorationImage(
                                           image: AssetImage(
                                               'assets/images/10percent.png'),
-                                          fit: BoxFit.fitWidth,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),
@@ -240,7 +240,7 @@ class PointPageChild extends State<PointPage> {
                                         image: DecorationImage(
                                           image: AssetImage(
                                               'assets/images/water.jpg'),
-                                          fit: BoxFit.fitWidth,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),
@@ -278,7 +278,7 @@ class PointPageChild extends State<PointPage> {
                                         image: DecorationImage(
                                           image: AssetImage(
                                               'assets/images/sponsor.png'),
-                                          fit: BoxFit.fitWidth,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),

@@ -8,14 +8,13 @@ class AdminRewardDetailPage extends StatefulWidget {
 }
 
 class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
-
-    createAlertDialog(BuildContext context) {
+  createAlertDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Enter point to use"),
-            content: TextField(decoration: InputDecoration(hintText: 'POINT')),
+            title: Text("Delete this reward?"),
+            //content: TextField(decoration: InputDecoration(hintText: 'POINT')),
             actions: <Widget>[
               MaterialButton(
                   elevation: 5.0,
@@ -25,7 +24,7 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                   }),
               MaterialButton(
                   elevation: 5.0,
-                  child: Text("CONFIRM"),
+                  child: Text("DELETE"),
                   onPressed: () {
                     Navigator.pop(context);
                   })
@@ -133,8 +132,19 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                   ),
                   SizedBox(height: 10),
                   TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      hintText: 'Point',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
                     keyboardType: TextInputType.multiline,
-                    maxLines: 10,
+                    maxLines: 7,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
@@ -152,11 +162,13 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                         width: MediaQuery.of(context).size.width / 2.5,
                         height: 60,
                         child: FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              createAlertDialog(context);
+                            },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100),
                                 side: BorderSide(color: Colors.transparent)),
-                            color: Colors.black,
+                            color: Colors.red,
                             child: Text(
                               "DELETE",
                               style: TextStyle(
@@ -169,13 +181,11 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                         width: MediaQuery.of(context).size.width / 2.5,
                         height: 60,
                         child: FlatButton(
-                            onPressed: () {
-                              createAlertDialog(context);
-                            },
+                            onPressed: () {},
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100),
                                 side: BorderSide(color: Colors.transparent)),
-                            color: Colors.orange[900],
+                            color: Colors.green,
                             child: Text(
                               "SAVE",
                               style: TextStyle(
