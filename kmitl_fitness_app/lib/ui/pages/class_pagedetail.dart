@@ -101,6 +101,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                   fontSize: 16,
                 ),
           ),
+          ),
           Spacer(),
           Center(
             child: Container(
@@ -158,78 +159,79 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-              child: Center(
-                child: Container(
-                  width: 200,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.orange[900],
-                      borderRadius: BorderRadius.all(Radius.circular(100))),
-                  child: FutureBuilder(
-                    future: classModel.isReserved(class_.id),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasError) {
-                        return LoadingWidget(height: 50, width: 50);
-                      } else if (snapshot.data == null) {
-                        return LoadingWidget(height: 50, width: 50);
-                      } else {
-                        return (snapshot.data)
-                            ? FlatButton(
-                              color: Colors.black,
-                                onPressed: () async {
-                                  //showClassDialog(context);
-                                  final result =
-                                      await classModel.cancelClass(class_.id);
-                                  if (result == 0) {
-                                    print('cancel success');
-                                    Navigator.of(context).pop();
-                                  } else {
-                                    print('cancel class failed');
-                                    print('error code: $result');
-                                  }
-                                },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100)),
-                                child: Text(
-                                  'Cancel',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ))
-                            : FlatButton(
-                                onPressed: () async {
-                                  //showClassDialog(context);
-                                  final result =
-                                      await classModel.reserveClass(class_.id);
-                                  if (result == 0) {
-                                    print('reserve class success');
-                                    Navigator.of(context).pop();
-                                  } else {
-                                    print('reserve class failed');
-                                    print('error code: $result');
-                                  }
-                                },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100)),
-                                child: Text(
-                                  'Reserve',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ));
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+            //   child: Center(
+            //     child: Container(
+            //       width: 200,
+            //       height: 50,
+            //       decoration: BoxDecoration(
+            //           color: Colors.orange[900],
+            //           borderRadius: BorderRadius.all(Radius.circular(100))),
+            //       child: FutureBuilder(
+            //         future: classModel.isReserved(class_.id),
+            //         builder: (BuildContext context, AsyncSnapshot snapshot) {
+            //           if (snapshot.hasError) {
+            //             return LoadingWidget(height: 50, width: 50);
+            //           } else if (snapshot.data == null) {
+            //             return LoadingWidget(height: 50, width: 50);
+            //           } else {
+            //             return (snapshot.data)
+            //                 ? FlatButton(
+            //                   color: Colors.black,
+            //                     onPressed: () async {
+            //                       //showClassDialog(context);
+            //                       final result =
+            //                           await classModel.cancelClass(class_.id);
+            //                       if (result == 0) {
+            //                         print('cancel success');
+            //                         Navigator.of(context).pop();
+            //                       } else {
+            //                         print('cancel class failed');
+            //                         print('error code: $result');
+            //                       }
+            //                     },
+            //                     shape: RoundedRectangleBorder(
+            //                         borderRadius: BorderRadius.circular(100)),
+            //                     child: Text(
+            //                       'Cancel',
+            //                       style: TextStyle(
+            //                           color: Colors.white,
+            //                           fontSize: 16,
+            //                           fontWeight: FontWeight.bold),
+            //                     ))
+            //                 : FlatButton(
+            //                     onPressed: () async {
+            //                       //showClassDialog(context);
+            //                       final result =
+            //                           await classModel.reserveClass(class_.id);
+            //                       if (result == 0) {
+            //                         print('reserve class success');
+            //                         Navigator.of(context).pop();
+            //                       } else {
+            //                         print('reserve class failed');
+            //                         print('error code: $result');
+            //                       }
+            //                     },
+            //                     shape: RoundedRectangleBorder(
+            //                         borderRadius: BorderRadius.circular(100)),
+            //                     child: Text(
+            //                       'Reserve',
+            //                       style: TextStyle(
+            //                           color: Colors.white,
+            //                           fontSize: 16,
+            //                           fontWeight: FontWeight.bold),
+            //                     ));
+            //           }
+            //         },
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+          ),
           ],
         ),
       ),

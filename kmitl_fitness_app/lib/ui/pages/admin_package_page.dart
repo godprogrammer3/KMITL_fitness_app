@@ -29,101 +29,117 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return AdminPackageAddingPage(user:user);
+            return AdminPackageAddingPage(user: user);
           }));
         },
         icon: Icon(Icons.add),
         label: Text('Create'),
         elevation: 10,
       ),
-      body: ListView.builder(
-        itemCount: memberPackages.length,
-        itemBuilder: (contex, index) {
-          return SizedBox(
-            //height: 220,
-            child: Card(
-              margin: EdgeInsets.all(20.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return AdminPackageEditingPage(memberPackages, index);
-                  }));
-                },
-                child: Container(
-                  margin: EdgeInsets.all(10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  memberPackages[index].title,
-                                  style: TextStyle(
-                                    fontFamily: 'Kanit',
-                                    fontSize: 30,
+      body: StreamBuilder(
+          stream: packageModel.packages,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return LoadingWidget(height: 50, width: 50);
+            } else if (snapshot.data == null) {
+              return Center(child: Text("Empty"));
+            } else {
+              if (snapshot.data.length == 0) {
+                return Center(child: Text("Empty"));
+              }
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                    //height: 220,
+                    child: Card(
+                      margin: EdgeInsets.all(20.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return AdminPackageEditingPage(
+                                user:user,package:snapshot.data[index]);
+                          }));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          snapshot.data[index].title,
+                                          style: TextStyle(
+                                            fontFamily: 'Kanit',
+                                            fontSize: 30,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Text(
+                                          snapshot.data[index].detail.replaceAll('\\n','\n'),
+                                          style: TextStyle(
+                                            fontFamily: 'Kanit',
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ]),
+                                  Column(
+                                    children: <Widget>[
+                                      FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: Text(
+                                          '฿'+snapshot.data[index].price.toString(),
+                                          style: TextStyle(
+                                              fontFamily: 'Kanit',
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Text(
+                                        '/'+snapshot.data[index].period,
+                                        style: TextStyle(
+                                            fontFamily: 'Kanit',
+                                            fontSize: 24,
+                                            height: 0.75),
+                                      ),
+                                      SizedBox(height: 10.0),
+                                      Text(
+                                        '฿'+snapshot.data[index].pricePerDay.toString()+'ต่อวัน',
+                                        style: TextStyle(
+                                            fontFamily: 'Kanit', fontSize: 12),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                Text(
-                                  memberPackages[index].detail,
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Divider(),
+                              Text('EDIT',
                                   style: TextStyle(
-                                    fontFamily: 'Kanit',
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ]),
-                          Column(
-                            children: <Widget>[
-                              FittedBox(
-                                fit: BoxFit.fill,
-                                child: Text(
-                                  memberPackages[index].price,
-                                  style: TextStyle(
+                                      fontSize: 14.0,
                                       fontFamily: 'Kanit',
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Text(
-                                memberPackages[index].time,
-                                style: TextStyle(
-                                    fontFamily: 'Kanit',
-                                    fontSize: 24,
-                                    height: 0.75),
-                              ),
-                              SizedBox(height: 10.0),
-                              Text(
-                                memberPackages[index].pricePerDay,
-                                style: TextStyle(
-                                    fontFamily: 'Kanit', fontSize: 12),
-                              ),
+                                      color: Colors.orange[900])),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                      SizedBox(height: 10),
-                      Divider(),
-                      Text('EDIT',
-                          style: TextStyle(
-                              fontSize: 14.0,
-                              fontFamily: 'Kanit',
-                              color: Colors.orange[900])),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+                    ),
+                  );
+                },
+              );
+            }
+          }),
     );
   }
 }

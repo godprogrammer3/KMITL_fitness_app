@@ -56,7 +56,7 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
   }
 
   Future _showMaxPickerDialog() async {
-    await showDialog<int>(
+    final number = await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
         return NumberPickerDialog.integer(
@@ -71,15 +71,14 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
           initialIntegerValue: _currentMax,
         );
       },
-    ).then((num value) {
-      if (value != null) {
+    );
+    if (number != null) {
         setState(() {
-          _currentMax = value;
+          _currentMax = number;
           maxPicked = true;
         });
-        maxPicker.animateInt(value);
+        //maxPicker.animateInt(number);
       }
-    });
   }
 
   Future<Null> selectTime(BuildContext context) async {
@@ -124,11 +123,11 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
   void initState() {
     super.initState();
     classModel = ClassModel(uid: user.uid);
+    _initializeNumberPickers();
   }
 
   @override
   Widget build(BuildContext context) {
-    _initializeNumberPickers();
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(builder: (context, constraint) {
@@ -291,7 +290,7 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                         color: Colors.white),
                                   ),
                                   color: Colors.orange[900],
-                                  onPressed: () {
+                                  onPressed: (){
                                     _showMaxPickerDialog();
                                   },
                                   shape: RoundedRectangleBorder(

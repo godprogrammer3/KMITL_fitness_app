@@ -20,15 +20,6 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            "Reward",
-            style: TextStyle(color: Colors.white, fontSize: 25),
-            textAlign: TextAlign.left,
-          ),
-          backgroundColor: Colors.orange[900],
-        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
