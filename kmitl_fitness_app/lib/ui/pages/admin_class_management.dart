@@ -155,7 +155,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                             ],
                           ),
                           Positioned(
-                            bottom: 45,
+                            top: 160,
                             right: 20,
                             child: Card(
                               elevation: 5,
