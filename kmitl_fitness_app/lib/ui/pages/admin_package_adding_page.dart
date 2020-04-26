@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/package_model.dart';
 
 class AdminPackageAddingPage extends StatelessWidget {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _periodController = TextEditingController();
+  final TextEditingController _totalDayController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _pricePerDayController = TextEditingController();
+  final User user;
 
+  AdminPackageAddingPage({Key key, this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,9 +60,21 @@ class AdminPackageAddingPage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 TextField(
-                  controller: _timeController,
+                  controller: _periodController,
                   decoration: InputDecoration(
-                    labelText: 'Time',
+                    labelText: 'Period',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _totalDayController,
+                  decoration: InputDecoration(
+                    labelText: 'Total Day',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
@@ -94,7 +111,24 @@ class AdminPackageAddingPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 2.5,
                   height: 60,
                   child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final packageModel = PackageModel(uid: user.uid);
+                        Map<String, dynamic> data = {
+                          'title':_titleController.text,
+                          'detail':_detailController.text,
+                          'period':_periodController.text,
+                          'totalDay': int.parse(_totalDayController.text),
+                          'price': double.parse(_priceController.text),
+                          'pricePerDay': double.parse(_pricePerDayController.text),
+                        };
+                        final result = await packageModel.create(data);
+                        if(result == 0){
+                          print('creat package success');
+                          Navigator.of(context).pop();
+                        }else{
+                           print('creat package faild');
+                        }
+                      },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                           side: BorderSide(color: Colors.transparent)),

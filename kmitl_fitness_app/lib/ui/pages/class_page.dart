@@ -58,97 +58,97 @@ class _ClassPageStateChild extends State<ClassPageChild> {
         backgroundColor: Colors.orange[900],
       ),
       body: StreamBuilder(
-        stream: classModel.classes,
-        builder: (BuildContext context, AsyncSnapshot snapshot){
-          if (snapshot.hasError) {
-            return LoadingWidget(height: 50, width: 50);
-          } else if (snapshot.data == null) {
-            return Center(child: Text("Empty"));
-          } else {
-            if (snapshot.data.length == 0) {
-              return Center(child: Text("Empty"));
-            }
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  height: 240,
-                  child: Card(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ClassPageDetail(
-                              user: user, class_: snapshot.data[index]),
-                        ));
+          stream: classModel.classes,
+          builder: (BuildContext context, AsyncSnapshot snapshot){
+            if (snapshot.hasError) {
+      return LoadingWidget(height: 50, width: 50);
+            } else if (snapshot.data == null) {
+      return Center(child: Text("Empty"));
+            } else {
+      if (snapshot.data.length == 0) {
+        return Center(child: Text("Empty"));
+      }
+      return ListView.builder(
+        itemCount: snapshot.data.length,
+        itemBuilder: (context, index) {
+          return SizedBox(
+            height: 240,
+            child: Card(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ClassPageDetail(
+                        user: user, class_: snapshot.data[index]),
+                  ));
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    FutureBuilder(
+                      future: classModel
+                          .getUrlFromImageId(snapshot.data[index].id),
+                      builder:
+                          (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasError) {
+                          return LoadingWidget(height: 50, width: 50);
+                        } else if (snapshot.data == null) {
+                          return LoadingWidget(height: 50, width: 50);
+                        } else {
+                          return Container(
+                            height: 150.0,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(snapshot.data),
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                          );
+                        }
                       },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          FutureBuilder(
-                            future: classModel
-                                .getUrlFromImageId(snapshot.data[index].id),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasError) {
-                                return LoadingWidget(height: 50, width: 50);
-                              } else if (snapshot.data == null) {
-                                return LoadingWidget(height: 50, width: 50);
-                              } else {
-                                return Container(
-                                  height: 150.0,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(snapshot.data),
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                          ListTile(
-                              title: Text(snapshot.data[index].title,
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text('วันที่ ' +
-                                            DateFormat('dd/MM/yyyy').format(
-                                                snapshot.data[index]
-                                                    .beginDateTime)),
-                                        Spacer()
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text('เวลา ' +
-                                            DateFormat('hh:mm').format(snapshot
-                                                .data[index].beginDateTime) +
-                                            ' - ' +
-                                            snapshot
-                                                .data[index].endDateTime.hour
-                                                .toString() +
-                                            ':' +
-                                            snapshot
-                                                .data[index].endDateTime.minute
-                                                .toString()),
-                                      ],
-                                    ),
-                                  ]),
-                              onTap: null),
-                        ],
-                      ),
                     ),
-                  ),
-                );
-              },
-            );
-          }
+                    ListTile(
+                        title: Text(snapshot.data[index].title,
+                            style:
+                                TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text('วันที่ ' +
+                                      DateFormat('dd/MM/yyyy').format(
+                                          snapshot.data[index]
+                                              .beginDateTime)),
+                                  Spacer()
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text('เวลา ' +
+                                      DateFormat('hh:mm').format(snapshot
+                                          .data[index].beginDateTime) +
+                                      ' - ' +
+                                      snapshot
+                                          .data[index].endDateTime.hour
+                                          .toString() +
+                                      ':' +
+                                      snapshot
+                                          .data[index].endDateTime.minute
+                                          .toString()),
+                                ],
+                              ),
+                            ]),
+                        onTap: null),
+                  ],
+                ),
+              ),
+            ),
+          );
         },
-      ),
+      );
+            }
+          },
+        ),
     );
   }
 }

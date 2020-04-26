@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key key}) : super(key: key);
@@ -20,6 +22,15 @@ class SignupPageChild extends StatefulWidget {
 }
 
 class _SignupPageChildState extends State<SignupPageChild> {
+  File faceID;
+
+  _openCamera(BuildContext context) async {
+    var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+    this.setState(() {
+      faceID = picture;
+    });
+  }
+
   final authenModel = AuthenModel();
 
   final firstName = TextEditingController(),
@@ -34,14 +45,14 @@ class _SignupPageChildState extends State<SignupPageChild> {
       child: SafeArea(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height:MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height,
           child: LoadingOverlay(
             isLoading: _isLoading,
             child: Center(
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: 30.0,
+                    height: 25.0,
                   ),
                   Text(
                     "Sign Up",
@@ -51,10 +62,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
-                    height: 40.0,
+                    height: 30.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -71,10 +82,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         controller: firstName,
                       )),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -91,10 +102,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         controller: lastName,
                       )),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -111,10 +122,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         controller: email,
                       )),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -132,10 +143,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         controller: password,
                       )),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
                   ),
                   Container(
-                      width: 250,
+                      width: 280,
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
@@ -151,22 +162,29 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         ),
                         obscureText: true,
                       )),
+                  IconButton(
+                      icon: Icon(Icons.center_focus_weak),
+                      iconSize: 80,
+                      onPressed: () {
+                        _openCamera(context);
+                      }),
+                  Text("Add Face ID"),
                   SizedBox(height: 20),
                   Container(
-                    width: 300,
+                    width: 280,
                     height: 50,
                     child: Builder(
-                          builder: (BuildContext context) => FlatButton(
+                      builder: (BuildContext context) => FlatButton(
                           onPressed: () async {
                             final userData = UserData(
                                 firstName: firstName.text,
                                 lastName: lastName.text,
                                 email: email.text);
-                              setState(()=>_isLoading = true);
-                            dynamic user =
-                                await authenModel.register(userData, password.text);
-                            if(this.mounted){
-                              setState(()=>_isLoading = false);
+                            setState(() => _isLoading = true);
+                            dynamic user = await authenModel.register(
+                                userData, password.text);
+                            if (this.mounted) {
+                              setState(() => _isLoading = false);
                             }
                             if (user != null) {
                               Navigator.of(context).pop();
@@ -191,7 +209,6 @@ class _SignupPageChildState extends State<SignupPageChild> {
                           )),
                     ),
                   ),
-                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

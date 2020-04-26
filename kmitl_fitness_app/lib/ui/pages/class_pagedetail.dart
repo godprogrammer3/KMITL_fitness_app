@@ -100,6 +100,62 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                   color: Colors.black,
                   fontSize: 16,
                 ),
+          ),
+          Spacer(),
+          Center(
+            child: Container(
+              width: 200,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.orange[900],
+                  borderRadius: BorderRadius.all(Radius.circular(100))),
+              child: FutureBuilder(
+                future: classModel.isReserved(class_.id),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    return LoadingWidget(height: 50, width: 50);
+                  } else if (snapshot.data == null) {
+                    return LoadingWidget(height: 50, width: 50);
+                  } else {
+                    return (snapshot.data)
+                        ? FlatButton(
+                            color: Colors.black,
+                            onPressed: () async {
+                              //showClassDialog(context);
+                              final result =
+                                  await classModel.cancelClass(class_.id);
+                              if (result == 0) {
+                                print('cancel success');
+                                Navigator.of(context).pop();
+                              } else {
+                                print('cancel class failed');
+                                print('error code: $result');
+                              }
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100)),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ))
+                        : FlatButton(
+                            onPressed: () async {
+                              showClassDialog(context);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100)),
+                            child: Text(
+                              'Reserve',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ));
+                  }
+                },
               ),
             ),
             Padding(
@@ -183,11 +239,20 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
   showClassDialog(BuildContext context) {
     Widget cancelButton = FlatButton(
       child: Text("CANCEL"),
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
     );
     Widget continueButton = FlatButton(
       child: Text("CONFIRM"),
-      onPressed: () {},
+      onPressed: () async {
+        final result = await classModel.reserveClass(class_.id);
+        if (result == 0) {
+          print('reserve class success');
+          Navigator.of(context, rootNavigator: true).pop();
+        } else {
+          print('reserve class failed');
+          print('error code: $result');
+        }
+      },
     );
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(
