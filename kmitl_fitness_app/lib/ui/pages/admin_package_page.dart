@@ -24,135 +24,106 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return AdminPackageAddingPage(user:user);
           }));
         },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.orange[900],
+        icon: Icon(Icons.add),
+        label: Text('Create'),
+        elevation: 10,
       ),
-      body: StreamBuilder(
-          stream: packageModel.packages,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return LoadingWidget(height: 50, width: 50);
-            } else if (snapshot.data == null) {
-              return Center(child: Text("Empty"));
-            } else {
-              if (snapshot.data.length == 0) {
-                return Center(child: Text("Empty"));
-              }
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  return SizedBox(
-                    height: 280,
-                    child: Card(
-                      margin: EdgeInsets.all(20.0),
-                      child: Container(
-                        margin: EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: ListView.builder(
+        itemCount: memberPackages.length,
+        itemBuilder: (contex, index) {
+          return SizedBox(
+            //height: 220,
+            child: Card(
+              margin: EdgeInsets.all(20.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return AdminPackageEditingPage(memberPackages, index);
+                  }));
+                },
+                child: Container(
+                  margin: EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        snapshot.data[index].title,
-                                        style: TextStyle(
-                                          fontFamily: 'Kanit',
-                                          fontSize: 30,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Text(
-                                        snapshot.data[index].detail
-                                            .replaceAll('\\n', '\n'),
-                                        style: TextStyle(
-                                          fontFamily: 'Kanit',
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ]),
-                                Column(
-                                  children: <Widget>[
-                                    FittedBox(
-                                      fit: BoxFit.fill,
-                                      child: Text(
-                                        '฿' +
-                                            snapshot.data[index].price
-                                                .toString(),
-                                        style: TextStyle(
-                                            fontFamily: 'Kanit',
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Text(
-                                      '/' + snapshot.data[index].period,
-                                      style: TextStyle(
-                                          fontFamily: 'Kanit',
-                                          fontSize: 20,
-                                          height: 0.75),
-                                    ),
-                                    SizedBox(height: 10.0),
-                                    Text(
-                                      '฿' +
-                                          snapshot.data[index].pricePerDay
-                                              .toString() +
-                                          ' ต่อวัน',
-                                      style: TextStyle(
-                                          fontFamily: 'Kanit', fontSize: 12),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Container(
-                              width: 200,
-                              height: 45,
-                              child: FlatButton(
-                                  onPressed: () async {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder:
-                                                (BuildContext context) {
-                                                  return AdminPackageEditingPage(user:user, package:snapshot.data[index]);
-                                                }));
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                      side: BorderSide(
-                                          color: Colors.transparent)),
-                                  color: Colors.orange[800],
-                                  child: Text(
-                                    "EDIT",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                          ],
-                        ),
+                                Text(
+                                  memberPackages[index].title,
+                                  style: TextStyle(
+                                    fontFamily: 'Kanit',
+                                    fontSize: 30,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                  memberPackages[index].detail,
+                                  style: TextStyle(
+                                    fontFamily: 'Kanit',
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ]),
+                          Column(
+                            children: <Widget>[
+                              FittedBox(
+                                fit: BoxFit.fill,
+                                child: Text(
+                                  memberPackages[index].price,
+                                  style: TextStyle(
+                                      fontFamily: 'Kanit',
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                memberPackages[index].time,
+                                style: TextStyle(
+                                    fontFamily: 'Kanit',
+                                    fontSize: 24,
+                                    height: 0.75),
+                              ),
+                              SizedBox(height: 10.0),
+                              Text(
+                                memberPackages[index].pricePerDay,
+                                style: TextStyle(
+                                    fontFamily: 'Kanit', fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ),
-                  );
-                },
-              );
-            }
-          }),
+                      SizedBox(height: 10),
+                      Divider(),
+                      Text('EDIT',
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              fontFamily: 'Kanit',
+                              color: Colors.orange[900])),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
-
 class AdminPackageEditingPage extends StatefulWidget {
   final User user;
   final Package package;
@@ -14,11 +13,8 @@ class AdminPackageEditingPage extends StatefulWidget {
 
 class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
   final TextEditingController _titleController = TextEditingController();
-
   final TextEditingController _detailController = TextEditingController();
-
   final TextEditingController _periodController = TextEditingController();
-
   final TextEditingController _totalDayController = TextEditingController();
 
   final TextEditingController _priceController = TextEditingController();
@@ -133,39 +129,45 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2.5,
-                  height: 60,
-                  child: FlatButton(
-                      onPressed: () async {
-                        final packageModel = PackageModel(uid: widget.user.uid);
-                        Map<String, dynamic> data = {
-                          'title':_titleController.text,
-                          'detail':_detailController.text,
-                          'period':_periodController.text,
-                          'totalDay': int.parse(_totalDayController.text),
-                          'price': double.parse(_priceController.text),
-                          'pricePerDay': double.parse(_pricePerDayController.text),
-                        };
-                        final result = await packageModel.update(widget.package.id,data);
-                        if(result == 0){
-                          print('update package success');
-                          Navigator.of(context).pop();
-                        }else{
-                           print('update package faild');
-                        }
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          side: BorderSide(color: Colors.transparent)),
-                      color: Colors.orange[900],
-                      child: Text(
-                        "SAVE",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      height: 60,
+                      width: 140,
+                      child: FlatButton(
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.transparent)),
+                          color: Colors.black,
+                          child: Text(
+                            "DELETE",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                    Container(
+                      height: 60,
+                      width: 140,
+                      child: FlatButton(
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(color: Colors.transparent)),
+                          color: Colors.orange[900],
+                          child: Text(
+                            "SAVE",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  ],
+
                 ),
               ],
             ),
