@@ -57,98 +57,115 @@ class _ClassPageStateChild extends State<ClassPageChild> {
         ],
         backgroundColor: Colors.orange[900],
       ),
-      body: StreamBuilder(
+      body: Container(
+        child: StreamBuilder(
           stream: classModel.classes,
-          builder: (BuildContext context, AsyncSnapshot snapshot){
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
-      return LoadingWidget(height: 50, width: 50);
+              return LoadingWidget(height: 50, width: 50);
             } else if (snapshot.data == null) {
-      return Center(child: Text("Empty"));
+              return LoadingWidget(height: 50, width: 50);
             } else {
-      if (snapshot.data.length == 0) {
-        return Center(child: Text("Empty"));
-      }
-      return ListView.builder(
-        itemCount: snapshot.data.length,
-        itemBuilder: (context, index) {
-          return SizedBox(
-            height: 240,
-            child: Card(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ClassPageDetail(
-                        user: user, class_: snapshot.data[index]),
-                  ));
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    FutureBuilder(
-                      future: classModel
-                          .getUrlFromImageId(snapshot.data[index].id),
-                      builder:
-                          (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasError) {
-                          return LoadingWidget(height: 50, width: 50);
-                        } else if (snapshot.data == null) {
-                          return LoadingWidget(height: 50, width: 50);
-                        } else {
-                          return Container(
-                            height: 150.0,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(snapshot.data),
-                                fit: BoxFit.fitWidth,
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: EdgeInsets.only(
+                        left: 20, top: 10, right: 20, bottom: 10),
+                    elevation: 5,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ClassPageDetail(user:user,class_:snapshot.data[index]),
+                        ));
+                      },
+                      child: Stack(
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FutureBuilder(
+                                future: classModel
+                                    .getUrlFromImageId(snapshot.data[index].id),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Center(child: LoadingWidget(height: 50, width: 50));
+                                  } else if (snapshot.data == null) {
+                                    return Center(child: LoadingWidget(height: 50, width: 50));
+                                  } else {
+                                    return Container(
+                                      height: 150.0,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(snapshot.data),
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                              ListTile(
+                                title: Text(
+                                  snapshot.data[index].title,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  DateFormat('kk:mm').format(snapshot.data[index].beginDateTime)
+                                  +
+                                      ' - ' +
+                                      DateFormat('kk:mm').format(snapshot.data[index].endDateTime)+' น.',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                trailing: Text(
+                                    'Created By: ' + snapshot.data[index].ownerFirstname),
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            top: 100,
+                            right: 20,
+                            child: Card(
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: snapshot.data[index].totalPerson >= snapshot.data[index].limitPerson
+                                      ? Colors.red
+                                      : Colors.lightGreenAccent[700],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                      snapshot.data[index].totalPerson.toString() +
+                                          '/' +
+                                          snapshot.data[index].limitPerson.toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
+                                ),
                               ),
                             ),
-                          );
-                        }
-                      },
+                          ),
+                        ],
+                      ),
                     ),
-                    ListTile(
-                        title: Text(snapshot.data[index].title,
-                            style:
-                                TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Text('วันที่ ' +
-                                      DateFormat('dd/MM/yyyy').format(
-                                          snapshot.data[index]
-                                              .beginDateTime)),
-                                  Spacer()
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text('เวลา ' +
-                                      DateFormat('hh:mm').format(snapshot
-                                          .data[index].beginDateTime) +
-                                      ' - ' +
-                                      snapshot
-                                          .data[index].endDateTime.hour
-                                          .toString() +
-                                      ':' +
-                                      snapshot
-                                          .data[index].endDateTime.minute
-                                          .toString()),
-                                ],
-                              ),
-                            ]),
-                        onTap: null),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      );
+                  );
+                },
+              );
             }
           },
         ),
+      ),
     );
   }
 }

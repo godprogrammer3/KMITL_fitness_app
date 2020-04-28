@@ -30,6 +30,15 @@ class PackageModel {
     return 0;
   }
 
+  Future<int> delete(String id) async {
+    try{
+      await packageCollection.document(id).delete();
+      return 0;
+    }catch (error) {
+      return -1;
+    }
+  }
+
   List<Package> _packageFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Package(

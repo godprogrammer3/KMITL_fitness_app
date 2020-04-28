@@ -22,6 +22,7 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
   final TextEditingController _pricePerDayController = TextEditingController();
   final User user;
   final Package package;
+  PackageModel packageModel;
 
   _AdminPackageEditingPageState({this.user, this.package});
   @override
@@ -33,6 +34,7 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
     _periodController.text = package.period;
     _pricePerDayController.text = package.pricePerDay.toString();
     _totalDayController.text = package.totalDay.toString();
+    packageModel = PackageModel(uid: user.uid);
   }
   @override
   Widget build(BuildContext context) {
@@ -135,8 +137,16 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                     Container(
                       height: 60,
                       width: 140,
-                      child: FlatButton(
-                          onPressed: () {},
+                      child: FlatButton( 
+                          onPressed: () async {
+                              final result = await packageModel.delete(package.id);
+                              if( result == 0){
+                                print('delete package success');
+                                Navigator.of(context).pop();
+                              }else{
+                                print('delete package failed');
+                              }
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.transparent)),
@@ -153,7 +163,24 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                       height: 60,
                       width: 140,
                       child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                              final packageModel = PackageModel(uid: user.uid);
+                        Map<String, dynamic> data = {
+                          'title':_titleController.text,
+                          'detail':_detailController.text,
+                          'period':_periodController.text,
+                          'totalDay': int.parse(_totalDayController.text),
+                          'price': double.parse(_priceController.text),
+                          'pricePerDay': double.parse(_pricePerDayController.text),
+                        };
+                        final result = await packageModel.update(package.id,data);
+                        if(result == 0){
+                          print('update package success');
+                          Navigator.of(context).pop();
+                        }else{
+                           print('update package faild');
+                        }
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.transparent)),

@@ -12,6 +12,7 @@ class Class{
   final DateTime updatedTime;
   final int limitPerson;
   final int totalPerson;
+  final String ownerFirstname;
   Class({
     @required this.id, 
     @required this.title, 
@@ -24,5 +25,6 @@ class Class{
     @required this.owner,
     @required this.limitPerson, 
     @required this.totalPerson, 
+    @required this.ownerFirstname, 
   });
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
@@ -116,7 +117,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AdminClassDetail(),
+                          builder: (context) => AdminClassDetail(user:user,class_:snapshot.data[index]),
                         ));
                       },
                       child: Stack(
@@ -124,38 +125,52 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                height: 200.0,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(classes[index].imagePath),
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                ),
+                              FutureBuilder(
+                                future: classModel
+                                    .getUrlFromImageId(snapshot.data[index].id),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasError) {
+                                    return LoadingWidget(height: 50, width: 50);
+                                  } else if (snapshot.data == null) {
+                                    return LoadingWidget(height: 50, width: 50);
+                                  } else {
+                                    return Container(
+                                      height: 150.0,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(snapshot.data),
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                               ListTile(
                                 title: Text(
-                                  classes[index].title,
+                                  snapshot.data[index].title,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 25,
                                   ),
                                 ),
                                 subtitle: Text(
-                                  classes[index].startTime.format(context) +
+                                  DateFormat('kk:mm').format(snapshot.data[index].beginDateTime)
+                                  +
                                       ' - ' +
-                                      classes[index].endTime.format(context),
+                                      DateFormat('kk:mm').format(snapshot.data[index].endDateTime)+' น.',
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 trailing: Text(
-                                    'Created By: ' + classes[index].creator),
+                                    'Created By: ' + snapshot.data[index].ownerFirstname),
                               ),
                             ],
                           ),
                           Positioned(
-                            top: 160,
+                            top: 100,
                             right: 20,
                             child: Card(
                               elevation: 5,
@@ -166,15 +181,15 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                                 height: 60,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: classes[index].isFull
+                                  color: snapshot.data[index].totalPerson >= snapshot.data[index].limitPerson
                                       ? Colors.red
                                       : Colors.lightGreenAccent[700],
                                 ),
                                 child: Center(
                                   child: Text(
-                                      classes[index].reserved.toString() +
+                                      snapshot.data[index].totalPerson.toString() +
                                           '/' +
-                                          classes[index].maximum.toString(),
+                                          snapshot.data[index].limitPerson.toString(),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),

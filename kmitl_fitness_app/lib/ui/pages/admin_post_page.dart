@@ -61,7 +61,7 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
         stream: postModel.posts,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
-            return LoadingWidget(height: 50, width: 50);
+            return Center(child: LoadingWidget(height: 50, width: 50));
           } else if (snapshot.data == null) {
             return Center(child: Text("Empty data!"));
           } else {

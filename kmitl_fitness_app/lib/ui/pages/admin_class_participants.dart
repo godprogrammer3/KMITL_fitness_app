@@ -1,25 +1,45 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class AdminClassParticipants extends StatelessWidget {
-  const AdminClassParticipants({Key key}) : super(key: key);
+  final User user;
+  final Class class_;
+  AdminClassParticipants({Key key, this.user, this.class_}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AdminClassParticipantsChild();
+    return AdminClassParticipantsChild(user: user, class_: class_);
   }
 }
 
 class AdminClassParticipantsChild extends StatefulWidget {
+  final User user;
+  final Class class_;
+  const AdminClassParticipantsChild({Key key, this.user, this.class_})
+      : super(key: key);
   @override
   _AdminClassParticipantsChildState createState() =>
-      _AdminClassParticipantsChildState();
+      _AdminClassParticipantsChildState(user: user, class_: class_);
 }
 
 class _AdminClassParticipantsChildState
     extends State<AdminClassParticipantsChild> {
   final List<String> items = List<String>.generate(17, (i) => "User ${++i}");
-  final List<bool> checkBoxValue = List<bool>.generate(17, (i) => false);
+  List<Map<String, dynamic>> persons;
+  final User user;
+  final Class class_;
+  ClassModel classModel;
+  _AdminClassParticipantsChildState({this.user, this.class_});
+
+  @override
+  void initState() {
+    super.initState();
+    classModel = ClassModel(uid: user.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +61,7 @@ class _AdminClassParticipantsChildState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Class Name',
+              class_.title,
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
@@ -51,7 +71,11 @@ class _AdminClassParticipantsChildState
               height: 10,
             ),
             Text(
-              'เวลา: ',
+              'เวลา ' +
+                  DateFormat('kk:mm').format(class_.beginDateTime) +
+                  ' - ' +
+                  DateFormat('kk:mm').format(class_.endDateTime) +
+                  ' น.',
               style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'Kanit',
@@ -68,25 +92,44 @@ class _AdminClassParticipantsChildState
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: CheckboxListTile(
-                            secondary: Icon(Icons.face),
-                            title: Text(items[index].toString()),
-                            value: checkBoxValue[index],
-                            onChanged: (bool value) {
-                              setState(() {
-                                checkBoxValue[index] = value;
-                              });
-                            }),
-                      );
-                    },
-                  ),
+                  child: FutureBuilder(
+                      future: classModel.getPersons(class_.id),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                              child: LoadingWidget(height: 50, width: 50));
+                        } else if (snapshot.data == null) {
+                          return Center(
+                              child: LoadingWidget(height: 50, width: 50));
+                        } else {
+                          if( snapshot.data.length == 0){
+                            return Center(child:Text("Empty"));
+                          }
+                          if( persons == null){
+                            persons = snapshot.data;
+                          }
+                          return ListView.builder(
+                            itemCount: persons.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: CheckboxListTile(
+                                    secondary: Icon(Icons.face),
+                                    title: Text(persons[index]['firstName']),
+                                    value: persons[index]['isChecked'],
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        persons[index]['isChecked'] = value;
+                                        print(persons[index]['isChecked']);
+                                      });
+                                    }),
+                              );
+                            },
+                          );
+                        }
+                      }),
                 ),
               ),
             ),
@@ -100,7 +143,15 @@ class _AdminClassParticipantsChildState
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final result = await classModel.checkPersons(class_.id,persons);
+                    if( result == 0){
+                      print('check class success');
+                      Navigator.of(context).pop();
+                    }else{
+                      print('check class failed');
+                    }
+                  },
                   color: Colors.orange[900],
                   child: Text(
                     'บันทึกการเข้าร่วม',

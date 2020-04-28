@@ -19,8 +19,7 @@ class ClassPageDetailChild extends StatefulWidget {
   final User user;
   final Class class_;
 
-  const ClassPageDetailChild({Key key, this.user, this.class_})
-      : super(key: key);
+  ClassPageDetailChild({Key key, this.user, this.class_}) : super(key: key);
   @override
   _ClassPageDetailStateChild createState() =>
       _ClassPageDetailStateChild(user: user, class_: class_);
@@ -42,11 +41,17 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: Colors.white,
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
@@ -56,9 +61,9 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
               future: classModel.getUrlFromImageId(class_.id),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
-                  return LoadingWidget(height: 50, width: 50);
+                  return Center(child: LoadingWidget(height: 50, width: 50));
                 } else if (snapshot.data == null) {
-                  return LoadingWidget(height: 50, width: 50);
+                  return Center(child: LoadingWidget(height: 50, width: 50));
                 } else {
                   return Image.network(snapshot.data, fit: BoxFit.cover);
                 }
@@ -77,7 +82,8 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
               child: Text(
-                'วันที่ ' + DateFormat('dd/MM/yyyy').format(class_.beginDateTime),
+                'วันที่ ' +
+                    DateFormat('dd/MM/yyyy').format(class_.beginDateTime),
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -86,7 +92,11 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
               child: Text(
-                'เวลา 16:00 - 17:00',
+                'เวลา ' +
+                    DateFormat('kk:mm').format(class_.beginDateTime) +
+                    ' - ' +
+                    DateFormat('kk:mm').format(class_.endDateTime) +
+                    ' น.',
                 style: TextStyle(
                   fontSize: 16,
                 ),
@@ -100,138 +110,58 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                   color: Colors.black,
                   fontSize: 16,
                 ),
-          ),
-          ),
-          Spacer(),
-          Center(
-            child: Container(
-              width: 200,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.orange[900],
-                  borderRadius: BorderRadius.all(Radius.circular(100))),
-              child: FutureBuilder(
-                future: classModel.isReserved(class_.id),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasError) {
-                    return LoadingWidget(height: 50, width: 50);
-                  } else if (snapshot.data == null) {
-                    return LoadingWidget(height: 50, width: 50);
-                  } else {
-                    return (snapshot.data)
-                        ? FlatButton(
-                            color: Colors.black,
-                            onPressed: () async {
-                              //showClassDialog(context);
-                              final result =
-                                  await classModel.cancelClass(class_.id);
-                              if (result == 0) {
-                                print('cancel success');
-                                Navigator.of(context).pop();
-                              } else {
-                                print('cancel class failed');
-                                print('error code: $result');
-                              }
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100)),
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ))
-                        : FlatButton(
-                            onPressed: () async {
-                              showClassDialog(context);
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100)),
-                            child: Text(
-                              'Reserve',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ));
-                  }
-                },
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-            //   child: Center(
-            //     child: Container(
-            //       width: 200,
-            //       height: 50,
-            //       decoration: BoxDecoration(
-            //           color: Colors.orange[900],
-            //           borderRadius: BorderRadius.all(Radius.circular(100))),
-            //       child: FutureBuilder(
-            //         future: classModel.isReserved(class_.id),
-            //         builder: (BuildContext context, AsyncSnapshot snapshot) {
-            //           if (snapshot.hasError) {
-            //             return LoadingWidget(height: 50, width: 50);
-            //           } else if (snapshot.data == null) {
-            //             return LoadingWidget(height: 50, width: 50);
-            //           } else {
-            //             return (snapshot.data)
-            //                 ? FlatButton(
-            //                   color: Colors.black,
-            //                     onPressed: () async {
-            //                       //showClassDialog(context);
-            //                       final result =
-            //                           await classModel.cancelClass(class_.id);
-            //                       if (result == 0) {
-            //                         print('cancel success');
-            //                         Navigator.of(context).pop();
-            //                       } else {
-            //                         print('cancel class failed');
-            //                         print('error code: $result');
-            //                       }
-            //                     },
-            //                     shape: RoundedRectangleBorder(
-            //                         borderRadius: BorderRadius.circular(100)),
-            //                     child: Text(
-            //                       'Cancel',
-            //                       style: TextStyle(
-            //                           color: Colors.white,
-            //                           fontSize: 16,
-            //                           fontWeight: FontWeight.bold),
-            //                     ))
-            //                 : FlatButton(
-            //                     onPressed: () async {
-            //                       //showClassDialog(context);
-            //                       final result =
-            //                           await classModel.reserveClass(class_.id);
-            //                       if (result == 0) {
-            //                         print('reserve class success');
-            //                         Navigator.of(context).pop();
-            //                       } else {
-            //                         print('reserve class failed');
-            //                         print('error code: $result');
-            //                       }
-            //                     },
-            //                     shape: RoundedRectangleBorder(
-            //                         borderRadius: BorderRadius.circular(100)),
-            //                     child: Text(
-            //                       'Reserve',
-            //                       style: TextStyle(
-            //                           color: Colors.white,
-            //                           fontSize: 16,
-            //                           fontWeight: FontWeight.bold),
-            //                     ));
-            //           }
-            //         },
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-          ),
+            Center(
+              child: Container(
+                width: 200,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.orange[900],
+                    borderRadius: BorderRadius.all(Radius.circular(100))),
+                child: FutureBuilder(
+                  future: classModel.isReserved(class_.id),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: LoadingWidget(height: 50, width: 50));
+                    } else if (snapshot.data == null) {
+                      return Center(
+                          child: LoadingWidget(height: 50, width: 50));
+                    } else {
+                      return (snapshot.data)
+                          ? FlatButton(
+                              color: Colors.black,
+                              onPressed: () async {
+                                showClassDialog(context);
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100)),
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ))
+                          : FlatButton(
+                              onPressed: () async {
+                                showClassDialog(context);
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100)),
+                              child: Text(
+                                'Reserve',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ));
+                    }
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
