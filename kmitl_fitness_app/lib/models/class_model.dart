@@ -134,6 +134,9 @@ class ClassModel {
     }else if( DateTime.now()
             .difference(DateTime.fromMillisecondsSinceEpoch((snapshotClass['beginDateTime'].seconds*1000+snapshotClass['beginDateTime'].nanoseconds/1000000).round()))
             .inHours > -2){
+      print(DateTime.now()
+            .difference(DateTime.fromMillisecondsSinceEpoch((snapshotClass['beginDateTime'].seconds*1000+snapshotClass['beginDateTime'].nanoseconds/1000000).round()))
+            );
       return -3;
     }else{
       await updateClass(

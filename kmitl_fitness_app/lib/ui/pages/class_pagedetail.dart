@@ -133,7 +133,14 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                           ? FlatButton(
                               color: Colors.black,
                               onPressed: () async {
-                                showClassDialog(context);
+                                final result = await classModel.cancelClass(class_.id);
+                                if( result == 0){
+                                  print('cancel class success');
+                                  Navigator.of(context).pop();
+                                }else{
+                                  print('cancel class failed');
+                                  print('error code : $result');
+                                }
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(100)),
