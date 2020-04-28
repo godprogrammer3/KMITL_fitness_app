@@ -128,6 +128,7 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                   ),
                   SizedBox(height: 10),
                   TextField(
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
