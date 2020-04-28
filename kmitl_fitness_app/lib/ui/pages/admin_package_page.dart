@@ -143,13 +143,3 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
     );
   }
 }
-
-class AdminPackage {
-  String title;
-  String detail;
-  String price;
-  String time;
-  String pricePerDay;
-  AdminPackage(
-      {this.title, this.detail, this.price, this.time, this.pricePerDay});
-}

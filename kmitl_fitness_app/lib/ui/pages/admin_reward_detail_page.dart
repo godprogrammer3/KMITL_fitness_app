@@ -2,12 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+
 class AdminRewardDetailPage extends StatefulWidget {
+  final User user;
+  final Reward reward;
+  const AdminRewardDetailPage({Key key, this.user, this.reward})
+      : super(key: key);
   @override
-  _AdminRewardDetailPageState createState() => _AdminRewardDetailPageState();
+  _AdminRewardDetailPageState createState() =>
+      _AdminRewardDetailPageState(user: user, reward: reward);
 }
 
 class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
+  final User user;
+  final Reward reward;
+  RewardModel rewardModel;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController pointController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  TextEditingController detailController = TextEditingController();
+  _AdminRewardDetailPageState({this.user, this.reward});
   createAlertDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -25,8 +42,15 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
               MaterialButton(
                   elevation: 5.0,
                   child: Text("DELETE"),
-                  onPressed: () {
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    final result =
+                        await rewardModel.delete(reward.id);
+                    if (result == 0) {
+                      print('delete reward success');
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    } else {
+                      print('delete reward faild');
+                    }
                   })
             ],
           );
@@ -70,17 +94,44 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
               color: Colors.grey,
               height: MediaQuery.of(context).size.height / 2.5,
             ),
-            Container(
-              margin: EdgeInsets.all(20),
-              child: Text(
-                'No Image Select',
-                textAlign: TextAlign.center,
-              ),
-            ),
+            FutureBuilder(
+                future: rewardModel.getUrlFromImageId(reward.id),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                        child: Center(
+                            child: LoadingWidget(height: 50, width: 50)));
+                  } else if (snapshot.data == null) {
+                    return Center(
+                        child: Center(
+                            child: LoadingWidget(height: 50, width: 50)));
+                  } else {
+                    return Image.network(snapshot.data);
+                  }
+                }),
           ]);
         }
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    rewardModel = RewardModel(uid: user.uid);
+    titleController.text = reward.title;
+    pointController.text = reward.point.toString();
+    quantityController.text = reward.quantity.toString();
+    detailController.text = reward.detail;
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    pointController.dispose();
+    quantityController.dispose();
+    detailController.dispose();
+    super.dispose();
   }
 
   @override
@@ -127,8 +178,9 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                           Radius.circular(10),
                         ),
                       ),
-                      hintText: 'Title',
+                      hintText: 'Title : ' + reward.title,
                     ),
+                    controller: titleController,
                   ),
                   SizedBox(height: 10),
                   TextField(
@@ -138,8 +190,21 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                           Radius.circular(10),
                         ),
                       ),
-                      hintText: 'Point',
+                      hintText: 'Point : ' + reward.point.toString(),
                     ),
+                    controller: pointController,
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      hintText: 'Quantity : ' + reward.point.toString(),
+                    ),
+                    controller: quantityController,
                   ),
                   SizedBox(height: 10),
                   TextField(
@@ -151,8 +216,9 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                           Radius.circular(10),
                         ),
                       ),
-                      hintText: 'Detail',
+                      hintText: 'Detail : ' + reward.detail,
                     ),
+                    controller: detailController,
                   ),
                   SizedBox(height: 10),
                   Row(
@@ -181,7 +247,24 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                         width: MediaQuery.of(context).size.width / 2.5,
                         height: 60,
                         child: FlatButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final rewardModel = RewardModel(uid: user.uid);
+                              Map<String, dynamic> data = {
+                                'title': titleController.text,
+                                'point': int.parse(pointController.text),
+                                'quantity': int.parse(quantityController.text),
+                                'detail': detailController.text,
+                              };
+                              final realImage = await imageFile;
+                              final result = await rewardModel.update(
+                                  reward.id, data, realImage);
+                              if (result == 0) {
+                                print('update reward success');
+                                Navigator.of(context).pop();
+                              } else {
+                                print('update reward failed');
+                              }
+                            },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100),
                                 side: BorderSide(color: Colors.transparent)),

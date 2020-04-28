@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class PointPage extends StatefulWidget {
   final User user;
@@ -13,8 +15,8 @@ class PointPage extends StatefulWidget {
 
 class PointPageChild extends State<PointPage> {
   final User user;
-
-  createAlertDialog(BuildContext context) {
+  RewardModel rewardModel;
+  createAlertDialog(BuildContext context,String id,Reward reward) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -44,34 +46,27 @@ class PointPageChild extends State<PointPage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "ส่วนลด 5%",
+                    reward.title,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                  Text("ใช้ 50 point"),
+                  Text("ใช้ "+reward.point.toString()+" point"),
                   SizedBox(height: 20),
                   Text(
-                      'ส่วนลดใช้กับ package membership รายเดือนจาก 500 บาท เหลือ 475 บาท'),
-                  Text(
-                    'วิธีใช้',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text('กดแลกรับแล้วเข้าไปหน้าmembership ระบบจะลดราคา'),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'เงื่อนไข',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text('- 1 สิทธิ์ / 1 ท่าน / 1 เดือน'),
-                  Text('- จำกัด 1,000 สิทธิ์'),
+                      reward.detail),
                   SizedBox(
                     height: 30,
                   ),
                   FlatButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final result = await rewardModel.redeem(id);
+                        if( result == 0){
+                          print('redeem reward success');
+                          Navigator.of(context).pop();
+                        }else{
+                          print('redeem reward failed');
+                          print('error code : $result');
+                        }
+                      },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                           side: BorderSide(color: Colors.transparent)),
@@ -91,216 +86,120 @@ class PointPageChild extends State<PointPage> {
   }
 
   PointPageChild({this.user});
+
+  @override
+  void initState() {
+    super.initState();
+    rewardModel = RewardModel(uid: user.uid);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            color: Colors.white,
-          ),
-          title: Text(
-            "Reward",
-            style: TextStyle(color: Colors.white, fontSize: 25),
-            textAlign: TextAlign.left,
-          ),
-          backgroundColor: Colors.orange[900],
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: Colors.white,
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: <Widget>[
-              Flexible(
-                flex: 0,
-                child: Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.stars,
-                          color: Colors.orange[900],
-                        ),
-                        Text(
-                          "300",
-                          style: TextStyle(fontSize: 23),
-                        )
-                      ],
-                    )),
-              ),
-              Expanded(
-                child: Container(
-                  //height: MediaQuery.of(context).size.height * 0.8,
-                  child: SingleChildScrollView(
+        title: Text(
+          "Reward",
+          style: TextStyle(color: Colors.white, fontSize: 25),
+          textAlign: TextAlign.left,
+        ),
+        backgroundColor: Colors.orange[900],
+      ),
+      body: StreamBuilder(
+          stream: rewardModel.rewards,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              return Center(child: LoadingWidget(height: 50, width: 50));
+            } else if (snapshot.data == null) {
+              return Center(child: Text("Empty"));
+            } else {
+              List<Widget> widgets = List<Widget>();
+              for (int i = 0; i < snapshot.data.length; i++) {
+                widgets.add(Container(
+                  child: Card(
+                    elevation: 5.0,
+                    margin: EdgeInsets.all(5.0),
+                    child: InkWell(
+                      onTap: () {
+                        createAlertDialog(context,snapshot.data[i].id,snapshot.data[i]);
+                      },
                       child: Column(
-                    children: <Widget>[
-                      GridView.count(
-                        physics: ScrollPhysics(),
-                        primary: true,
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        children: <Widget>[
-                          Container(
-                            child: Card(
-                              elevation: 5.0,
-                              margin: EdgeInsets.all(5.0),
-                              child: InkWell(
-                                onTap: () {
-                                  createAlertDialog(context);
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.18,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/5percent.jpg'),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FutureBuilder(
+                            future: rewardModel
+                                .getUrlFromImageId(snapshot.data[i].id),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasError) {
+                                return Center(
+                                    child:
+                                        LoadingWidget(height: 50, width: 50));
+                              } else if (snapshot.data == null) {
+                                return Center(
+                                    child:
+                                        LoadingWidget(height: 50, width: 50));
+                              } else {
+                                return Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.18,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(snapshot.data),
+                                      fit: BoxFit.fill,
                                     ),
-                                    ListTile(
-                                      title: Text('ส่วนลด 5 %',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                      subtitle: Text("ใช้  50 point"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                  ),
+                                );
+                              }
+                            },
                           ),
-                          Container(
-                            child: Card(
-                              elevation: 5.0,
-                              margin: EdgeInsets.all(5.0),
-                              child: InkWell(
-                                onTap: () {
-                                  /*
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return AdminRewardDetailPage();
-                                  }));*/
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.18,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/10percent.png'),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      title: Text('ส่วนลด 10 %',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                      subtitle: Text("ใช้  100 point"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          ListTile(
+                            title: Text(snapshot.data[i].title,
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            subtitle: Text("ใช้  " +
+                                snapshot.data[i].point.toString() +
+                                " point"),
                           ),
-                          Container(
-                            child: Card(
-                              elevation: 5.0,
-                              margin: EdgeInsets.all(5.0),
-                              child: InkWell(
-                                onTap: () {
-                                  /*
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return AdminRewardDetailPage();
-                                  }));*/
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.18,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/water.jpg'),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      title: Text('น้ำดื่ม',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                      subtitle: Text("ใช้  199 point"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Card(
-                              elevation: 5.0,
-                              margin: EdgeInsets.all(5.0),
-                              child: InkWell(
-                                onTap: () {
-                                  /*
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return AdminRewardDetailPage();
-                                  }));*/
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.18,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/sponsor.png'),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      title: Text('น้ำดื่มเกลือแร่',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                      subtitle: Text("ใช้  299 point"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
                         ],
                       ),
-                    ],
-                  )),
+                    ),
+                  ),
+                ));
+              }
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        //height: MediaQuery.of(context).size.height * 0.8,
+                        child: SingleChildScrollView(
+                            child: Column(
+                          children: <Widget>[
+                            GridView.count(
+                              physics: ScrollPhysics(),
+                              primary: true,
+                              shrinkWrap: true,
+                              crossAxisCount: 2,
+                              children: widgets,
+                            ),
+                          ],
+                        )),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ));
+              );
+            }
+          }),
+    );
   }
 }

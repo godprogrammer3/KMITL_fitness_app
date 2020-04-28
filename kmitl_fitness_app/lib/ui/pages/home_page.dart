@@ -86,9 +86,9 @@ class _HomePageStateChild extends State<HomePageChild> {
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 if (snapshot.hasError) {
-                                  return LoadingWidget(height: 50, width: 50);
+                                  return Center(child: LoadingWidget(height: 50, width: 50));
                                 } else if (snapshot.data == null) {
-                                  return LoadingWidget(height: 50, width: 50);
+                                  return Center(child: LoadingWidget(height: 50, width: 50));
                                 } else {
                                   return Container(
                                     height: 150.0,

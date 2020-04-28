@@ -48,8 +48,6 @@ class ClassModel {
     }catch (error) {
       return -1;
     }
-    
-    
   }
 
   Future<List<Map<String,dynamic>>> getPersons(String id) async {

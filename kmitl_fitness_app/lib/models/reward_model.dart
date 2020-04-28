@@ -15,45 +15,68 @@ class RewardModel {
       FirebaseStorage.instance.ref().child('reward');
   RewardModel({@required this.uid});
 
-  Future<void> create(Map<String, dynamic> rewardData, File imageFile) async {
-    rewardData['owner'] = this.uid;
-    final document = await rewardCollection.add(rewardData);
-    await document.updateData({
-      'createdTime': FieldValue.serverTimestamp(),
-      'updatedTime': FieldValue.serverTimestamp(),
-      'imageId': document.documentID,
-    });
-    StorageUploadTask uploadTask =
-        storageReference.child(document.documentID).putFile(imageFile);
-    return await uploadTask.onComplete;
+  Future<int> create(Map<String, dynamic> rewardData, File imageFile) async {
+    try {
+      rewardData['owner'] = this.uid;
+      final document = await rewardCollection.add(rewardData);
+      await document.updateData({
+        'createdTime': FieldValue.serverTimestamp(),
+        'updatedTime': FieldValue.serverTimestamp(),
+      });
+      StorageUploadTask uploadTask =
+          storageReference.child(document.documentID).putFile(imageFile);
+      await uploadTask.onComplete;
+      return 0;
+    } catch (error) {
+      return -1;
+    }
   }
 
- Future<void> update(
+  Future<int> update(
       String rewardId, Map<String, dynamic> updateData, File imageFile) async {
-    updateData['updatedTime'] = FieldValue.serverTimestamp();  
-    if (imageFile != null) {
-      StorageUploadTask uploadTask =
-          storageReference.child(rewardId).putFile(imageFile);
-      await uploadTask.onComplete;
+    try {
+      updateData['updatedTime'] = FieldValue.serverTimestamp();
+      if (imageFile != null) {
+        StorageUploadTask uploadTask =
+            storageReference.child(rewardId).putFile(imageFile);
+        await uploadTask.onComplete;
+      }
+      await rewardCollection.document(rewardId).updateData(updateData);
+      return 0;
+    } catch (error) {
+      return -1;
     }
-    return await rewardCollection.document(rewardId).updateData(updateData);
+  }
+
+  Future<int> delete(String id) async {
+    try{
+      await rewardCollection.document(id).delete();
+      return 0;
+    }catch (error) {
+      return -1;
+    }
   }
 
   Future<int> redeem(String rewardId) async {
     final snapshotReward = await rewardCollection.document(rewardId).get();
     final userModel = UserModel(uid: this.uid);
     final userData = await userModel.getUserData();
-    if( snapshotReward['point'] > userData.point){
-      return -1;
-    }else if( snapshotReward['persons'].contains(this.uid)){
-      return -2;
-    }else if( snapshotReward['quantity'] <= 0){
-      return -3;
+    var persons;
+    if( snapshotReward['person'] != null){
+      persons = List<String>.from(snapshotReward['person']);
     }
+    if (snapshotReward['point'] > userData.point) {
+      return -1;
+    } else if (snapshotReward['quantity'] <= 0) {
+      return -2;
+    }else if (snapshotReward['person'] != null && persons.contains(this.uid)) {
+      return -3;
+    } 
     await rewardCollection.document(rewardId).updateData({
       'quantity': FieldValue.increment(-1),
-      'person':  FieldValue.arrayUnion([this.uid])
+      'person': FieldValue.arrayUnion([this.uid])
     });
+    await userModel.updateUserData({'point':userData.point-snapshotReward['point']});
     return 0;
   }
 
@@ -61,16 +84,20 @@ class RewardModel {
     return snapshot.documents.map((doc) {
       return Reward(
         id: doc.documentID,
-        imageId: doc.data['imageId'],
         title: doc.data['title'],
+        detail: doc.data['detail'],
         point: doc.data['point'],
         quantity: doc.data['quantity'],
-        beginDateTime: DateTime.fromMillisecondsSinceEpoch((doc.data['beginDateTime'].seconds*1000+doc.data['beginDateTime'].nanoseconds/1000000).round()),
-        endDateTime: DateTime.fromMillisecondsSinceEpoch((doc.data['endDateTime'].seconds*1000+doc.data['endDateTime'].nanoseconds/1000000).round()),
-        createdTime: DateTime.fromMillisecondsSinceEpoch((doc.data['createdTime'].seconds*1000+doc.data['createdTime'].nanoseconds/1000000).round()),
-        updatedTime:  DateTime.fromMillisecondsSinceEpoch((doc.data['updatedTime'].seconds*1000+doc.data['updatedTime'].nanoseconds/1000000).round()),
+        createdTime: DateTime.fromMillisecondsSinceEpoch(
+            (doc.data['createdTime'].seconds * 1000 +
+                    doc.data['createdTime'].nanoseconds / 1000000)
+                .round()),
+        updatedTime: DateTime.fromMillisecondsSinceEpoch(
+            (doc.data['updatedTime'].seconds * 1000 +
+                    doc.data['updatedTime'].nanoseconds / 1000000)
+                .round()),
         owner: doc.data['owner'],
-        person: doc.data['person'],
+        person: doc.data['person']!=null?List<String>.from(doc.data['person']):null,
       );
     }).toList();
   }
@@ -78,8 +105,13 @@ class RewardModel {
   Stream<List<Reward>> get rewards {
     return rewardCollection.snapshots().map(_rewardFromSnapshot);
   }
-  Future<Image> getImageFromImageId(String imageId) async {
-    final imageUrl = await storageReference.child(imageId).getDownloadURL();
-    return Image.network(imageUrl);
+
+  Future<String> getUrlFromImageId(String imageId) async {
+    try {
+      final url = await storageReference.child(imageId).getDownloadURL();
+      return url;
+    } catch (error) {
+      return null;
+    }
   }
 }
