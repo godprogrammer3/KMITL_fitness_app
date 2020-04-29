@@ -52,7 +52,9 @@ class _NavigationStateChild extends State<NavigationChild> {
     firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
       if (this.user != null) {
+        print('user is not null');
         final result = await treadmillModel.checkValidNotifications();
+        print('result is $result');
         if (result == 0 && _selectedIndex != 3) {
           Navigator.of(context).popUntil((route) => route.isFirst);
           setState(() {

@@ -19,6 +19,9 @@ class UserModel {
   }
   Future<UserData> getUserData() async {
     final snapshot = await userDataCollection.document(uid).get();
+    if( snapshot == null){
+      return null;
+    }
       return UserData(
         uid:uid,
         firstName:snapshot['firstName'],
@@ -31,11 +34,6 @@ class UserModel {
         faceId:snapshot['faceId'],
         isHaveYellowCard:snapshot['isHaveYellowCard'],
       );
-  }
-   Future<void> updateMembership(String membershipExpireDate) async {
-    return await userDataCollection.document(uid).updateData({
-      'membershipExpireDate': membershipExpireDate,
-    });
   }
 
 }

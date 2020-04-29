@@ -94,7 +94,7 @@ class _HomePageStateChild extends State<HomePageChild> {
                                     height: 150.0,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: NetworkImage(snapshot.data),
+                                        image: buildImage(snapshot),
                                         fit: BoxFit.fitWidth,
                                       ),
                                     ),
@@ -135,5 +135,13 @@ class _HomePageStateChild extends State<HomePageChild> {
         },
       ),
     );
+  }
+
+  ImageProvider buildImage(AsyncSnapshot snapshot){
+    try{ 
+      return NetworkImage(snapshot.data);
+    }catch(error){
+      return AssetImage('assets/images/flutter.png');
+    }
   }
 }
