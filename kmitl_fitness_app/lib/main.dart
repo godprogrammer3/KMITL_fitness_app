@@ -50,7 +50,7 @@ class SelectPage extends StatelessWidget {
     if (user != null) {
       firebaseMessaging.getToken().then((token) async {
         final userModel = UserModel(uid: user.uid);
-        await userModel.updateUserData({'fcmToken': token});
+        await userModel.updateUserData({'fcmToken': token,'isSignedIn':true});
       });
       final adminUserModel = UserModel(uid: user.uid);
       return FutureBuilder(
