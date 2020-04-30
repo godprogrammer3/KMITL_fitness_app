@@ -3,6 +3,7 @@ import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/main.dart';
+import 'package:provider/provider.dart';
 
 class NavigationWidget extends StatelessWidget {
   final User user;
@@ -49,60 +50,48 @@ class _NavigationStateChild extends State<NavigationChild> {
   }
 
   void initFirebaseMessaging() {
+    firebaseMessaging.subscribeToTopic('notification');
     firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-      if (this.user != null) {
-        print('user is not null');
-        final result = await treadmillModel.checkValidNotifications();
-        print('result is $result');
-        if (result == 0 && _selectedIndex != 3) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-        } else if (result == 1) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-        }
-      }
-      print("fcm received");
-      print("onMessageInNavigation: $message");
+          final user = Provider.of<User>(context);
+          if (user != null) {
+            print('user != null');
+            if( message['data']['type'] == 'RunQueue' || message['data']['type'] == 'AcceptQueue'){
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              setState(() {
+                _selectedIndex = 3;
+              });
+            }
+            
+          }
+          print("fcm received");
+          print("onMessageInNavigation: $message");
     }, onLaunch: (Map<String, dynamic> message) async {
-      if (this.user != null) {
-        final result = await treadmillModel.checkValidNotifications();
-        if (result == 0 && _selectedIndex != 3) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-        } else if (result == 1) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-        }
-      }
-      // print("fcm received");
-      // print("onLaunchInNavigation: $message");
+          final user = Provider.of<User>(context);
+          if (user != null) {
+            print('user != null');
+            if( message['data']['type'] == 'RunQueue' || message['data']['type'] == 'AcceptQueue'){
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              setState(() {
+                _selectedIndex = 3;
+              });
+            }
+          }
+          print("fcm received");
+          print("onLaunchInNavigation: $message");
     }, onResume: (Map<String, dynamic> message) async {
-      if (this.user != null) {
-        final result = await treadmillModel.checkValidNotifications();
-        if (result == 0 && _selectedIndex != 3 ) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-        } else if (result == 1) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          setState(() {
-            _selectedIndex = 3;
-          });
-        }
-      }
-      print("fcm received");
-      print("onResumeInNavigation: $message");
+          final user = Provider.of<User>(context);
+          if (user != null) {
+            print('user != null');
+           if( message['data']['type'] == 'RunQueue' || message['data']['type'] == 'AcceptQueue'){
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              setState(() {
+                _selectedIndex = 3;
+              });
+            }
+          }
+          print("fcm received");
+          print("onResumeInNavigation: $message");
     });
   }
 

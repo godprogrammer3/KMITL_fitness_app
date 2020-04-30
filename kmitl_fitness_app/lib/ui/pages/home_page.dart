@@ -49,7 +49,7 @@ class _HomePageStateChild extends State<HomePageChild> {
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
-                return NotificationPage();
+                return NotificationPage(user:user);
               }));
             },
             color: Colors.white,

@@ -8,3 +8,4 @@ export './event.dart';
 export './locker.dart';
 export './reward.dart';
 export './package.dart';
+export './notification.dart';

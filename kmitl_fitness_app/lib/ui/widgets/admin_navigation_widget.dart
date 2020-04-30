@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
-
+import 'package:kmitl_fitness_app/main.dart';
 
 class AdminNavigationWidget extends StatelessWidget {
   final User user;
@@ -30,6 +30,7 @@ class _AdminNavigationStateChild extends State<AdminNavigationChild> {
   @override
   void initState() {
     super.initState();
+    initFirebaseMessaging();
     _pageOptions = [
       AdminStatisticPage(user: user),
       AdminClassManagement(user: user),
@@ -38,7 +39,9 @@ class _AdminNavigationStateChild extends State<AdminNavigationChild> {
       AdminProfilePage(user: user)
     ];
   }
-
+  void initFirebaseMessaging() {
+    firebaseMessaging.unsubscribeFromTopic('notification');
+  }
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
