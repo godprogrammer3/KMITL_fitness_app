@@ -49,7 +49,7 @@ class _ClassPageStateChild extends State<ClassPageChild> {
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
-                return NotificationPage();
+                return NotificationPage(user:user);
               }));
             },
             color: Colors.white,

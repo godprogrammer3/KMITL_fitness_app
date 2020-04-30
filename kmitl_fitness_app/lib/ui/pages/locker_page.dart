@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/locator.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 import 'package:kmitl_fitness_app/util/datamodels/dialog_type.dart';
 import 'package:kmitl_fitness_app/util/services/dialog_service.dart';
@@ -83,6 +84,18 @@ class _LockerPageStateChild extends State<LockerPageChild> {
           'Locker',
           style: TextStyle(color: Colors.white),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return NotificationPage(user:user);
+              }));
+            },
+            color: Colors.white,
+          )
+        ],
         backgroundColor: Colors.orange[900],
       ),
       body: StreamBuilder(

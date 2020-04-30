@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
 class TreadmillPage extends StatelessWidget {
@@ -130,7 +131,20 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
         appBar: AppBar(
           centerTitle: true,
           title: Text('Treadmill'),
+          actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return NotificationPage(user:user);
+              }));
+            },
+            color: Colors.white,
+          )
+        ],
         ),
+        
         body: Container(
           height: MediaQuery.of(context).size.height,
           child: Column(children: <Widget>[
