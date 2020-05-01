@@ -178,6 +178,17 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                 color: Colors.grey[900], fontSize: 15)),
                       ),
                       FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return TutorialPage();
+                          }));
+                        },
+                        child: Text("Tutorial",
+                            style: TextStyle(
+                                color: Colors.grey[900], fontSize: 15)),
+                      ),
+                      FlatButton(
                         onPressed: () async {
                           final userModel = UserModel(uid: user.uid);
                           await userModel.updateUserData({'isSignedIn':false});

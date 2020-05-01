@@ -35,3 +35,4 @@ export './admin_package_editing_page.dart';
 export './admin_post_editing_page.dart';
 export './admin_income_page.dart';
 export './admin_userlog_page.dart';
+export './tutorial_page.dart';
