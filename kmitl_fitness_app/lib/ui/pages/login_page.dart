@@ -122,13 +122,14 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                       width: 300,
                       height: 50,
                       child: Builder(
-                             builder: (BuildContext context) => FlatButton(
-                             onPressed: () async {
+                        builder: (BuildContext context) => FlatButton(
+                            onPressed: () async {
+                              email.text = email.text.trimRight();
                               setState(() => _isLoading = true);
                               final user =
                                   await authenModel.signInWithEmailAndPassword(
                                       email.text, password.text);
-                              if(this.mounted){
+                              if (this.mounted) {
                                 setState(() => _isLoading = false);
                               }
                               if (user == null) {
@@ -186,14 +187,25 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                           onPressed: () {},
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
-                              side: BorderSide(color: Colors.transparent)),
-                          color: Colors.blue[900],
-                          child: Text(
-                            "LOGIN WITH FACEBOOK",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                              side: BorderSide(color: Colors.grey)),
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/google_logo.png',
+                                height: 30.0,
+                                width: 30.0,
+                              ),
+                              SizedBox(width: 30,),
+                              Text(
+                                  "LOGIN WITH GOOGLE",
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
+                                      ),
+                                ),
+                            ],
                           )),
                     ),
                     SizedBox(height: 10),
