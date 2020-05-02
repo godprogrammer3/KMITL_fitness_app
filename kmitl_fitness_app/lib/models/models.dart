@@ -8,3 +8,4 @@ export './package_model.dart';
 export './reward_model.dart';
 export './notification_model.dart';
 export './time_attendance_model.dart';
+export './income_model.dart';
