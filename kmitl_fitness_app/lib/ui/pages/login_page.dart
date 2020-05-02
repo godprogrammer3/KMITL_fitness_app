@@ -124,6 +124,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                       child: Builder(
                         builder: (BuildContext context) => FlatButton(
                             onPressed: () async {
+                              email.text = email.text.trimRight();
                               setState(() => _isLoading = true);
                               final user =
                                   await authenModel.signInWithEmailAndPassword(
