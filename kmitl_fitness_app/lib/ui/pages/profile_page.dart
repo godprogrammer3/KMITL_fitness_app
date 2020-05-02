@@ -170,10 +170,10 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return AboutPage(user: user);
+                            return TutorialPage();
                           }));
                         },
-                        child: Text("About",
+                        child: Text("Tutorial",
                             style: TextStyle(
                                 color: Colors.grey[900], fontSize: 15)),
                       ),
@@ -181,10 +181,10 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return TutorialPage();
+                            return AboutPage(user: user);
                           }));
                         },
-                        child: Text("Tutorial",
+                        child: Text("About",
                             style: TextStyle(
                                 color: Colors.grey[900], fontSize: 15)),
                       ),
