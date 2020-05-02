@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -99,6 +100,15 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
                 style: TextStyle(
                   fontSize: 16,
                 ),
+              ),
+              RaisedButton(
+                onPressed: () async {
+                  final result = await TimeAttendanceModel().getAllTimeAttendanceChartData();
+                  for(var i in result){
+                    print(i.date.toString()+':'+i.totalPerson.toString());
+                  }
+                },
+                child: Text('test api'),
               ),
             ],
           ),
