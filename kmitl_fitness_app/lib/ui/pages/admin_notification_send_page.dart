@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
-import 'package:kmitl_fitness_app/models/notification_model.dart';
-import 'package:kmitl_fitness_app/models/package_model.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+
 
 class AdminNotificationSendPage extends StatelessWidget {
   final TextEditingController _titleController = TextEditingController();

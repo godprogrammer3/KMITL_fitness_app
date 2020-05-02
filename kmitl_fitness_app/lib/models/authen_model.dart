@@ -30,6 +30,7 @@ class AuthenModel {
     }
   }
 
+
   // register with email and password
   Future register(UserData userData, String password) async {
     try {

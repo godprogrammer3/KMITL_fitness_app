@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 
@@ -23,8 +24,19 @@ class AdminPasswordPageChild extends StatefulWidget {
 class _AdminPasswordPageStateChild extends State<AdminPasswordPageChild> {
   final authenModel = AuthenModel();
   final User user;
-
+  TextEditingController _currentPasswordController = TextEditingController();
+  TextEditingController _newPasswordController = TextEditingController();
+  TextEditingController _confiremNewPasswordController =
+      TextEditingController();
   _AdminPasswordPageStateChild({this.user});
+  @override
+  void dispose() {
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confiremNewPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +71,7 @@ class _AdminPasswordPageStateChild extends State<AdminPasswordPageChild> {
                   ),
                 ),
                 obscureText: true,
+                controller: _currentPasswordController,
               )),
           SizedBox(
             height: 20,
@@ -78,6 +91,7 @@ class _AdminPasswordPageStateChild extends State<AdminPasswordPageChild> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
+                controller: _newPasswordController,
                 obscureText: true,
               )),
           SizedBox(
@@ -89,7 +103,7 @@ class _AdminPasswordPageStateChild extends State<AdminPasswordPageChild> {
               child: TextField(
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock),
-                  hintText: "New Password, again",
+                  hintText: "Confirm new password",
                   hintStyle: TextStyle(
                     color: Colors.grey,
                     fontSize: 12.0,
@@ -99,28 +113,8 @@ class _AdminPasswordPageStateChild extends State<AdminPasswordPageChild> {
                   ),
                 ),
                 obscureText: true,
+                controller: _confiremNewPasswordController,
               )),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            width: 200,
-            height: 50,
-            decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(100))),
-            child: FlatButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100)),
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                )),
-          ),
           SizedBox(
             height: 20,
           ),
@@ -132,14 +126,27 @@ class _AdminPasswordPageStateChild extends State<AdminPasswordPageChild> {
                 borderRadius: BorderRadius.all(Radius.circular(100))),
             child: FlatButton(
                 onPressed: () async {
-                  final userModel = UserModel(uid: user.uid);
-                  await userModel.updateUserData({'fcmToken': ''});
-                  await authenModel.signOut();
+                  final userData = await UserModel(uid: user.uid).getUserData();
+                  final resultUser = await AuthenModel()
+                      .signInWithEmailAndPassword(
+                          userData.email, _currentPasswordController.text);
+                  if (resultUser != null) {
+                    try {
+                      await resultUser
+                          .updatePassword(_newPasswordController.text);
+                      print('change password success');
+                      Navigator.of(context).pop();
+                    } catch (error) {
+                      print('change password failed');
+                    }
+                  } else {
+                    print('change password failed');
+                  }
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100)),
                 child: Text(
-                  'Return',
+                  'Save',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

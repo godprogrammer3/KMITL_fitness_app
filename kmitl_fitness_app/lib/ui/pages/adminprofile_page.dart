@@ -56,14 +56,18 @@ class _AdminProfilePageStateChild extends State<AdminProfilePageChild> {
           FlatButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AdminPasswordPage(),
+                builder: (context) => AdminPasswordPage(user:user),
               ));
             },
             child: Text("Password",
                 style: TextStyle(color: Colors.grey[900], fontSize: 15)),
           ),
           FlatButton(
-            onPressed: () => {},
+            onPressed: (){
+               Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>  AboutPage(),
+              ));
+            },
             child: Text("About",
                 style: TextStyle(color: Colors.grey[900], fontSize: 15)),
           ),
