@@ -12,27 +12,14 @@ class NotificationPage extends StatelessWidget {
     return NotificationPageChild(user: user);
   }
 }
-
-var messages = const [
-  {'subject': 'LOCKER', 'body': 'คุณใช้ล็อคเกอร์นานเกินกำหนดแล้วนะ'},
-  {'subject': 'Treadmill is READY!', 'body': 'Treadmill ของคุณพร้อมแล้ว!!!'},
-  {'subject': 'CLASS', 'body': 'Class ของคุณจะเริ่มในอีก 30 นาที'},
-  {
-    'subject': 'CLASS',
-    'body': 'คุณไม่ได้เช็คชื่อเข้าคลาสที่ลงไว้ จะติดสถานะใบเหลือง'
-  }
-];
-
-List<int> list = [4292149248, 4278241363, 4294929664, 4292149248];
-
-Map<String,IconData> symbol = {
-  'class': Icons.schedule,
-  'post': Icons.assignment,
-};
-
 class NotificationPageChild extends StatelessWidget {
   final User user;
   const NotificationPageChild({Key key, this.user}) : super(key: key);
+  final Map<String, IconData> symbol = const {
+    'class': Icons.schedule,
+    'post': Icons.assignment,
+    'admin':Icons.assignment_ind
+  };
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -27,7 +27,6 @@ class AdminUserLogPageChild extends StatefulWidget {
 class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
   final authenModel = AuthenModel();
   final User user;
-  List<TimeAttendanceChartData> _timeAttendanceChartDatas = List<TimeAttendanceChartData>();
   _AdminUserLogPageStateChild({this.user});
   @override
   Widget build(BuildContext context) {

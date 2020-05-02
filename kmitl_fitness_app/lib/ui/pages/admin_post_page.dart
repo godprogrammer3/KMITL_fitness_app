@@ -46,16 +46,29 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.orange[900],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return AdminNotificationPage(user: user);
+              }));
+            },
+            color: Colors.white,
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-            return AdminPostAddingPage(user: user);
-          }));
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AdminPostAddingPage(user: user),
+          ));
         },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.orange[900],
+        icon: Icon(Icons.add),
+        label: Text('Create'),
+        elevation: 10,
       ),
       body: StreamBuilder(
         stream: postModel.posts,
@@ -75,8 +88,8 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                AdminPostEditingPage(post:snapshot.data[index]),
+                            builder: (context) => AdminPostEditingPage(
+                                post: snapshot.data[index]),
                           ));
                         },
                         child: Column(

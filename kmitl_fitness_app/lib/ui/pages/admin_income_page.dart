@@ -26,7 +26,6 @@ class AdminIncomePageChild extends StatefulWidget {
 class _AdminIncomePageStateChild extends State<AdminIncomePageChild> {
   final authenModel = AuthenModel();
   final User user;
-  List<IncomeChartData> _incomeChartDatas = List<IncomeChartData>();
   _AdminIncomePageStateChild({this.user});
   @override
   Widget build(BuildContext context) {
@@ -84,9 +83,6 @@ class _AdminIncomePageStateChild extends State<AdminIncomePageChild> {
                           return Center(
                               child: LoadingWidget(height: 50, width: 50));
                         } else {
-                          for( var  i in snapshot.data){
-                            print(i.date.toString()+'->'+i.value.toString());
-                          }
                           return charts.TimeSeriesChart(
                             [
                               charts.Series<IncomeChartData, DateTime>(
@@ -94,7 +90,7 @@ class _AdminIncomePageStateChild extends State<AdminIncomePageChild> {
                                 domainFn: (IncomeChartData datum, int index) {
                                   return datum.date;
                                 },
-                                id: 'time_attendance_chart',
+                                id: 'income_chart',
                                 measureFn: (IncomeChartData datum, int index) {
                                   return datum.value;
                                 },
