@@ -161,7 +161,12 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                 color: Colors.grey[900], fontSize: 15)),
                       ),
                       FlatButton(
-                        onPressed: () => {},
+                        onPressed: (){
+                           Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return PasswordPage();
+                          }));
+                        },
                         child: Text("Password",
                             style: TextStyle(
                                 color: Colors.grey[900], fontSize: 15)),

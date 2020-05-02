@@ -38,3 +38,4 @@ export './admin_userlog_page.dart';
 export './tutorial_page.dart';
 export './admin_notification_page.dart';
 export './admin_notification_send_page.dart';
+export './password_page.dart';
