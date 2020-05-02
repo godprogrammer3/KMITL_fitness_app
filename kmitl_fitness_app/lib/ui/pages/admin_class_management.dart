@@ -24,67 +24,10 @@ class AdminClassManagementChild extends StatefulWidget {
       _AdminClassManagementChildState(user: user);
 }
 
-class Classes {
-  String title;
-  TimeOfDay startTime;
-  TimeOfDay endTime;
-  int maximum;
-  int reserved;
-  bool isFull;
-  String imagePath;
-  String creator;
-
-  Classes({
-    this.title,
-    this.startTime,
-    this.endTime,
-    this.maximum,
-    this.reserved,
-    this.isFull,
-    this.imagePath,
-    this.creator,
-  });
-}
-
 class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
   final User user;
   ClassModel classModel;
   _AdminClassManagementChildState({this.user});
-
-  Class classData;
-
-  List<Classes> classes = [
-    Classes(
-      title: 'Yoga',
-      startTime: TimeOfDay(hour: 17, minute: 0),
-      endTime: TimeOfDay(hour: 18, minute: 0),
-      maximum: 20,
-      reserved: 17,
-      isFull: false,
-      imagePath: 'assets/images/YogaEx.jpg',
-      creator: 'Admin A',
-    ),
-    Classes(
-      title: 'Cardio Boxing',
-      startTime: TimeOfDay(hour: 18, minute: 0),
-      endTime: TimeOfDay(hour: 19, minute: 0),
-      maximum: 20,
-      reserved: 20,
-      isFull: true,
-      imagePath: 'assets/images/cardio_boxing.jpg',
-      creator: 'Admin B',
-    ),
-    Classes(
-      title: 'Dance',
-      startTime: TimeOfDay(hour: 19, minute: 0),
-      endTime: TimeOfDay(hour: 20, minute: 0),
-      maximum: 20,
-      reserved: 3,
-      isFull: false,
-      imagePath: 'assets/images/dance.jpg',
-      creator: 'Admin C',
-    ),
-  ];
   @override
   void initState() {
     super.initState();
@@ -97,6 +40,18 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Class Management'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return AdminNotificationPage(user: user);
+              }));
+            },
+            color: Colors.white,
+          )
+        ],
       ),
       body: Container(
         child: StreamBuilder(
@@ -117,7 +72,8 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AdminClassDetail(user:user,class_:snapshot.data[index]),
+                          builder: (context) => AdminClassDetail(
+                              user: user, class_: snapshot.data[index]),
                         ));
                       },
                       child: Stack(
@@ -156,16 +112,18 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  DateFormat('kk:mm').format(snapshot.data[index].beginDateTime)
-                                  +
+                                  DateFormat('kk:mm').format(
+                                          snapshot.data[index].beginDateTime) +
                                       ' - ' +
-                                      DateFormat('kk:mm').format(snapshot.data[index].endDateTime)+' น.',
+                                      DateFormat('kk:mm').format(
+                                          snapshot.data[index].endDateTime) +
+                                      ' น.',
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
-                                trailing: Text(
-                                    'Created By: ' + snapshot.data[index].ownerFirstname),
+                                trailing: Text('Created By: ' +
+                                    snapshot.data[index].ownerFirstname),
                               ),
                             ],
                           ),
@@ -181,15 +139,18 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                                 height: 60,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: snapshot.data[index].totalPerson >= snapshot.data[index].limitPerson
+                                  color: snapshot.data[index].totalPerson >=
+                                          snapshot.data[index].limitPerson
                                       ? Colors.red
                                       : Colors.lightGreenAccent[700],
                                 ),
                                 child: Center(
                                   child: Text(
-                                      snapshot.data[index].totalPerson.toString() +
+                                      snapshot.data[index].totalPerson
+                                              .toString() +
                                           '/' +
-                                          snapshot.data[index].limitPerson.toString(),
+                                          snapshot.data[index].limitPerson
+                                              .toString(),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),

@@ -27,4 +27,13 @@ class NotificationModel{
     return notificationCollection.snapshots().map(_notificationFromSnapshot);
   }
 
+  Future<int> send(Map<String,dynamic> data) async {
+    try{
+      data['createdTime'] =  FieldValue.serverTimestamp();
+      await notificationCollection.add(data);
+      return 0;
+    }catch(err){
+      return -1;
+    }
+  }
 }
