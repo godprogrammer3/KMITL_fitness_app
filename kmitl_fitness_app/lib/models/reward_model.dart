@@ -76,7 +76,7 @@ class RewardModel {
       'quantity': FieldValue.increment(-1),
       'person': FieldValue.arrayUnion([this.uid])
     });
-    await userModel.updateUserData({'point':userData.point-snapshotReward['point']});
+    await userModel.updateUserData({'point':userData.point-snapshotReward['point']},null);
     return 0;
   }
 

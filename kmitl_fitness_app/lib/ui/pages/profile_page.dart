@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
-import 'package:kmitl_fitness_app/ui/pages/membership_page.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 
@@ -49,7 +48,7 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return EditProfilePage();
+                  return EditProfilePage(user: user);
                 }));
               },
               color: Colors.white,
@@ -81,8 +80,29 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                               child: SizedBox(
                                 width: 180.0,
                                 height: 180.0,
-                                child: (imageFile != null)
-                                    ? Image.file(imageFile, fit: BoxFit.fill)
+                                child: (snapshot.data.imageId != null)
+                                    ? FutureBuilder(
+                                        future: userModel.getUrlFromImageId(snapshot.data.imageId),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot snapshot) {
+                                          if (snapshot.hasError) {
+                                            return Center(
+                                                child: Center(
+                                                    child: LoadingWidget(
+                                                        height: 50,
+                                                        width: 50)));
+                                          } else if (snapshot.data == null) {
+                                            return Center(
+                                                child: Center(
+                                                    child: LoadingWidget(
+                                                        height: 50,
+                                                        width: 50)));
+                                          } else {
+                                            return Image.network(snapshot.data,
+                                              fit: BoxFit.fill
+                                            );
+                                          }
+                                        })
                                     : Icon(
                                         Icons.person,
                                         color: Colors.white,
@@ -114,7 +134,9 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Membership until "+DateFormat('dd/MM/yyyy').format(snapshot.data.membershipExpireDate),
+                        "Membership until " +
+                            DateFormat('dd/MM/yyyy')
+                                .format(snapshot.data.membershipExpireDate),
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 15,
@@ -161,8 +183,8 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                 color: Colors.grey[900], fontSize: 15)),
                       ),
                       FlatButton(
-                        onPressed: (){
-                           Navigator.of(context).push(MaterialPageRoute(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
                             return PasswordPage();
                           }));
@@ -196,7 +218,8 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                       FlatButton(
                         onPressed: () async {
                           final userModel = UserModel(uid: user.uid);
-                          await userModel.updateUserData({'isSignedIn':false});
+                          await userModel
+                              .updateUserData({'isSignedIn': false}, null);
                           await authenModel.signOut();
                         },
                         child: Text("Logout",

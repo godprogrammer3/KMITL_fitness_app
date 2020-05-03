@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class UserData {
   final String uid;
   final String firstName;
@@ -5,21 +7,25 @@ class UserData {
   final String email;
   final DateTime membershipExpireDate;
   final int point;
-  final int birthYear;
+  final String birthDate;
   final String role;
   final String faceId;
   final bool isHaveYellowCard;
+  final String imageId;
+  final String phoneNumber;
   UserData(
       {
-      this.point,
-      this.birthYear,
-      this.role,
-      this.faceId,
-      this.isHaveYellowCard,
-      this.firstName,
-      this.lastName,
-      this.email,
-      this.uid,
-      this.membershipExpireDate,
+      @required this.point,
+      @required this.birthDate,
+      @required this.role,
+      @required this.faceId,
+      @required this.isHaveYellowCard,
+      @required this.firstName,
+      @required this.lastName,
+      @required this.email,
+      @required this.uid,
+      @required this.membershipExpireDate,
+      @required this.imageId,
+      @required this.phoneNumber, 
   });
 }

@@ -179,7 +179,17 @@ class _SignupPageChildState extends State<SignupPageChild> {
                             final userData = UserData(
                                 firstName: firstName.text,
                                 lastName: lastName.text,
-                                email: email.text);
+                                email: email.text,
+                                birthDate: null,
+                                faceId: null,
+                                imageId: null,
+                                isHaveYellowCard: null,
+                                membershipExpireDate: null,
+                                point: null,
+                                role: null,
+                                uid: null,
+                                phoneNumber: null
+                                );
                             setState(() => _isLoading = true);
                             dynamic user = await authenModel.register(
                                 userData, password.text);
