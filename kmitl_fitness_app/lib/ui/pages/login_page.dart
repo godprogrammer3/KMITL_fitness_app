@@ -31,10 +31,10 @@ class _LoginPageStateChild extends State<LoginPageChild> {
 
   @override
   void dispose() {
-    if (email == null) {
+    if (email != null) {
       email.dispose();
     }
-    if (password == null) {
+    if (password != null) {
       password.dispose();
     }
     super.dispose();
@@ -196,7 +196,6 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                             }else{
                               _isLoading = false;
                             }
-
                             if (result == 0) {
                               print('login with google success');
                             } else {

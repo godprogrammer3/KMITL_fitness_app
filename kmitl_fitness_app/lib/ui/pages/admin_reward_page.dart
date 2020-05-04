@@ -49,6 +49,7 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
               } else if (snapshot.data == null) {
                 return Center(child: Text("Empty"));
               } else {
+                snapshot.data.sort();
                 List<Widget> widgets = List<Widget>();
                 for (int i = 0; i < snapshot.data.length; i++) {
                   widgets.add(Container(

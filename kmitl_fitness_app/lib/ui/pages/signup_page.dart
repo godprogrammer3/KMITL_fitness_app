@@ -50,10 +50,8 @@ class _SignupPageChildState extends State<SignupPageChild> {
             isLoading: _isLoading,
             child: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
-                    height: 25.0,
-                  ),
                   Text(
                     "Sign Up",
                     style: TextStyle(
@@ -69,7 +67,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person_outline),
+                          prefixIcon: Icon(Icons.person),
                           hintText: "First Name",
                           hintStyle: TextStyle(
                             color: Colors.grey,
@@ -89,7 +87,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person_outline),
+                          prefixIcon: Icon(Icons.person),
                           hintText: "Last Name",
                           hintStyle: TextStyle(
                             color: Colors.grey,
