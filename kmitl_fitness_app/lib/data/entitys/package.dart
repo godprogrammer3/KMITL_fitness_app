@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Package {
+class Package implements Comparable {
   final String id;
   final String title;
   final String detail;
@@ -23,4 +23,8 @@ class Package {
     @required this.period,
     @required this.totalDay, 
   });
+  @override
+  int compareTo(other) {
+    return price.compareTo(other.price);
+  }
 }

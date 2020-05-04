@@ -66,6 +66,11 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                 return Center(
                     child: Center(child: LoadingWidget(height: 50, width: 50)));
               } else {
+                final expireDate = DateTime.parse(DateFormat('yyyy-MM-dd')
+                    .format(snapshot.data.membershipExpireDate));
+                final currentDate = DateTime.parse(
+                    DateFormat('yyyy-MM-dd').format(DateTime.now()));
+                final bool isNotExpired = currentDate.isBefore(expireDate);
                 return SingleChildScrollView(
                   child: Center(
                       child: Column(
@@ -82,7 +87,8 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                 height: 180.0,
                                 child: (snapshot.data.imageId != null)
                                     ? FutureBuilder(
-                                        future: userModel.getUrlFromImageId(snapshot.data.imageId),
+                                        future: userModel.getUrlFromImageId(
+                                            snapshot.data.imageId),
                                         builder: (BuildContext context,
                                             AsyncSnapshot snapshot) {
                                           if (snapshot.hasError) {
@@ -99,8 +105,7 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                                         width: 50)));
                                           } else {
                                             return Image.network(snapshot.data,
-                                              fit: BoxFit.fill
-                                            );
+                                                fit: BoxFit.fill);
                                           }
                                         })
                                     : Icon(
@@ -134,9 +139,11 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Membership until " +
-                            DateFormat('dd/MM/yyyy')
-                                .format(snapshot.data.membershipExpireDate),
+                        isNotExpired
+                            ? "Membership before " +
+                                DateFormat('dd/MM/yyyy')
+                                    .format(snapshot.data.membershipExpireDate)
+                            : 'You not in membership or expired',
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 15,
@@ -171,17 +178,19 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                             style: TextStyle(
                                 color: Colors.grey[900], fontSize: 15)),
                       ),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return MembershipPage(user: user);
-                          }));
-                        },
-                        child: Text("Membership",
-                            style: TextStyle(
-                                color: Colors.grey[900], fontSize: 15)),
-                      ),
+                      isNotExpired
+                          ? Container()
+                          : FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return MembershipPage(user: user);
+                                }));
+                              },
+                              child: Text("Membership",
+                                  style: TextStyle(
+                                      color: Colors.grey[900], fontSize: 15)),
+                            ),
                       FlatButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
