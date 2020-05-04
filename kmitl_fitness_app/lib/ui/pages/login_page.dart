@@ -185,10 +185,21 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                       height: 50,
                       child: FlatButton(
                           onPressed: () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
                             final result = await authenModel.loginWithGoogle();
-                            if( result == 0){
-                              print('login with google success');
+                            if (this.mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
                             }else{
+                              _isLoading = false;
+                            }
+
+                            if (result == 0) {
+                              print('login with google success');
+                            } else {
                               print('login with google failed');
                             }
                           },
@@ -203,15 +214,16 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                                 height: 30.0,
                                 width: 30.0,
                               ),
-                              SizedBox(width: 30,),
+                              SizedBox(
+                                width: 30,
+                              ),
                               Text(
-                                  "LOGIN WITH GOOGLE",
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold
-                                      ),
-                                ),
+                                "LOGIN WITH GOOGLE",
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ],
                           )),
                     ),
