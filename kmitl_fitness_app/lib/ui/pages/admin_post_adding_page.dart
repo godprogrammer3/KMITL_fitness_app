@@ -101,9 +101,8 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
               children: <Widget>[
                 Stack(alignment: Alignment.center, children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.height*0.4,
-                    child: showImage()
-                  ),
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: showImage()),
                   IconButton(
                     icon: Icon(Icons.add_photo_alternate),
                     iconSize: 60.0,

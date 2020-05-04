@@ -31,15 +31,20 @@ class PostModel {
     }
   }
 
-  Future<void> updatePost(
+  Future<int> updatePost(
       String postId, Map<String, dynamic> updateData, File imageFile) async {
-    updateData['updatedTime'] = FieldValue.serverTimestamp();
-    if (imageFile != null) {
-      StorageUploadTask uploadTask =
-          storageReference.child(postId).putFile(imageFile);
-      await uploadTask.onComplete;
+    try {
+      updateData['updatedTime'] = FieldValue.serverTimestamp();
+      if (imageFile != null) {
+        StorageUploadTask uploadTask =
+            storageReference.child(postId).putFile(imageFile);
+        await uploadTask.onComplete;
+      }
+      await postCollection.document(postId).updateData(updateData);
+      return 0;
+    } catch (error) {
+      return -1;
     }
-    return await postCollection.document(postId).updateData(updateData);
   }
 
   Future<int> deletePost(String postId) async {
