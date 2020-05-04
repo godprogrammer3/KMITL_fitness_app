@@ -184,7 +184,14 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                       width: 300,
                       height: 50,
                       child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final result = await authenModel.loginWithGoogle();
+                            if( result == 0){
+                              print('login with google success');
+                            }else{
+                              print('login with google failed');
+                            }
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
                               side: BorderSide(color: Colors.grey)),

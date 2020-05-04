@@ -39,3 +39,4 @@ export './tutorial_page.dart';
 export './admin_notification_page.dart';
 export './admin_notification_send_page.dart';
 export './password_page.dart';
+export './face_id_page.dart';
