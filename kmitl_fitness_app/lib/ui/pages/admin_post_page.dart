@@ -134,7 +134,7 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                               ),
                             ),
                             Divider(),
-                            Text('อ่านต่อ',
+                            Text('แก้ไข',
                                 style: TextStyle(
                                     fontSize: 14.0,
                                     fontWeight: FontWeight.bold,
