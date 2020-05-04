@@ -16,7 +16,7 @@ class PointPage extends StatefulWidget {
 class PointPageChild extends State<PointPage> {
   final User user;
   RewardModel rewardModel;
-  createAlertDialog(BuildContext context,String id,Reward reward) {
+  createAlertDialog(BuildContext context, String id, Reward reward) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -49,20 +49,19 @@ class PointPageChild extends State<PointPage> {
                     reward.title,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                  Text("ใช้ "+reward.point.toString()+" point"),
+                  Text("ใช้ " + reward.point.toString() + " point"),
                   SizedBox(height: 20),
-                  Text(
-                      reward.detail),
+                  Text(reward.detail),
                   SizedBox(
                     height: 30,
                   ),
                   FlatButton(
                       onPressed: () async {
                         final result = await rewardModel.redeem(id);
-                        if( result == 0){
+                        if (result == 0) {
                           print('redeem reward success');
                           Navigator.of(context).pop();
-                        }else{
+                        } else {
                           print('redeem reward failed');
                           print('error code : $result');
                         }
@@ -121,20 +120,23 @@ class PointPageChild extends State<PointPage> {
             } else if (snapshot.data == null) {
               return Center(child: Text("Empty"));
             } else {
+              snapshot.data.sort();
               List<Widget> widgets = List<Widget>();
               for (int i = 0; i < snapshot.data.length; i++) {
-                widgets.add(Container(
-                  child: Card(
-                    elevation: 5.0,
-                    margin: EdgeInsets.all(5.0),
-                    child: InkWell(
-                      onTap: () {
-                        createAlertDialog(context,snapshot.data[i].id,snapshot.data[i]);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FutureBuilder(
+                widgets.add(Card(
+                  elevation: 5.0,
+                  margin: EdgeInsets.all(5.0),
+                  child: InkWell(
+                    onTap: () {
+                      createAlertDialog(
+                          context, snapshot.data[i].id, snapshot.data[i]);
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: FutureBuilder(
                             future: rewardModel
                                 .getUrlFromImageId(snapshot.data[i].id),
                             builder:
@@ -150,26 +152,26 @@ class PointPageChild extends State<PointPage> {
                               } else {
                                 return Container(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.18,
+                                      MediaQuery.of(context).size.height * 0.12,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: NetworkImage(snapshot.data),
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.fitWidth,
                                     ),
                                   ),
                                 );
                               }
                             },
                           ),
-                          ListTile(
-                            title: Text(snapshot.data[i].title,
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            subtitle: Text("ใช้  " +
-                                snapshot.data[i].point.toString() +
-                                " point"),
-                          ),
-                        ],
-                      ),
+                        ),
+                        ListTile(
+                          title: Text(snapshot.data[i].title,
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Text("ใช้  " +
+                              snapshot.data[i].point.toString() +
+                              " point"),
+                        ),
+                      ],
                     ),
                   ),
                 ));
@@ -180,7 +182,6 @@ class PointPageChild extends State<PointPage> {
                   children: <Widget>[
                     Expanded(
                       child: Container(
-                        //height: MediaQuery.of(context).size.height * 0.8,
                         child: SingleChildScrollView(
                             child: Column(
                           children: <Widget>[

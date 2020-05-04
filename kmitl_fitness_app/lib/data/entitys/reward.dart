@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-class Reward{
+class Reward implements Comparable {
   final String id;
   final String title; 
   final String detail;
@@ -20,5 +20,8 @@ class Reward{
     @required this.owner, 
     @required this.person,
   });
-
+   @override
+  int compareTo(other) {
+    return point.compareTo(other.point);
+  }
 }

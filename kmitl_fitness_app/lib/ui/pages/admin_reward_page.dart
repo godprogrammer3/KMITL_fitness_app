@@ -59,44 +59,50 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                            return AdminRewardDetailPage(user:user,reward:snapshot.data[i]);
+                            return AdminRewardDetailPage(
+                                user: user, reward: snapshot.data[i]);
                           }));
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            FutureBuilder(
-                              future: rewardModel
-                                  .getUrlFromImageId(snapshot.data[i].id),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                if (snapshot.hasError) {
-                                  return Center(
-                                      child:
-                                          LoadingWidget(height: 50, width: 50));
-                                } else if (snapshot.data == null) {
-                                  return Center(
-                                      child:
-                                          LoadingWidget(height: 50, width: 50));
-                                } else {
-                                  return Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.18,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(snapshot.data),
-                                        fit: BoxFit.fill,
+                            Expanded(
+                              child: FutureBuilder(
+                                future: rewardModel
+                                    .getUrlFromImageId(snapshot.data[i].id),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Center(
+                                        child: LoadingWidget(
+                                            height: 50, width: 50));
+                                  } else if (snapshot.data == null) {
+                                    return Center(
+                                        child: LoadingWidget(
+                                            height: 50, width: 50));
+                                  } else {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.12,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(snapshot.data),
+                                          fit: BoxFit.fitWidth,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }
-                              },
+                                    );
+                                  }
+                                },
+                              ),
                             ),
                             ListTile(
                               title: Text(snapshot.data[i].title,
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Text("ใช้  "+snapshot.data[i].point.toString()+" point"),
+                              subtitle: Text("ใช้  " +
+                                  snapshot.data[i].point.toString() +
+                                  " point"),
                             ),
                           ],
                         ),

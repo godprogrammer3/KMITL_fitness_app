@@ -47,6 +47,7 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
               if (snapshot.data.length == 0) {
                 return Center(child: Text("Empty"));
               }
+              snapshot.data.sort();
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
