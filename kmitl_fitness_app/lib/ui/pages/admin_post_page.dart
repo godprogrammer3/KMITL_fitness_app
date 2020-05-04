@@ -76,8 +76,15 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
           if (snapshot.hasError) {
             return Center(child: LoadingWidget(height: 50, width: 50));
           } else if (snapshot.data == null) {
-            return Center(child: Text("Empty data!"));
+            return Center(child: LoadingWidget(height: 50, width: 50));
           } else {
+            if (snapshot.data.length == 0) {
+              return Center(
+                  child: Text(
+                'Empty',
+                style: TextStyle(fontSize: 30),
+              ));
+            }
             snapshot.data.sort();
             List<Post> reveseList = List.from(snapshot.data.reversed);
             return ListView.builder(
@@ -90,8 +97,8 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AdminPostEditingPage(
-                                post: reveseList[index]),
+                            builder: (context) =>
+                                AdminPostEditingPage(post: reveseList[index]),
                           ));
                         },
                         child: Column(

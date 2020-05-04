@@ -49,7 +49,7 @@ class _ClassPageStateChild extends State<ClassPageChild> {
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
-                return NotificationPage(user:user);
+                return NotificationPage(user: user);
               }));
             },
             color: Colors.white,
@@ -66,6 +66,13 @@ class _ClassPageStateChild extends State<ClassPageChild> {
             } else if (snapshot.data == null) {
               return Center(child: LoadingWidget(height: 50, width: 50));
             } else {
+              if (snapshot.data.length == 0) {
+                return Center(
+                    child: Text(
+                  'Empty',
+                  style: TextStyle(fontSize: 30),
+                ));
+              }
               snapshot.data.sort();
               List<Class> reveseList = List.from(snapshot.data.reversed);
               return ListView.builder(
@@ -78,7 +85,8 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ClassPageDetail(user:user,class_:reveseList[index]),
+                          builder: (context) => ClassPageDetail(
+                              user: user, class_: reveseList[index]),
                         ));
                       },
                       child: Stack(
@@ -92,9 +100,13 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasError) {
-                                    return Center(child: LoadingWidget(height: 50, width: 50));
+                                    return Center(
+                                        child: LoadingWidget(
+                                            height: 50, width: 50));
                                   } else if (snapshot.data == null) {
-                                    return Center(child: LoadingWidget(height: 50, width: 50));
+                                    return Center(
+                                        child: LoadingWidget(
+                                            height: 50, width: 50));
                                   } else {
                                     return Container(
                                       height: 150.0,
@@ -117,16 +129,18 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  DateFormat('kk:mm').format(reveseList[index].beginDateTime)
-                                  +
+                                  DateFormat('kk:mm').format(
+                                          reveseList[index].beginDateTime) +
                                       ' - ' +
-                                      DateFormat('kk:mm').format(reveseList[index].endDateTime)+' น.',
+                                      DateFormat('kk:mm').format(
+                                          reveseList[index].endDateTime) +
+                                      ' น.',
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
-                                trailing: Text(
-                                    'Created By: ' + reveseList[index].ownerFirstname),
+                                trailing: Text('Created By: ' +
+                                    reveseList[index].ownerFirstname),
                               ),
                             ],
                           ),
@@ -142,7 +156,8 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                                 height: 60,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: reveseList[index].totalPerson >= reveseList[index].limitPerson
+                                  color: reveseList[index].totalPerson >=
+                                          reveseList[index].limitPerson
                                       ? Colors.red
                                       : Colors.lightGreenAccent[700],
                                 ),
@@ -150,7 +165,9 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                                   child: Text(
                                       reveseList[index].totalPerson.toString() +
                                           '/' +
-                                          reveseList[index].limitPerson.toString(),
+                                          reveseList[index]
+                                              .limitPerson
+                                              .toString(),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),

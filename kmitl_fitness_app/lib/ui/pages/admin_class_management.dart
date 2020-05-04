@@ -58,10 +58,13 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
           stream: classModel.classes,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
-              return LoadingWidget(height: 50, width: 50);
+              return Center(child: LoadingWidget(height: 50, width: 50));
             } else if (snapshot.data == null) {
-              return LoadingWidget(height: 50, width: 50);
+              return Center(child: LoadingWidget(height: 50, width: 50));
             } else {
+              if(snapshot.data.length == 0){
+                return Center(child:Text('Empty',style: TextStyle(fontSize: 30),));
+              }
               snapshot.data.sort();
               List<Class> reveseList = List.from(snapshot.data.reversed);
               return ListView.builder(
