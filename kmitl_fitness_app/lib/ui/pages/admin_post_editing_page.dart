@@ -188,7 +188,7 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
               onPressed: () async {
                 Map<String, dynamic> data = {
                   'title': _titleController.text,
-                  'detail': _titleController.text,
+                  'detail': _detailController.text,
                 };
                 final realImage = await imageFile;
                 await postModel.updatePost(post.id, data, realImage);
