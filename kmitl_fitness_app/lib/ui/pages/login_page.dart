@@ -125,6 +125,15 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                         builder: (BuildContext context) => FlatButton(
                             onPressed: () async {
                               email.text = email.text.trimRight();
+
+                              if (email.text == '' || password.text == '') {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content:
+                                      Text("User or password field is empty."),
+                                  backgroundColor: Colors.red,
+                                ));
+                                return;
+                              }
                               setState(() => _isLoading = true);
                               final user =
                                   await authenModel.signInWithEmailAndPassword(
@@ -193,7 +202,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                               setState(() {
                                 _isLoading = false;
                               });
-                            }else{
+                            } else {
                               _isLoading = false;
                             }
                             if (result == 0) {

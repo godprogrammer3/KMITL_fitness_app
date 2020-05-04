@@ -214,7 +214,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("Have an account ?,"),
+                      Text("Already have an accouct ?"),
                       FlatButton(
                         onPressed: () {
                           Navigator.of(context).pop();
