@@ -51,6 +51,7 @@ class AuthenModel {
         'isHaveYellowCard': false,
         'point': 0,
         'phoneNumber': '',
+        'type':userData.type
       });
       return User(uid: user.uid);
     } catch (error) {

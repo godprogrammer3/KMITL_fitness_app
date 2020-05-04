@@ -191,6 +191,7 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                   style: TextStyle(
                                       color: Colors.grey[900], fontSize: 15)),
                             ),
+                      (snapshot.data.type != 'google')?
                       FlatButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -201,7 +202,8 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                         child: Text("Password",
                             style: TextStyle(
                                 color: Colors.grey[900], fontSize: 15)),
-                      ),
+                      )
+                      :Container(),
                       FlatButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(

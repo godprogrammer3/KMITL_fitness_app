@@ -181,19 +181,24 @@ class EditProfilePageChild extends State<EditProfilePage> {
   }
 
   Widget _buildCurrentPassword() {
-    return TextFormField(
-      initialValue: '',
-      decoration: InputDecoration(labelText: 'Current password'),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Current password is required';
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        _currentPassword = value;
-      },
-      obscureText: true,
+    return Container(
+      margin: EdgeInsets.only(
+        top: 10,
+      ),
+      child: TextFormField(
+        initialValue: '',
+        decoration: InputDecoration(labelText: 'Current password'),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Current password is required';
+          }
+          return null;
+        },
+        onSaved: (String value) {
+          _currentPassword = value;
+        },
+        obscureText: true,
+      ),
     );
   }
 
@@ -271,8 +276,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
                                               } else {
                                                 if (imageFile != null) {
                                                   return Image.file(imageFile,
-                                                    fit:BoxFit.fill
-                                                  );
+                                                      fit: BoxFit.fill);
                                                 } else {
                                                   return Image.network(
                                                     snapshot.data,
@@ -299,8 +303,9 @@ class EditProfilePageChild extends State<EditProfilePage> {
                           _buildPhoneNumber(snapshot.data.phoneNumber),
                           SizedBox(height: 10.0),
                           _buildBirthDay(snapshot.data.birthDate),
-                          SizedBox(height: 10.0),
-                          _buildCurrentPassword(),
+                          (snapshot.data.type != 'google')
+                              ? _buildCurrentPassword()
+                              : Container(),
                           SizedBox(height: 20.0),
                           FlatButton(
                               color: Colors.orange[900],

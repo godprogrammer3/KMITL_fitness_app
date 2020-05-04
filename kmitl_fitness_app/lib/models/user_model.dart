@@ -67,7 +67,8 @@ class UserModel {
         faceId:snapshot['faceId'],
         isHaveYellowCard:snapshot['isHaveYellowCard'], 
         imageId: snapshot['imageId'],
-        phoneNumber: snapshot['phoneNumber']
+        phoneNumber: snapshot['phoneNumber'],
+        type: snapshot['type'],
       );
     }catch(error){
       return null;

@@ -181,7 +181,8 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                 point: null,
                                 role: null,
                                 uid: null,
-                                phoneNumber: null
+                                phoneNumber: null,
+                                type: 'email',
                                 );
                             setState(() => _isLoading = true);
                             dynamic user = await authenModel.register(

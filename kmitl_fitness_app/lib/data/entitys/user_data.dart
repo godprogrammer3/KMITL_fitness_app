@@ -13,6 +13,7 @@ class UserData {
   final bool isHaveYellowCard;
   final String imageId;
   final String phoneNumber;
+  final String type;
   UserData(
       {
       @required this.point,
@@ -27,5 +28,6 @@ class UserData {
       @required this.membershipExpireDate,
       @required this.imageId,
       @required this.phoneNumber, 
+      @required this.type, 
   });
 }
