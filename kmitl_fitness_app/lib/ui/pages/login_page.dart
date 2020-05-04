@@ -209,6 +209,11 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                               print('login with google success');
                             } else {
                               print('login with google failed');
+                               Scaffold.of(context).showSnackBar(SnackBar(
+                                  content:
+                                      Text("Log in with google account failed!"),
+                                  backgroundColor: Colors.red,
+                                ));
                             }
                           },
                           shape: RoundedRectangleBorder(
