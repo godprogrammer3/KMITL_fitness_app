@@ -62,8 +62,10 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
             } else if (snapshot.data == null) {
               return LoadingWidget(height: 50, width: 50);
             } else {
+              snapshot.data.sort();
+              List<Class> reveseList = List.from(snapshot.data.reversed);
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: reveseList.length,
                 itemBuilder: (context, index) {
                   return Card(
                     margin: EdgeInsets.only(
@@ -73,7 +75,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => AdminClassDetail(
-                              user: user, class_: snapshot.data[index]),
+                              user: user, class_: reveseList[index]),
                         ));
                       },
                       child: Stack(
@@ -83,7 +85,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                             children: [
                               FutureBuilder(
                                 future: classModel
-                                    .getUrlFromImageId(snapshot.data[index].id),
+                                    .getUrlFromImageId(reveseList[index].id),
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasError) {
@@ -105,7 +107,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                               ),
                               ListTile(
                                 title: Text(
-                                  snapshot.data[index].title,
+                                  reveseList[index].title,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 25,
@@ -113,17 +115,17 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                                 ),
                                 subtitle: Text(
                                   DateFormat('kk:mm').format(
-                                          snapshot.data[index].beginDateTime) +
+                                          reveseList[index].beginDateTime) +
                                       ' - ' +
                                       DateFormat('kk:mm').format(
-                                          snapshot.data[index].endDateTime) +
+                                          reveseList[index].endDateTime) +
                                       ' น.',
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 trailing: Text('Created By: ' +
-                                    snapshot.data[index].ownerFirstname),
+                                    reveseList[index].ownerFirstname),
                               ),
                             ],
                           ),
@@ -139,17 +141,17 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                                 height: 60,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: snapshot.data[index].totalPerson >=
-                                          snapshot.data[index].limitPerson
+                                  color: reveseList[index].totalPerson >=
+                                          reveseList[index].limitPerson
                                       ? Colors.red
                                       : Colors.lightGreenAccent[700],
                                 ),
                                 child: Center(
                                   child: Text(
-                                      snapshot.data[index].totalPerson
+                                      reveseList[index].totalPerson
                                               .toString() +
                                           '/' +
-                                          snapshot.data[index].limitPerson
+                                          reveseList[index].limitPerson
                                               .toString(),
                                       style: TextStyle(
                                           color: Colors.black,

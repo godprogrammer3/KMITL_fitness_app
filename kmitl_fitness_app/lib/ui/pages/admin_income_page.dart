@@ -83,6 +83,7 @@ class _AdminIncomePageStateChild extends State<AdminIncomePageChild> {
                           return Center(
                               child: LoadingWidget(height: 50, width: 50));
                         } else {
+                          snapshot.data.sort();
                           return charts.TimeSeriesChart(
                             [
                               charts.Series<IncomeChartData, DateTime>(

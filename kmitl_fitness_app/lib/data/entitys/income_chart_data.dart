@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class IncomeChartData{
+class IncomeChartData implements Comparable {
   final DateTime date;
   final double value;
 
@@ -8,4 +8,8 @@ class IncomeChartData{
     @required this.date, 
     @required this.value
   });
+  @override
+  int compareTo(other) {
+    return date.compareTo(other.date);
+  }
 }

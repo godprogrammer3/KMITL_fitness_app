@@ -64,9 +64,11 @@ class _HomePageStateChild extends State<HomePageChild> {
           } else if (snapshot.data == null) {
             return Center(child: Text("Empty"));
           } else {
+            snapshot.data.sort();
+            List<Post> reveseList = List.from(snapshot.data.reversed);
             return ListView.builder(
               padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
-              itemCount: snapshot.data.length,
+              itemCount: reveseList.length,
               itemBuilder: (context, index) {
                 return Column(
                   children: <Widget>[
@@ -74,7 +76,7 @@ class _HomePageStateChild extends State<HomePageChild> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PostDetailPage(post:snapshot.data[index]),
+                            builder: (context) => PostDetailPage(post:reveseList[index]),
                           ));
                         },
                         child: Column(
@@ -82,7 +84,7 @@ class _HomePageStateChild extends State<HomePageChild> {
                           children: [
                             FutureBuilder(
                               future: postModel
-                                  .getUrlFromImageId(snapshot.data[index].id),
+                                  .getUrlFromImageId(reveseList[index].id),
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 if (snapshot.hasError) {
@@ -104,13 +106,13 @@ class _HomePageStateChild extends State<HomePageChild> {
                             ),
                             ListTile(
                               title: Text(
-                                  snapshot.data[index].title,
+                                  reveseList[index].title,
                                   style: TextStyle(
                                       height: 2,
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Kanit')),
-                              subtitle: Text(snapshot.data[index].detail,
+                              subtitle: Text(reveseList[index].detail,
                                 style: TextStyle(fontFamily: 'Kanit'),
                               ),
                             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Class{
+class Class implements Comparable {
   final String id;
   final String title;
   final String detail;
@@ -27,4 +27,8 @@ class Class{
     @required this.totalPerson, 
     @required this.ownerFirstname, 
   });
+  @override
+  int compareTo(other) {
+    return createdTime.compareTo(other.createdTime);
+  }
 }

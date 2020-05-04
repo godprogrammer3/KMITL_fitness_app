@@ -80,6 +80,7 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
                           return Center(
                               child: LoadingWidget(height: 50, width: 50));
                         } else {
+                          snapshot.data.sort();
                           return charts.TimeSeriesChart(
                             [
                               charts.Series<TimeAttendanceChartData, DateTime>(

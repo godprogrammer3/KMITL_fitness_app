@@ -78,9 +78,11 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
           } else if (snapshot.data == null) {
             return Center(child: Text("Empty data!"));
           } else {
+            snapshot.data.sort();
+            List<Post> reveseList = List.from(snapshot.data.reversed);
             return ListView.builder(
               padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
-              itemCount: snapshot.data.length,
+              itemCount: reveseList.length,
               itemBuilder: (context, index) {
                 return Column(
                   children: <Widget>[
@@ -89,7 +91,7 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => AdminPostEditingPage(
-                                post: snapshot.data[index]),
+                                post: reveseList[index]),
                           ));
                         },
                         child: Column(
@@ -97,7 +99,7 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                           children: [
                             FutureBuilder(
                               future: postModel
-                                  .getUrlFromImageId(snapshot.data[index].id),
+                                  .getUrlFromImageId(reveseList[index].id),
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
                                 if (snapshot.hasError) {
@@ -118,14 +120,14 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                               },
                             ),
                             ListTile(
-                              title: Text(snapshot.data[index].title,
+                              title: Text(reveseList[index].title,
                                   style: TextStyle(
                                       height: 2,
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Kanit')),
                               subtitle: Text(
-                                snapshot.data[index].detail,
+                                reveseList[index].detail,
                                 style: TextStyle(fontFamily: 'Kanit'),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,

@@ -45,21 +45,21 @@ class NotificationPageChild extends StatelessWidget {
               return Center(child: LoadingWidget(height: 50, width: 50));
             } else {
               snapshot.data.sort();
+              List reveseList = List.from(snapshot.data.reversed);
               return ListView.separated(
-                reverse: true,
-                itemCount: snapshot.data.length,
+                itemCount: reveseList.length,
                 separatorBuilder: (context, index) => Divider(),
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    title: Text(snapshot.data[index].title),
+                    title: Text(reveseList[index].title),
                     isThreeLine: true,
                     leading: CircleAvatar(
                       backgroundColor: Colors.orange[900],
-                      child: Icon(symbol[snapshot.data[index].type]
+                      child: Icon(symbol[reveseList[index].type]
                           ),
                       foregroundColor: Colors.white,
                     ),
-                    subtitle: Text(snapshot.data[index].detail,
+                    subtitle: Text(reveseList[index].detail,
                         maxLines: 2, overflow: TextOverflow.ellipsis),
                   );
                 },
