@@ -91,7 +91,7 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.grey,),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -112,7 +112,9 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Stack(alignment: Alignment.center, children: <Widget>[
-                  showImage(),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.4,
+                    child: showImage()),
                   IconButton(
                     icon: Icon(Icons.add_photo_alternate),
                     iconSize: 60.0,
@@ -168,7 +170,7 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                       ],
                     ),
                   ),
@@ -191,23 +193,13 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
           height: 60,
           child: FlatButton(
               onPressed: () async {
-                // setState(() {
-                //   _isLoading = true;
-                // });
-                // final result = await postModel.deletePost(post.id);
-                // setState(() {
-                //   _isLoading = false;
-                // });
-                // if (result == 0) {
-                //   print('delete post success');
-                //   Navigator.of(context).pop();
-                // } else {
-                //   print('delete post failed');
-                // }
                 setState(() {
                   _isLoading = true;
                 });
-                await showPopup(context, post.id);
+                final result = await showPopup(context, post.id);
+                if(result == 0){
+                  Navigator.of(context).pop();
+                }
                 setState(() {
                   _isLoading = false;
                 });
@@ -276,8 +268,8 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
     );
   }
 
-  Future<void> showPopup(BuildContext context, String postId) async {
-    await showDialog(
+  Future<int> showPopup(BuildContext context, String postId) async {
+    return await showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -298,7 +290,7 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                   fontSize: 20, fontFamily: 'Kanit', color: Colors.black54),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(-1);
             },
           ),
           FlatButton(
@@ -311,14 +303,14 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
               final result = await postModel.deletePost(postId);
               if (result == 0) {
                 print('delete class success');
-                Navigator.of(context).pop();
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).pop(0);
               } else {
                 print('delete class faild');
                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                   content: Text("Delete post failed please try again."),
                   backgroundColor: Colors.red,
                 ));
+                Navigator.of(context).pop(-1);
               }
             },
           ),

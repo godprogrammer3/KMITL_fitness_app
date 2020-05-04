@@ -79,7 +79,7 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.grey),
           onPressed: () {
             Navigator.of(context).pop();
           },
