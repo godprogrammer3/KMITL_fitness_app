@@ -162,13 +162,6 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         ),
                         obscureText: true,
                       )),
-                  IconButton(
-                      icon: Icon(Icons.center_focus_weak),
-                      iconSize: 80,
-                      onPressed: () {
-                        _openCamera(context);
-                      }),
-                  Text("Add Face ID"),
                   SizedBox(height: 20),
                   Container(
                     width: 280,

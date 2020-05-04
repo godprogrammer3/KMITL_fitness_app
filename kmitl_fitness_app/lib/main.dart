@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/locator.dart';
@@ -10,6 +12,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 
 FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+StreamController<int> resfreshStream = StreamController();
 void main() {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,8 +36,13 @@ class KmitlFitnessApp extends StatelessWidget {
                 ),
               ),
             ),
-        home: StreamProvider<User>(
-          create: (_) => AuthenModel().user,
+        home: MultiProvider(
+          providers: [
+            StreamProvider<User>(
+              create: (context) => AuthenModel().user,
+            ),
+            StreamProvider<int>(create: (context)=>resfreshStream.stream,updateShouldNotify: (oldValue,newValue)=>true,)
+          ],
           child: SelectPage(),
         ));
   }
@@ -45,18 +53,22 @@ class SelectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final refresh = Provider.of<int>(context);
+    print('refresh here by value : $refresh');
     final user = Provider.of<User>(context);
     print("User stream run here");
     if (user != null) {
       firebaseMessaging.getToken().then((token) async {
         final userModel = UserModel(uid: user.uid);
-        await userModel.updateUserData({'fcmToken': token,'isSignedIn':true},null);
+        await userModel
+            .updateUserData({'fcmToken': token, 'isSignedIn': true}, null);
       });
       final adminUserModel = UserModel(uid: user.uid);
       return FutureBuilder(
         future: adminUserModel.getUserData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
+            print(snapshot.error);
             return Scaffold(
                 body: SafeArea(
                     child:
@@ -67,11 +79,14 @@ class SelectPage extends StatelessWidget {
                     child:
                         Center(child: LoadingWidget(height: 50, width: 50))));
           } else {
-            print(snapshot.data.role);
             if (snapshot.data.role == 'admin') {
               return AdminNavigationWidget(user: user);
             } else {
-              return NavigationWidget(user: user);
+              if (snapshot.data.faceId != '' && snapshot.data.faceId != null) {
+                return NavigationWidget(user: user);
+              } else {
+                return FaceIdPage(user: user);
+              }
             }
           }
         },

@@ -33,8 +33,25 @@ class UserModel {
     }
     
   }
+  Future<int> updateFaceId(File imageFile)async{
+    try{
+       if (imageFile != null) {
+      StorageUploadTask uploadTask =
+          storageReference.child(this.uid+'.faceid').putFile(imageFile);
+      await uploadTask.onComplete;
+      Map<String ,dynamic> data = {
+        'faceId':this.uid+'.faceid',
+      };
+      return await updateUserData(data,null);
+      }
+      return -1;
+    }catch(error){
+      return -1;
+    }
+  }
   Future<UserData> getUserData() async {
-    final snapshot = await userDataCollection.document(uid).get();
+    try{
+       final snapshot = await userDataCollection.document(uid).get();
     if( snapshot == null){
       return null;
     }
@@ -44,7 +61,7 @@ class UserModel {
         lastName:snapshot['lastName'],
         email:snapshot['email'],
         point: snapshot['point'],
-        membershipExpireDate:DateTime.fromMillisecondsSinceEpoch((snapshot['membershipExpireDate'].seconds*1000+snapshot['membershipExpireDate'].nanoseconds/1000000).round()),
+        membershipExpireDate:DateTime.fromMillisecondsSinceEpoch((snapshot['membershipExpireDate'].seconds*1000+snapshot['membershipExpireDate'].nanoseconds/1000000).round())??null,
         birthDate:snapshot['birthDate'],
         role:snapshot['role'],
         faceId:snapshot['faceId'],
@@ -52,6 +69,10 @@ class UserModel {
         imageId: snapshot['imageId'],
         phoneNumber: snapshot['phoneNumber']
       );
+    }catch(error){
+      return null;
+    }
+   
   }
    Future<String> getUrlFromImageId(String imageId) async {
     try{
@@ -62,5 +83,4 @@ class UserModel {
     }
     
   }
-
 }

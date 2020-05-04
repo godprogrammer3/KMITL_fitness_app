@@ -41,6 +41,10 @@ dependencies:
   intl: ^0.16.1
   numberpicker: ^1.2.0
   introduction_screen: ^1.0.8
+  google_sign_in: ^4.4.4
+  flutter_facebook_login: ^3.0.0
+  firebase_ml_vision: ^0.9.3+8
+  path_provider: ^1.6.7
 dev_dependencies:
   flutter_test:
     sdk: flutter
