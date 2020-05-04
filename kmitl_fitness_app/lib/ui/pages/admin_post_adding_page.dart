@@ -94,13 +94,16 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
         child: LoadingOverlay(
           isLoading: _isLoading,
           child: SingleChildScrollView(
-                      child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Stack(alignment: Alignment.center, children: <Widget>[
-                  showImage(),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.4,
+                    child: showImage()
+                  ),
                   IconButton(
                     icon: Icon(Icons.add_photo_alternate),
                     iconSize: 60.0,
@@ -137,7 +140,7 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                           },
                         ),
                         SizedBox(height: 10),
-                        TextField(
+                        TextFormField(
                           controller: _detailController,
                           keyboardType: TextInputType.multiline,
                           maxLines: 10,
@@ -149,6 +152,14 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                             ),
                             hintText: 'Detail',
                           ),
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Detail is required';
+                            } else if (value.length < 3 || value.length > 500) {
+                              return 'Detail must between 3 and 500 letter';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 20),
                         Row(

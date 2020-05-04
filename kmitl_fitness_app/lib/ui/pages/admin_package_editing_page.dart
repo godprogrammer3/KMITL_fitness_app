@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
-import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 
 class AdminPackageEditingPage extends StatefulWidget {
   final User user;
