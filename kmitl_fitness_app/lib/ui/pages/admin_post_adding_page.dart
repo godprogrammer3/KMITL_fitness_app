@@ -4,21 +4,25 @@ import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'dart:io';
 
 import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class AdminPostAddingPage extends StatefulWidget {
   final User user;
 
   const AdminPostAddingPage({Key key, this.user}) : super(key: key);
   @override
-  _AdminPostAddingPageState createState() => _AdminPostAddingPageState(user:user);
+  _AdminPostAddingPageState createState() =>
+      _AdminPostAddingPageState(user: user);
 }
 
 class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
   Future<File> imageFile;
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _detailController = TextEditingController(); 
+  final TextEditingController _detailController = TextEditingController();
   final User user;
-
+  bool _isLoading = false;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   _AdminPostAddingPageState({this.user});
   pickImageFromGallery(ImageSource source) async {
     setState(() {
@@ -71,6 +75,7 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
@@ -83,90 +88,147 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Stack(alignment: Alignment.center, children: <Widget>[
-              showImage(),
-              IconButton(
-                icon: Icon(Icons.add_photo_alternate),
-                iconSize: 60.0,
-                color: Colors.white,
-                onPressed: () {
-                  pickImageFromGallery(ImageSource.gallery);
-                },
-              ),
-            ]),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _titleController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: LoadingOverlay(
+          isLoading: _isLoading,
+          child: SingleChildScrollView(
+                      child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Stack(alignment: Alignment.center, children: <Widget>[
+                  showImage(),
+                  IconButton(
+                    icon: Icon(Icons.add_photo_alternate),
+                    iconSize: 60.0,
+                    color: Colors.white,
+                    onPressed: () {
+                      pickImageFromGallery(ImageSource.gallery);
+                    },
+                  ),
+                ]),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: _titleController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            hintText: 'Title',
+                          ),
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Title is required';
+                            } else if (value.length < 3 || value.length > 50) {
+                              return 'Title must between 3 and 50 letter';
+                            }
+                            return null;
+                          },
                         ),
-                      ),
-                      hintText: 'Title',
+                        SizedBox(height: 10),
+                        TextField(
+                          controller: _detailController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 10,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            hintText: 'Detail',
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              height: 60,
+                              child: FlatButton(
+                                  onPressed: () async {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    final realImage = await imageFile;
+                                    if (realImage == null) {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                      _scaffoldKey.currentState
+                                          .showSnackBar(SnackBar(
+                                        content: Text("Image must selected"),
+                                        backgroundColor: Colors.red,
+                                      ));
+                                      return;
+                                    }
+                                    if (_formKey.currentState.validate()) {
+                                      final postModel =
+                                          PostModel(uid: user.uid);
+                                      Map<String, dynamic> data = {
+                                        'title': _titleController.text,
+                                        'detail': _detailController.text,
+                                      };
+                                      final result = await postModel.creatPost(
+                                          data, realImage);
+                                      if (result == 0) {
+                                        print('create post success');
+                                        Navigator.of(context).pop();
+                                      } else {
+                                        print('create post failed');
+                                        _scaffoldKey.currentState
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              "Create post failed please try again."),
+                                          backgroundColor: Colors.red,
+                                        ));
+                                      }
+                                    } else {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                      _scaffoldKey.currentState
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                            "Please fill up the form the form correctly"),
+                                        backgroundColor: Colors.red,
+                                      ));
+                                    }
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(100),
+                                      side: BorderSide(
+                                          color: Colors.transparent)),
+                                  color: Colors.orange[900],
+                                  child: Text(
+                                    "POST",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: _detailController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      hintText: 'Detail',
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        height: 60,
-                        child: FlatButton(
-                            onPressed: () async {
-                              final postModel = PostModel(uid: user.uid);
-                              Map<String, dynamic> data = {
-                                'title':_titleController.text,
-                                'detail':_detailController.text,
-                              };
-                              final realImage = await imageFile;
-                              await postModel.creatPost(data, realImage);
-                              print('create post success');
-                              Navigator.of(context).pop();
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
-                                side: BorderSide(color: Colors.transparent)),
-                            color: Colors.orange[900],
-                            child: Text(
-                              "POST",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

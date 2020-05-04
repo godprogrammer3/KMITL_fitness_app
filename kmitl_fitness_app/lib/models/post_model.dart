@@ -13,22 +13,27 @@ class PostModel {
       FirebaseStorage.instance.ref().child('post');
   PostModel({@required this.uid});
 
-  Future<void> creatPost(Map<String, dynamic> postData, File imageFile) async {
-    postData['owner'] = this.uid;
-    final document = await postCollection.add(postData);
-    await document.updateData({
-      'createdTime': FieldValue.serverTimestamp(),
-      'updatedTime': FieldValue.serverTimestamp(),
-      'imageId':document.documentID
-    });
-    StorageUploadTask uploadTask =
-        storageReference.child(document.documentID).putFile(imageFile);
-    return await uploadTask.onComplete;
+  Future<int> creatPost(Map<String, dynamic> postData, File imageFile) async {
+    try {
+      postData['owner'] = this.uid;
+      final document = await postCollection.add(postData);
+      await document.updateData({
+        'createdTime': FieldValue.serverTimestamp(),
+        'updatedTime': FieldValue.serverTimestamp(),
+        'imageId': document.documentID
+      });
+      StorageUploadTask uploadTask =
+          storageReference.child(document.documentID).putFile(imageFile);
+      await uploadTask.onComplete;
+      return 0;
+    } catch (error) {
+      return -1;
+    }
   }
 
   Future<void> updatePost(
       String postId, Map<String, dynamic> updateData, File imageFile) async {
-    updateData['updatedTime'] = FieldValue.serverTimestamp();  
+    updateData['updatedTime'] = FieldValue.serverTimestamp();
     if (imageFile != null) {
       StorageUploadTask uploadTask =
           storageReference.child(postId).putFile(imageFile);
@@ -43,16 +48,22 @@ class PostModel {
     return 0;
   }
 
-  List<Post> _postFromSnapshot(QuerySnapshot snapshot){
-    return snapshot.documents.map((doc){
+  List<Post> _postFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
       return Post(
         id: doc.documentID,
         title: doc.data['title'],
         imageUrl: doc.data['imageId'],
         detail: doc.data['detail'],
         owner: doc.data['owner'],
-        createdTime:  DateTime.fromMillisecondsSinceEpoch((doc.data['createdTime'].seconds*1000+doc.data['createdTime'].nanoseconds/1000000).round()),
-        updatedTime:  DateTime.fromMillisecondsSinceEpoch((doc.data['updatedTime'].seconds*1000+doc.data['updatedTime'].nanoseconds/1000000).round()),
+        createdTime: DateTime.fromMillisecondsSinceEpoch(
+            (doc.data['createdTime'].seconds * 1000 +
+                    doc.data['createdTime'].nanoseconds / 1000000)
+                .round()),
+        updatedTime: DateTime.fromMillisecondsSinceEpoch(
+            (doc.data['updatedTime'].seconds * 1000 +
+                    doc.data['updatedTime'].nanoseconds / 1000000)
+                .round()),
       );
     }).toList();
   }
@@ -62,12 +73,11 @@ class PostModel {
   }
 
   Future<String> getUrlFromImageId(String imageId) async {
-    try{
+    try {
       final url = await storageReference.child(imageId).getDownloadURL();
       return url;
-    }catch (error) {
+    } catch (error) {
       return null;
     }
-    
   }
 }

@@ -164,7 +164,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                             if (value.isEmpty) {
                               return 'Password is required';
                             }
-                            if (value.length<6) {
+                            if (value.length < 6) {
                               return 'Password must longer than 5 letter';
                             }
                             return null;
