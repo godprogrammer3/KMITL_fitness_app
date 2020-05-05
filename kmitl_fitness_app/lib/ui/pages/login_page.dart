@@ -147,7 +147,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                               if (user == null) {
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text(
-                                      "Sorry Incorect username or password please try again."),
+                                      "Sorry Incorrect username or password please try again."),
                                   backgroundColor: Colors.red,
                                 ));
                               }
