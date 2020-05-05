@@ -89,7 +89,8 @@ class _AboutPageChildState extends State<AboutPageChild> {
               height: 30,
             ),
             CircleAvatar(
-              backgroundImage: AssetImage('assets/images/flutter.jpg'),
+              backgroundImage: AssetImage('assets/images/icon.png'),
+              backgroundColor: Colors.white,
               radius: 75,
             ),
             SizedBox(
