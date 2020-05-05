@@ -40,19 +40,23 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
           stream: packageModel.packages,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
-              return LoadingWidget(height: 50, width: 50);
+              print(snapshot.error);
+              return Center(child: LoadingWidget(height: 50, width: 50));
             } else if (snapshot.data == null) {
-              return Center(child: Text("Empty"));
+              return Center(child: LoadingWidget(height: 50, width: 50));
             } else {
               if (snapshot.data.length == 0) {
-                return Center(child: Text("Empty"));
+                return Center(
+                    child: Text(
+                  'Empty',
+                  style: TextStyle(fontSize: 30),
+                ));
               }
               snapshot.data.sort();
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   return SizedBox(
-                    //height: 220,
                     child: Card(
                       margin: EdgeInsets.all(20.0),
                       child: InkWell(
@@ -60,7 +64,7 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
                             return AdminPackageEditingPage(
-                                user:user,package:snapshot.data[index]);
+                                user: user, package: snapshot.data[index]);
                           }));
                         },
                         child: Container(
@@ -88,7 +92,8 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
                                           height: 5.0,
                                         ),
                                         Text(
-                                          snapshot.data[index].detail.replaceAll('\\n','\n'),
+                                          snapshot.data[index].detail
+                                              .replaceAll('\\n', '\n'),
                                           style: TextStyle(
                                             fontFamily: 'Kanit',
                                             fontSize: 16,
@@ -100,7 +105,9 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
                                       FittedBox(
                                         fit: BoxFit.fill,
                                         child: Text(
-                                          '฿'+snapshot.data[index].price.toString(),
+                                          '฿' +
+                                              snapshot.data[index].price
+                                                  .toString(),
                                           style: TextStyle(
                                               fontFamily: 'Kanit',
                                               fontSize: 30,
@@ -108,7 +115,7 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
                                         ),
                                       ),
                                       Text(
-                                        '/'+snapshot.data[index].period,
+                                        '/' + snapshot.data[index].period,
                                         style: TextStyle(
                                             fontFamily: 'Kanit',
                                             fontSize: 24,
@@ -116,7 +123,10 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
                                       ),
                                       SizedBox(height: 10.0),
                                       Text(
-                                        '฿'+snapshot.data[index].pricePerDay.toString()+'ต่อวัน',
+                                        '฿' +
+                                            snapshot.data[index].pricePerDay
+                                                .toString() +
+                                            'ต่อวัน',
                                         style: TextStyle(
                                             fontFamily: 'Kanit', fontSize: 12),
                                       ),
