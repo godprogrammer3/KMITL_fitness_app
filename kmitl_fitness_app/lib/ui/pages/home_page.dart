@@ -120,7 +120,7 @@ class _HomePageStateChild extends State<HomePageChild> {
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Kanit')),
                               subtitle: Text(
-                                snapshot.data[index].detail,
+                                reveseList[index].detail,
                                 style: TextStyle(fontFamily: 'Kanit'),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,

@@ -106,6 +106,8 @@ class RewardModel {
         person: doc.data['person'] != null
             ? List<String>.from(doc.data['person'])
             : null,
+        type: doc.data['type'],
+        percent: doc.data['percent'],
       );
     }).toList();
   }

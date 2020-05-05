@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
+import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -23,9 +23,11 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
   TextEditingController pointController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController detailController = TextEditingController();
+  TextEditingController percentController = TextEditingController();
   bool _isLoading = false;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String rewardType = 'discount';
   _AdminRewardAddingPageState({this.user});
   pickImageFromGallery(ImageSource source) {
     setState(() {
@@ -81,6 +83,7 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
     pointController.dispose();
     quantityController.dispose();
     detailController.dispose();
+    percentController.dispose();
     super.dispose();
   }
 
@@ -144,7 +147,7 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                                 Radius.circular(10),
                               ),
                             ),
-                            hintText: 'Title',
+                            labelText: 'Title',
                           ),
                           controller: titleController,
                           validator: (String value) {
@@ -166,7 +169,7 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                                 Radius.circular(10),
                               ),
                             ),
-                            hintText: 'Point',
+                            labelText: 'Point',
                           ),
                           controller: pointController,
                           inputFormatters: [
@@ -180,28 +183,88 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                           },
                         ),
                         SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.numberWithOptions(
-                              signed: false, decimal: false),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            hintText: 'Quantity',
-                          ),
-                          controller: quantityController,
-                          inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly
-                          ],
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return 'Quantity is required';
-                            }
-                            return null;
+                        DropDownFormField(
+                          titleText: 'Type',
+                          hintText: 'Please choose one',
+                          value: rewardType,
+                          onSaved: (value) {
+                            setState(() {
+                              rewardType = value;
+                            });
                           },
+                          onChanged: (value) {
+                            setState(() {
+                              rewardType = value;
+                            });
+                          },
+                          dataSource: [
+                            {
+                              "display": "discount",
+                              "value": "discount",
+                            },
+                            {
+                              "display": "goods",
+                              "value": "goods",
+                            },
+                          ],
+                          textField: 'display',
+                          valueField: 'value',
                         ),
+                        SizedBox(height: 10),
+                        (rewardType == 'goods')
+                            ? TextFormField(
+                                keyboardType: TextInputType.numberWithOptions(
+                                    signed: false, decimal: false),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
+                                  labelText: 'Quantity',
+                                ),
+                                controller: quantityController,
+                                inputFormatters: [
+                                  WhitelistingTextInputFormatter.digitsOnly
+                                ],
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return 'Quantity is required';
+                                  }
+                                  return null;
+                                },
+                              )
+                            : Container(),
+                        (rewardType == 'discount')
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.numberWithOptions(
+                                      signed: false, decimal: true),
+                                  controller: percentController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Percent',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                  inputFormatters: [
+                                    WhitelistingTextInputFormatter(
+                                        RegExp(r"[0-9.]"))
+                                  ],
+                                  validator: (String value) {
+                                    if (value.isEmpty) {
+                                      return 'Percent is required';
+                                    } else if (double.tryParse(value) == null) {
+                                      return 'PLease input a valid percent';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              )
+                            : Container(),
                         SizedBox(height: 10),
                         TextFormField(
                           maxLength: 200,
@@ -213,13 +276,13 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                                 Radius.circular(10),
                               ),
                             ),
-                            hintText: 'Detail',
+                            labelText: 'Detail',
                           ),
                           controller: detailController,
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Detail is required';
-                            }else if (value.length < 3 || value.length > 200) {
+                            } else if (value.length < 3 || value.length > 200) {
                               return 'Detail must between 3 and 200 letter';
                             }
                             return null;
@@ -264,10 +327,18 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                                   Map<String, dynamic> data = {
                                     'title': titleController.text,
                                     'point': int.parse(pointController.text),
-                                    'quantity':
-                                        int.parse(quantityController.text),
                                     'detail': detailController.text,
+                                    'type': rewardType,
                                   };
+                                  if (rewardType == 'discount') {
+                                    data['percent'] =
+                                        double.parse(percentController.text);
+                                    data['quantity'] = 1;
+                                  } else {
+                                    data['percent'] = 0.00;
+                                    data['quantity'] = 
+                                        int.parse(quantityController.text);
+                                  }
                                   setState(() {
                                     _isLoading = true;
                                   });
@@ -281,7 +352,7 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                                     Navigator.of(context).pop();
                                   } else {
                                     print('create reward failed');
-                                     _scaffoldKey.currentState
+                                    _scaffoldKey.currentState
                                         .showSnackBar(SnackBar(
                                       content: Text(
                                           "Create reward failed please try again"),

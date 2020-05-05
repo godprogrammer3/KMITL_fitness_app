@@ -9,7 +9,9 @@ class Reward implements Comparable {
   final DateTime updatedTime;
   final String owner;
   final List<String> person;
-  Reward( {
+  final String type;
+  final double percent;
+  Reward({
     @required this.id, 
     @required this.title, 
     @required this.detail,
@@ -19,6 +21,8 @@ class Reward implements Comparable {
     @required this.updatedTime, 
     @required this.owner, 
     @required this.person,
+    @required this.type, 
+    @required this.percent, 
   });
    @override
   int compareTo(other) {
