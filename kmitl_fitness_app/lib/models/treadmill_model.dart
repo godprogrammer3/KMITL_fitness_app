@@ -50,9 +50,10 @@ class TreadmillModel {
           'queueNumber': snapshots.documents[0]['queueNumber'] + 1,
           'firstName': userData.firstName,
         });
-        return 1;
+        return 0;
       }
     } catch (error) {
+      print(error);
       return -1;
     }
   }
