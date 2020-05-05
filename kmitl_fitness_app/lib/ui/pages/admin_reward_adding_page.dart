@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -146,7 +147,7 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                             hintText: 'Title',
                           ),
                           controller: titleController,
-                           validator: (String value) {
+                          validator: (String value) {
                             if (value.isEmpty) {
                               return 'Title is required';
                             } else if (value.length < 3 || value.length > 50) {
@@ -157,8 +158,8 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                         ),
                         SizedBox(height: 10),
                         TextFormField(
-                          maxLength: 50,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.numberWithOptions(
+                              signed: false, decimal: false),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -168,10 +169,20 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                             hintText: 'Point',
                           ),
                           controller: pointController,
-                         
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter.digitsOnly
+                          ],
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Point is required';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 10),
-                        TextField(
+                        TextFormField(
+                          keyboardType: TextInputType.numberWithOptions(
+                              signed: false, decimal: false),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -181,9 +192,19 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                             hintText: 'Quantity',
                           ),
                           controller: quantityController,
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter.digitsOnly
+                          ],
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Quantity is required';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 10),
-                        TextField(
+                        TextFormField(
+                          maxLength: 200,
                           keyboardType: TextInputType.multiline,
                           maxLines: 7,
                           decoration: InputDecoration(
@@ -195,6 +216,14 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                             hintText: 'Detail',
                           ),
                           controller: detailController,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Detail is required';
+                            }else if (value.length < 3 || value.length > 200) {
+                              return 'Detail must between 3 and 200 letter';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 10),
                         Center(
@@ -239,14 +268,25 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
                                         int.parse(quantityController.text),
                                     'detail': detailController.text,
                                   };
-
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
                                   final result =
                                       await rewardModel.create(data, realImage);
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
                                   if (result == 0) {
                                     print('create reward success');
                                     Navigator.of(context).pop();
                                   } else {
                                     print('create reward failed');
+                                     _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Create reward failed please try again"),
+                                      backgroundColor: Colors.red,
+                                    ));
                                   }
                                 },
                                 shape: RoundedRectangleBorder(
