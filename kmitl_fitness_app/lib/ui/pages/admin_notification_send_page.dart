@@ -31,6 +31,7 @@ class _AdminNotificationSendPageState extends State<AdminNotificationSendPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -38,7 +39,7 @@ class _AdminNotificationSendPageState extends State<AdminNotificationSendPage> {
           },
           color: Colors.white,
         ),
-        title: Text('Add Package'),
+        title: Text('Notification Creator'),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -79,7 +80,7 @@ class _AdminNotificationSendPageState extends State<AdminNotificationSendPage> {
                       TextFormField(
                         maxLength: 200,
                         controller: _detailController,
-                        maxLines: 2,
+                        maxLines: 3,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
                           labelText: 'Detail',
@@ -143,10 +144,10 @@ class _AdminNotificationSendPageState extends State<AdminNotificationSendPage> {
                                 side: BorderSide(color: Colors.transparent)),
                             color: Colors.orange[900],
                             child: Text(
-                              "SEND",
+                              "Send",
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold),
                             )),
                       ),
