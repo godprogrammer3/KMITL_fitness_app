@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -142,17 +143,21 @@ class EditProfilePageChild extends State<EditProfilePage> {
     return TextFormField(
       initialValue: str ?? '',
       decoration: InputDecoration(labelText: 'Phone Number'),
-      keyboardType: TextInputType.phone,
+      keyboardType:
+          TextInputType.numberWithOptions(signed: false, decimal: false),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Phone Number is Required';
         }
-
-        if (!RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(value)) {
+        if (!RegExp(r'(^(?:[+0]9)?[0-9]{9,10}$)').hasMatch(value)) {
           return 'Please enter a valid Phone Number';
+        }
+        if(value.length < 9 || value.length > 10){
+          return 'Phone number must 9 or 10 digits';
         }
         return null;
       },
+      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       onSaved: (String value) {
         _phoneNumber = value;
       },
@@ -167,14 +172,14 @@ class EditProfilePageChild extends State<EditProfilePage> {
         if (value.isEmpty) {
           return 'Birth Day is Required';
         }
-        try{
+        try {
           final birthDate = DateTime.parse(value);
-          if(DateTime.now().isBefore(birthDate)){
+          if (DateTime.now().isBefore(birthDate)) {
             return 'Please enter a valid Birth Day';
           }
           return null;
-        }catch(error){
-            return 'Please enter a valid Birth Day';
+        } catch (error) {
+          return 'Please enter a valid Birth Day';
         }
       },
       onSaved: (String value) {
