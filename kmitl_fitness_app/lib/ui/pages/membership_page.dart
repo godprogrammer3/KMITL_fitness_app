@@ -16,6 +16,7 @@ class MembershipPage extends StatefulWidget {
 class _MembershipPageState extends State<MembershipPage> {
   final User user;
   PackageModel packageModel;
+  List<double> priceAfterDiscount;
   _MembershipPageState({this.user});
   launchURL(String url) async {
     if (await canLaunch(url)) {
@@ -54,6 +55,8 @@ class _MembershipPageState extends State<MembershipPage> {
                 ));
               }
               snapshot.data.sort();
+              priceAfterDiscount =
+                  List<double>.generate(snapshot.data.length, (index) => -1);
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
@@ -128,6 +131,52 @@ class _MembershipPageState extends State<MembershipPage> {
                               ],
                             ),
                             Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 50,
+                              child: FutureBuilder(
+                                  future:
+                                      UserModel(uid: user.uid).getUserData(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshotUser) {
+                                    if (snapshotUser.hasError) {
+                                      return Center(
+                                          child: LoadingWidget(
+                                              height: 50, width: 50));
+                                    } else if (snapshotUser.data == null) {
+                                      return Center(
+                                          child: LoadingWidget(
+                                              height: 50, width: 50));
+                                    } else {
+                                      if (snapshotUser.data.discount >= 0) {
+                                        priceAfterDiscount[index] = (100.0 -
+                                                snapshotUser.data.discount) *
+                                            snapshot.data[index].price /
+                                            100.0;
+                                        return Center(
+                                            child: Text(
+                                          'คุณมีส่วนลด ' +
+                                              snapshotUser.data.discount
+                                                  .toString() +
+                                              '%\nเหลือ ${priceAfterDiscount[index]} บาท',
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            fontFamily: 'Kanit',
+                                          ),
+                                        ));
+                                      } else {
+                                        return Center(
+                                            child: Text(
+                                          'คุณไม่มีส่วนลด',
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            fontFamily: 'Kanit',
+                                          ),
+                                        ));
+                                      }
+                                    }
+                                  }),
+                            ),
+                            Container(
                               width: 200,
                               height: 45,
                               child: FlatButton(
@@ -135,12 +184,18 @@ class _MembershipPageState extends State<MembershipPage> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (BuildContext context) {
+                                      int paidValue;
+                                      if (priceAfterDiscount[index] > 0) {
+                                        paidValue =
+                                            (priceAfterDiscount[index] * 100)
+                                                .toInt();
+                                      } else {
+                                        paidValue =
+                                            (snapshot.data[index].price * 100)
+                                                .toInt();
+                                      }
                                       final url =
-                                          'https://kmitlfitnessapp.web.app/payment?amount=' +
-                                              (snapshot.data[index].price * 100)
-                                                  .toInt()
-                                                  .toString() +
-                                              '&userId=' +
+                                          'https://kmitlfitnessapp.web.app/payment?amount=$paidValue&userId=' +
                                               user.uid +
                                               '&packageId=' +
                                               snapshot.data[index].id

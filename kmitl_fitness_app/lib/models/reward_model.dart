@@ -62,25 +62,39 @@ class RewardModel {
       final snapshotReward = await rewardCollection.document(rewardId).get();
       final userModel = UserModel(uid: this.uid);
       final userData = await userModel.getUserData();
-      var persons;
-      if (snapshotReward['person'] != null) {
-        persons = List<String>.from(snapshotReward['person']);
+      if (snapshotReward['type'] == 'goods') {
+        var persons;
+        if (snapshotReward['person'] != null) {
+          persons = List<String>.from(snapshotReward['person']);
+        }
+        if (snapshotReward['point'] > userData.point) {
+          return -1;
+        } else if (snapshotReward['quantity'] <= 0) {
+          return -2;
+        } else if (snapshotReward['person'] != null &&
+            persons.contains(this.uid)) {
+          return -3;
+        }
+        await rewardCollection.document(rewardId).updateData({
+          'quantity': FieldValue.increment(-1),
+          'person': FieldValue.arrayUnion([this.uid])
+        });
+        await userModel.updateUserData(
+            {'point': userData.point - snapshotReward['point']}, null);
+        return 0;
+      } else {
+        if (userData.discount >= 0) {
+          return -5;
+        }else if (snapshotReward['point'] > userData.point) {
+          return -1;
+        }
+        final result = await userModel.updateUserData({'discount':snapshotReward['percent'],'point': userData.point - snapshotReward['point']}, null);
+       if( result == 0){
+         return 0;
+       }else{
+         return -4;
+       }
       }
-      if (snapshotReward['point'] > userData.point) {
-        return -1;
-      } else if (snapshotReward['quantity'] <= 0) {
-        return -2;
-      } else if (snapshotReward['person'] != null &&
-          persons.contains(this.uid)) {
-        return -3;
-      }
-      await rewardCollection.document(rewardId).updateData({
-        'quantity': FieldValue.increment(-1),
-        'person': FieldValue.arrayUnion([this.uid])
-      });
-      await userModel.updateUserData(
-          {'point': userData.point - snapshotReward['point']}, null);
-      return 0;
     } catch (error) {
       return -4;
     }

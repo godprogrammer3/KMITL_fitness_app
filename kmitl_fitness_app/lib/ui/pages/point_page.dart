@@ -58,7 +58,7 @@ class PointPageChild extends State<PointPage> {
                                 color: Colors.orange[900],
                               ),
                               onPressed: () {
-                                Navigator.pop(context, -99);
+                                Navigator.pop(context, -1);
                               }))
                     ],
                   ),
@@ -75,15 +75,7 @@ class PointPageChild extends State<PointPage> {
                   ),
                   FlatButton(
                       onPressed: () async {
-                        final result = await rewardModel.redeem(id);
-                        if (result == 0) {
-                          print('redeem reward success');
-                          Navigator.of(context).pop(result);
-                        } else {
-                          print('redeem reward failed');
-                          print('error code : $result');
-                          Navigator.of(context).pop(result);
-                        }
+                        Navigator.of(context).pop(0);
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
@@ -162,41 +154,55 @@ class PointPageChild extends State<PointPage> {
                       margin: EdgeInsets.all(5.0),
                       child: InkWell(
                         onTap: () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          final result = await createAlertDialog(
+                          final resultDialog = await createAlertDialog(
                               context, snapshot.data[i].id, snapshot.data[i]);
-                          setState(() {
-                            _isLoading = false;
-                          });
-                          if (result == 0) {
-                            Navigator.of(context).pop();
-                          } else if (result == -1) {
-                            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content: Text("Redeem failed point not enough"),
-                              backgroundColor: Colors.red,
-                            ));
-                          } else if (result == -2) {
-                            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content:
-                                  Text("Redeem failed reward out of stock"),
-                              backgroundColor: Colors.red,
-                            ));
-                          } else if (result == -3) {
-                            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content:
-                                  Text("Redeem failed you already redeem"),
-                              backgroundColor: Colors.red,
-                            ));
-                          }else if(result == -99){
+                          if (resultDialog == 0) {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            final result =
+                                await rewardModel.redeem(snapshot.data[i].id);
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            if (result == 0) {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text("Redeem success"),
+                                backgroundColor: Colors.green,
+                              ));
+                            } else if (result == -1) {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text("Redeem failed point not enough"),
+                                backgroundColor: Colors.red,
+                              ));
+                            } else if (result == -2) {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content:
+                                    Text("Redeem failed reward out of stock"),
+                                backgroundColor: Colors.red,
+                              ));
+                            } else if (result == -3) {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content:
+                                    Text("Redeem failed you already redeem"),
+                                backgroundColor: Colors.red,
+                              ));
+                            } else if (result == -5) {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text(
+                                    "Redeem failed discount can use one as a time"),
+                                backgroundColor: Colors.red,
+                              ));
+                            } else if (result == -99) {
+                              return;
+                            } else {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text("Redeem failed please try again"),
+                                backgroundColor: Colors.red,
+                              ));
+                            }
+                          } else {
                             return;
-                          }else{
-                            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content:
-                                  Text("Redeem failed please try again"),
-                              backgroundColor: Colors.red,
-                            ));
                           }
                         },
                         child: Column(
