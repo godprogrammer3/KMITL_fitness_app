@@ -119,8 +119,11 @@ class _HomePageStateChild extends State<HomePageChild> {
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Kanit')),
-                              subtitle: Text(reveseList[index].detail,
+                              subtitle: Text(
+                                snapshot.data[index].detail,
                                 style: TextStyle(fontFamily: 'Kanit'),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Divider(),
