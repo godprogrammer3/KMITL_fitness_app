@@ -36,6 +36,7 @@ class _AdminClassParticipantsChildState
   ClassModel classModel;
   bool _isLoading = false;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isUserEmpty = true;
   _AdminClassParticipantsChildState({this.user, this.class_});
 
   @override
@@ -47,6 +48,7 @@ class _AdminClassParticipantsChildState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Class Participants'),
         centerTitle: true,
@@ -112,6 +114,11 @@ class _AdminClassParticipantsChildState
                             if (snapshot.data.length == 0) {
                               return Center(child: Text("Empty"));
                             }
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              setState(() {
+                                _isUserEmpty = false;
+                              });
+                            });
                             if (persons == null) {
                               persons = snapshot.data;
                             }
@@ -147,51 +154,67 @@ class _AdminClassParticipantsChildState
               SizedBox(
                 height: 10,
               ),
-              Center(
-                child: ButtonTheme(
-                  minWidth: 200,
-                  height: 45,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  child: RaisedButton(
-                    onPressed: class_.isChecked
-                        ? null
-                        : () async {
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            final result = await classModel.checkPersons(
-                                class_.id, persons);
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            if (result == 0) {
-                              print('check class success');
-                              Navigator.of(context).pop();
-                            } else {
-                              print('check class failed');
-                              _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                content:
-                                    Text("Check class failed please try again"),
-                                backgroundColor: Colors.red,
-                              ));
-                            }
-                          },
-                    color: Colors.orange[900],
-                    child: Text(
-                      class_.isChecked
-                          ? 'บันทึกการเข้าร่วมแล้ว'
-                          : 'บันทึกการเข้าร่วม',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontFamily: 'Kanit',
+              (_isUserEmpty)
+                  ? Container()
+                  : Center(
+                      child: ButtonTheme(
+                        minWidth: 200,
+                        height: 45,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        child: RaisedButton(
+                          onPressed: class_.isChecked
+                              ? null
+                              : () async {
+                                  if (user.uid != class_.owner) {
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Check class failed you are not owner"),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                    return;
+                                  }
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  final result = await classModel.checkPersons(
+                                      class_.id, persons);
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  if (result == 0) {
+                                    print('check class success');
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text("Check class success"),
+                                      backgroundColor: Colors.green,
+                                    ));
+                                  } else {
+                                    print('check class failed');
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Check class failed please try again"),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                  }
+                                },
+                          color: Colors.orange[900],
+                          child: Text(
+                            class_.isChecked
+                                ? 'บันทึกการเข้าร่วมแล้ว'
+                                : 'บันทึกการเข้าร่วม',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontFamily: 'Kanit',
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
