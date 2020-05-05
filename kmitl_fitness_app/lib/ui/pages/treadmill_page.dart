@@ -6,6 +6,7 @@ import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class TreadmillPage extends StatelessWidget {
   final User user;
@@ -27,34 +28,66 @@ class TreadmillPageChild extends StatefulWidget {
 }
 
 class _TreadmillPageStateChild extends State<TreadmillPageChild> {
+  bool _isLoading = false;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   _TreadmillPageStateChild({this.user});
   Function buttonFunction;
   String buttonText = 'Queue up';
   Color buttonColor = Colors.orange[900];
   void enQueue() async {
+    setState(() {
+      _isLoading = true;
+    });
     final result = await treadmillModel.enQueue();
-    if (result != 0) {
-      print('you cannot enqueue');
-    } else {
+    setState(() {
+      _isLoading = false;
+    });
+    if (result == 0) {
       print('enqueue success');
+    } else {
+      print('you cannot enqueue');
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Enqueue failed please try again"),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
   void cancel() async {
+    setState(() {
+      _isLoading = true;
+    });
     final result = await treadmillModel.cancel();
-    if (result != 0) {
-      print('you cannot cancel');
-    } else {
+    setState(() {
+      _isLoading = false;
+    });
+    if (result == 0) {
       print('cancel success');
+    } else {
+      print('you cannot cancel');
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Cancel queue failed please try again"),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
   void done() async {
+    setState(() {
+      _isLoading = true;
+    });
     final result = await treadmillModel.done();
-    if (result != 0) {
-      print('you cannot done');
-    } else {
+    setState(() {
+      _isLoading = false;
+    });
+    if (result == 0) {
       print('done success');
+    } else {
+      print('you cannot done');
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Done queue failed please try again"),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
@@ -128,200 +161,210 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
           title: Text('Treadmill'),
           actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return NotificationPage(user:user);
-              }));
-            },
-            color: Colors.white,
-          )
-        ],
+            IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return NotificationPage(user: user);
+                }));
+              },
+              color: Colors.white,
+            )
+          ],
         ),
-        
         body: Container(
+          width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: Column(children: <Widget>[
-            Flexible(
-              flex: 0,
-              child: Card(
-                margin: EdgeInsets.all(20),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                elevation: 5,
-                child: Container(
-                  width: 330,
-                  height: 140,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      StreamBuilder(
-                          stream: TreadmillModel(uid: user.uid).status,
-                          builder: (context, asyncSnapshot) {
-                            if (asyncSnapshot.hasError) {
-                              return LoadingWidget(height: 50, width: 50);
-                            } else if (asyncSnapshot.data == null) {
-                              return new Text("Empty data!");
-                            } else {
-                              List<Widget> widgets = new List<Widget>();
-                              for (var i in asyncSnapshot.data) {
-                                widgets.add(
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Text(
-                                        'No. ' +
-                                            (int.parse(i.id) + 1).toString(),
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: i.user == ''
-                                              ? Colors.lightGreenAccent[700]
-                                              : Colors.black26,
-                                        ),
+          child: LoadingOverlay(
+            isLoading: _isLoading,
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: Column(children: <Widget>[
+                Flexible(
+                  flex: 0,
+                  child: Card(
+                    margin: EdgeInsets.all(20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 5,
+                    child: Container(
+                      width: 330,
+                      height: 140,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          StreamBuilder(
+                              stream: TreadmillModel(uid: user.uid).status,
+                              builder: (context, asyncSnapshot) {
+                                if (asyncSnapshot.hasError) {
+                                  return LoadingWidget(height: 50, width: 50);
+                                } else if (asyncSnapshot.data == null) {
+                                  return new Text("Empty data!");
+                                } else {
+                                  List<Widget> widgets = new List<Widget>();
+                                  for (var i in asyncSnapshot.data) {
+                                    widgets.add(
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Text(
+                                            'No. ' +
+                                                (int.parse(i.id) + 1)
+                                                    .toString(),
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: i.user == ''
+                                                  ? Colors.lightGreenAccent[700]
+                                                  : Colors.black26,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.directions_run,
+                                            color: i.user == ''
+                                                ? Colors.lightGreenAccent[700]
+                                                : Colors.black26,
+                                            size: 75,
+                                          ),
+                                        ],
                                       ),
-                                      Icon(
-                                        Icons.directions_run,
-                                        color: i.user == ''
-                                            ? Colors.lightGreenAccent[700]
-                                            : Colors.black26,
-                                        size: 75,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                              return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: widgets);
-                            }
-                          }),
-                    ],
+                                    );
+                                  }
+                                  return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: widgets);
+                                }
+                              }),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Flexible(
-              flex: 0,
-              child: Text(
-                'Queue',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black54,
+                Flexible(
+                  flex: 0,
+                  child: Text(
+                    'Queue',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black54,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: StreamBuilder(
-                            stream: TreadmillModel(uid: user.uid).queues,
-                            builder: (context, asyncSnapshot) {
-                              if (asyncSnapshot.hasError) {
-                                return LoadingWidget(height: 50, width: 50);
-                              } else if (asyncSnapshot.data == null) {
-                                _isCanSkip = false;
-                                return Center(
-                                    child: Text("Queue is empty",
-                                        style: TextStyle(fontSize: 25)));
-                              } else {
-                                if (asyncSnapshot.data.length == 0) {
-                                  _isCanSkip = false;
-                                  return Center(
-                                      child: Text("Queue is empty",
-                                          style: TextStyle(fontSize: 25)));
-                                }
-                                asyncSnapshot.data.sort();
-                                return ListView.builder(
-                                  itemCount: asyncSnapshot.data.length,
-                                  itemBuilder: (context, index) {
-                                    return Card(
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: StreamBuilder(
+                                stream: TreadmillModel(uid: user.uid).queues,
+                                builder: (context, asyncSnapshot) {
+                                  if (asyncSnapshot.hasError) {
+                                    return LoadingWidget(height: 50, width: 50);
+                                  } else if (asyncSnapshot.data == null) {
+                                    _isCanSkip = false;
+                                    return Center(
+                                        child: Text("Queue is empty",
+                                            style: TextStyle(fontSize: 25)));
+                                  } else {
+                                    if (asyncSnapshot.data.length == 0) {
+                                      _isCanSkip = false;
+                                      return Center(
+                                          child: Text("Queue is empty",
+                                              style: TextStyle(fontSize: 25)));
+                                    }
+                                    asyncSnapshot.data.sort();
+                                    return ListView.builder(
+                                      itemCount: asyncSnapshot.data.length,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          color:
+                                              asyncSnapshot.data[index].user ==
+                                                      user.uid
+                                                  ? Colors.lightGreenAccent[700]
+                                                  : Colors.white,
+                                          elevation: 1,
+                                          child: ListTile(
+                                            title: Text((index + 1).toString() +
+                                                ' ' +
+                                                asyncSnapshot
+                                                    .data[index].firstName),
+                                            leading: Icon(Icons.face),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                }),
+                          ),
+                          StreamBuilder(
+                              stream: userStatusStreamController.stream,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot asyncSnapshot) {
+                                if (asyncSnapshot.hasError) {
+                                  return LoadingWidget(height: 50, width: 50);
+                                } else if (asyncSnapshot.data == null) {
+                                  return LoadingWidget(height: 50, width: 50);
+                                } else {
+                                  if (asyncSnapshot.data == 0) {
+                                    buttonText = 'Done';
+                                    buttonColor = Colors.blue;
+                                    buttonFunction = done;
+                                  } else if (asyncSnapshot.data == 1) {
+                                    buttonText = 'Cancel queue';
+                                    buttonColor = Colors.black;
+                                    buttonFunction = cancel;
+                                  } else {
+                                    buttonText = 'Queue up';
+                                    buttonColor = Colors.orange[900];
+                                    buttonFunction = enQueue;
+                                  }
+                                  return ButtonTheme(
+                                    minWidth: 330,
+                                    height: 50,
+                                    child: RaisedButton(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20),
                                       ),
-                                      color: asyncSnapshot.data[index].user ==
-                                              user.uid
-                                          ? Colors.lightGreenAccent[700]
-                                          : Colors.white,
-                                      elevation: 1,
-                                      child: ListTile(
-                                        title: Text((index + 1).toString() +
-                                            ' ' +
-                                            asyncSnapshot
-                                                .data[index].firstName),
-                                        leading: Icon(Icons.face),
+                                      child: Text(
+                                        buttonText,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    );
-                                  },
-                                );
-                              }
-                            }),
-                      ),
-                      StreamBuilder(
-                          stream: userStatusStreamController.stream,
-                          builder: (BuildContext context,
-                              AsyncSnapshot asyncSnapshot) {
-                            if (asyncSnapshot.hasError) {
-                              return LoadingWidget(height: 50, width: 50);
-                            } else if (asyncSnapshot.data == null) {
-                              return LoadingWidget(height: 50, width: 50);
-                            } else {
-                              if (asyncSnapshot.data == 0) {
-                                buttonText = 'Done';
-                                buttonColor = Colors.blue;
-                                buttonFunction = done;
-                              } else if (asyncSnapshot.data == 1) {
-                                buttonText = 'Cancel queue';
-                                buttonColor = Colors.black;
-                                buttonFunction = cancel;
-                              } else {
-                                buttonText = 'Queue up';
-                                buttonColor = Colors.orange[900];
-                                buttonFunction = enQueue;
-                              }
-                              return ButtonTheme(
-                                minWidth: 330,
-                                height: 50,
-                                child: RaisedButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    buttonText,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
+                                      onPressed: buttonFunction, //Firebase
+                                      color: buttonColor,
                                     ),
-                                  ),
-                                  onPressed: buttonFunction, //Firebase
-                                  color: buttonColor,
-                                ),
-                              );
-                            }
-                          }),
-                    ],
+                                  );
+                                }
+                              }),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ]),
             ),
-          ]),
+          ),
         ));
   }
 }
