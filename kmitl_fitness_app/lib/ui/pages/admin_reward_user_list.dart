@@ -139,6 +139,14 @@ class _AdminRewardUserListChildState extends State<AdminRewardUserListChild> {
                       borderRadius: BorderRadius.circular(30)),
                   child: RaisedButton(
                     onPressed:() async {
+                            if( user.uid != reward.owner){
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content:
+                                    Text("Check user list failed you are not owner"),
+                                backgroundColor: Colors.red,
+                              ));
+                              return ;
+                            }
                             setState(() {
                               _isLoading = true;
                             });

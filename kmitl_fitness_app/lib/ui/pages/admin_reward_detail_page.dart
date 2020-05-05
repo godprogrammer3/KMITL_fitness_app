@@ -352,6 +352,15 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                                       final resultDialog =
                                           await createAlertDialog(context);
                                       if (resultDialog == 0) {
+                                        if(user.uid != reward.owner){
+                                          _scaffoldKey.currentState
+                                              .showSnackBar(SnackBar(
+                                            content: Text(
+                                                "Delete reward failed you are not owner"),
+                                            backgroundColor: Colors.red,
+                                          ));
+                                          return ;
+                                        }
                                         setState(() {
                                           _isLoading = false;
                                         });

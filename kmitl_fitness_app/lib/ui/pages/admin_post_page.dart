@@ -98,7 +98,7 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
-                                AdminPostEditingPage(post: reveseList[index]),
+                                AdminPostEditingPage(post: reveseList[index],user:user),
                           ));
                         },
                         child: Column(
