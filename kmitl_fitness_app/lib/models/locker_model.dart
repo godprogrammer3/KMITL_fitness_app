@@ -8,12 +8,18 @@ class LockerModel {
   final String uid;
   LockerModel({@required this.uid});
 
-  Future<int> verifyPincode(String pincode,String lockerId) async {
-    final snapshotPincode = await lockerCollection.document('pinCode').get();
-    if (snapshotPincode.data['value'] == pincode) {
-      await lockerCollection.document(lockerId).updateData({'user':this.uid});
-      return 0;
-    } else {
+  Future<int> verifyPincode(String pincode, String lockerId) async {
+    try {
+      final snapshotPincode = await lockerCollection.document('pinCode').get();
+      if (snapshotPincode.data['value'] == pincode) {
+        await lockerCollection
+            .document(lockerId)
+            .updateData({'user': this.uid});
+        return 0;
+      } else {
+        return -2;
+      }
+    } catch (error) {
       return -1;
     }
   }
@@ -24,9 +30,7 @@ class LockerModel {
         .getDocuments();
     if (snapshotQuerLocker.documents.length > 0) {
       final lockerId = snapshotQuerLocker.documents[0].documentID;
-      await lockerCollection
-          .document(lockerId)
-          .updateData({'isLocked': false});
+      await lockerCollection.document(lockerId).updateData({'isLocked': false});
       return 0;
     } else {
       return -1;
@@ -34,14 +38,12 @@ class LockerModel {
   }
 
   Future<int> lock() async {
-   final snapshotQuerLocker = await lockerCollection
+    final snapshotQuerLocker = await lockerCollection
         .where('user', isEqualTo: this.uid)
         .getDocuments();
     if (snapshotQuerLocker.documents.length > 0) {
       final lockerId = snapshotQuerLocker.documents[0].documentID;
-      await lockerCollection
-          .document(lockerId)
-          .updateData({'isLocked': true});
+      await lockerCollection.document(lockerId).updateData({'isLocked': true});
       return 0;
     } else {
       return -1;

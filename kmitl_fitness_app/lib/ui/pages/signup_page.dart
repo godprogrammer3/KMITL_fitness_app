@@ -29,6 +29,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
       email = TextEditingController(),
       password = TextEditingController();
   bool _isLoading = false;
+  bool _isHidden = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -149,6 +150,18 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
+                            suffixIcon: IconButton(
+                            onPressed: (){
+                              setState(() {
+                                _isHidden = !_isHidden;
+                              });
+                            },
+                            icon: _isHidden
+                                ? Icon(Icons.visibility_off)
+                                : Icon(Icons.visibility),
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
                             hintText: "Password (6 or more characters)",
                             hintStyle: TextStyle(
                               color: Colors.grey,
@@ -158,7 +171,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                               borderRadius: BorderRadius.circular(20.0),
                             ),
                           ),
-                          obscureText: true,
+                          obscureText: _isHidden,
                           controller: password,
                           validator: (String value) {
                             if (value.isEmpty) {
@@ -261,7 +274,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Already have an accouct ?"),
+                        Text("Already have an account ?"),
                         FlatButton(
                           onPressed: () {
                             Navigator.of(context).pop();
