@@ -41,7 +41,10 @@ class KmitlFitnessApp extends StatelessWidget {
             StreamProvider<User>(
               create: (context) => AuthenModel().user,
             ),
-            StreamProvider<int>(create: (context)=>resfreshStream.stream,updateShouldNotify: (oldValue,newValue)=>true,)
+            StreamProvider<int>(
+              create: (context) => resfreshStream.stream,
+              updateShouldNotify: (oldValue, newValue) => true,
+            )
           ],
           child: SelectPage(),
         ));
@@ -57,42 +60,55 @@ class SelectPage extends StatelessWidget {
     print('refresh here by value : $refresh');
     final user = Provider.of<User>(context);
     print("User stream run here");
-    if (user != null) {
-      firebaseMessaging.getToken().then((token) async {
-        final userModel = UserModel(uid: user.uid);
-        await userModel
-            .updateUserData({'fcmToken': token, 'isSignedIn': true}, null);
-      });
-      final adminUserModel = UserModel(uid: user.uid);
-      return FutureBuilder(
-        future: adminUserModel.getUserData(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasError) {
-            print(snapshot.error);
-            return Scaffold(
-                body: SafeArea(
-                    child:
-                        Center(child: LoadingWidget(height: 50, width: 50))));
-          } else if (snapshot.data == null) {
-            return Scaffold(
-                body: SafeArea(
-                    child:
-                        Center(child: LoadingWidget(height: 50, width: 50))));
-          } else {
-            if (snapshot.data.role == 'admin') {
-              return AdminNavigationWidget(user: user);
+    try {
+      if (user != null) {
+        firebaseMessaging.getToken().then((token) async {
+          final userModel = UserModel(uid: user.uid);
+          await userModel
+              .updateUserData({'fcmToken': token, 'isSignedIn': true}, null);
+        });
+        final adminUserModel = UserModel(uid: user.uid);
+        return FutureBuilder(
+          future: adminUserModel.getUserData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              return Scaffold(
+                  body: SafeArea(
+                      child:
+                          Center(child: LoadingWidget(height: 50, width: 50))));
+            } else if (snapshot.data == null) {
+              return Scaffold(
+                  body: SafeArea(
+                      child:
+                          Center(child: LoadingWidget(height: 50, width: 50))));
             } else {
-              if (snapshot.data.faceId != '' && snapshot.data.faceId != null) {
-                return NavigationWidget(user: user);
+              if (snapshot.data.role == 'admin') {
+                return AdminNavigationWidget(user: user);
               } else {
-                return FaceIdPage(user: user);
+                if (snapshot.data.faceId != '' &&
+                    snapshot.data.faceId != null) {
+                  return NavigationWidget(user: user);
+                } else {
+                  return FaceIdPage(user: user);
+                }
               }
             }
-          }
-        },
+          },
+        );
+      } else {
+        return LoginPage();
+      }
+    } catch (error) {
+      resfreshStream.add(-1);
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: LoadingWidget(
+          width: 50,
+          height: 50,
+        ),
       );
-    } else {
-      return LoginPage();
     }
   }
 }

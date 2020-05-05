@@ -118,8 +118,15 @@ class PointPageChild extends State<PointPage> {
               print(snapshot.error);
               return Center(child: LoadingWidget(height: 50, width: 50));
             } else if (snapshot.data == null) {
-              return Center(child: Text("Empty"));
+              return Center(child: LoadingWidget(height: 50, width: 50));
             } else {
+              if (snapshot.data.length == 0) {
+                return Center(
+                    child: Text(
+                  'Empty',
+                  style: TextStyle(fontSize: 30),
+                ));
+              }
               snapshot.data.sort();
               List<Widget> widgets = List<Widget>();
               for (int i = 0; i < snapshot.data.length; i++) {

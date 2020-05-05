@@ -42,12 +42,16 @@ class _MembershipPageState extends State<MembershipPage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
               print(snapshot.error);
-              return LoadingWidget(height: 50, width: 50);
+              return Center(child: LoadingWidget(height: 50, width: 50));
             } else if (snapshot.data == null) {
-              return Center(child: Text("Empty"));
+              return Center(child: LoadingWidget(height: 50, width: 50));
             } else {
               if (snapshot.data.length == 0) {
-                return Center(child: Text("Empty"));
+                return Center(
+                    child: Text(
+                  'Empty',
+                  style: TextStyle(fontSize: 30),
+                ));
               }
               snapshot.data.sort();
               return ListView.builder(

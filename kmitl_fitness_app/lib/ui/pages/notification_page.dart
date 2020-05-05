@@ -12,13 +12,14 @@ class NotificationPage extends StatelessWidget {
     return NotificationPageChild(user: user);
   }
 }
+
 class NotificationPageChild extends StatelessWidget {
   final User user;
   const NotificationPageChild({Key key, this.user}) : super(key: key);
   final Map<String, IconData> symbol = const {
     'class': Icons.schedule,
     'post': Icons.assignment,
-    'admin':Icons.assignment_ind
+    'admin': Icons.assignment_ind
   };
   @override
   Widget build(BuildContext context) {
@@ -44,6 +45,13 @@ class NotificationPageChild extends StatelessWidget {
             } else if (snapshot.data == null) {
               return Center(child: LoadingWidget(height: 50, width: 50));
             } else {
+              if (snapshot.data.length == 0) {
+                return Center(
+                    child: Text(
+                  'Empty',
+                  style: TextStyle(fontSize: 30),
+                ));
+              }
               snapshot.data.sort();
               List reveseList = List.from(snapshot.data.reversed);
               return ListView.separated(
@@ -55,8 +63,7 @@ class NotificationPageChild extends StatelessWidget {
                     isThreeLine: true,
                     leading: CircleAvatar(
                       backgroundColor: Colors.orange[900],
-                      child: Icon(symbol[reveseList[index].type]
-                          ),
+                      child: Icon(symbol[reveseList[index].type]),
                       foregroundColor: Colors.white,
                     ),
                     subtitle: Text(reveseList[index].detail,
