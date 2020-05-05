@@ -52,9 +52,16 @@ class ClassModel {
 
   Future<int> deleteClass(String classId) async {
     try {
-      final snapshotQuery = await classCollection.document(classId).collection('person').getDocuments();
-      for(var i in snapshotQuery.documents){
-        await classCollection.document(classId).collection('person').document(i.documentID).delete();
+      final snapshotQuery = await classCollection
+          .document(classId)
+          .collection('person')
+          .getDocuments();
+      for (var i in snapshotQuery.documents) {
+        await classCollection
+            .document(classId)
+            .collection('person')
+            .document(i.documentID)
+            .delete();
       }
       await classCollection.document(classId).delete();
       return 0;
@@ -83,18 +90,18 @@ class ClassModel {
       String id, List<Map<String, dynamic>> persons) async {
     try {
       for (var i in persons) {
-        if( i['isChecked'] == true){
-           await classCollection
-            .document(id)
-            .collection('person')
-            .document(i['uid'])
-            .updateData({'isChecked': i['isChecked']});
-        }else{
-          await UserModel(uid:i['uid']).updateUserData({'isHaveYellowCard':true}, null);
+        if (i['isChecked'] == true) {
+          await classCollection
+              .document(id)
+              .collection('person')
+              .document(i['uid'])
+              .updateData({'isChecked': i['isChecked']});
+        } else {
+          await UserModel(uid: i['uid'])
+              .updateUserData({'isHaveYellowCard': true}, null);
         }
-       
       }
-      await classCollection.document(id).updateData({'isChecked':true});
+      await classCollection.document(id).updateData({'isChecked': true});
       return 0;
     } catch (error) {
       return -1;
@@ -102,53 +109,51 @@ class ClassModel {
   }
 
   Future<int> reserveClass(String classId) async {
-    final snapshotClass = await classCollection.document(classId).get();
-    final snapshotPerson = await classCollection
-        .document(classId)
-        .collection('person')
-        .getDocuments();
-    if (!snapshotClass.exists) {
-      return -1;
-    } else if (snapshotClass['totalPerson'] >= snapshotClass['limitPerson']) {
-      return -2;
-    } else if (DateTime.now()
-            .isAfter(DateTime.fromMillisecondsSinceEpoch(
-                (snapshotClass['beginDateTime'].seconds * 1000 +
-                        snapshotClass['beginDateTime'].nanoseconds / 1000000)
-                    .round()))
-             ) {
-      return -3;
-    } else if (DateTime.now()
-            .difference(DateTime.fromMillisecondsSinceEpoch(
-                (snapshotClass['beginDateTime'].seconds * 1000 +
-                        snapshotClass['beginDateTime'].nanoseconds / 1000000)
-                    .round()))
-            .inMinutes >
-        -30) {
-      return -4;
-    } else if (snapshotPerson.documents.length > 0) {
-      for (var i in snapshotPerson.documents) {
-        if (i.documentID == this.uid) {
-          return -5;
-        }
+    try {
+      final userDate = await UserModel(uid:this.uid).getUserData();
+      if(userDate.isHaveYellowCard){
+        return -6;
       }
-      await updateClass(
-          classId, {'totalPerson': FieldValue.increment(1)}, null);
-      await classCollection
+      final snapshotClass = await classCollection.document(classId).get();
+      final snapshotPerson = await classCollection
           .document(classId)
           .collection('person')
-          .document(this.uid)
-          .setData({'isChecked': false});
-      return 0;
-    } else {
-      await updateClass(
-          classId, {'totalPerson': FieldValue.increment(1)}, null);
-      await classCollection
-          .document(classId)
-          .collection('person')
-          .document(this.uid)
-          .setData({'isChecked': false});
-      return 0;
+          .getDocuments();
+      if (!snapshotClass.exists) {
+        return -1;
+      } else if (snapshotClass['totalPerson'] >= snapshotClass['limitPerson']) {
+        return -2;
+      } else if (DateTime.now().isAfter(DateTime.fromMillisecondsSinceEpoch(
+          (snapshotClass['beginDateTime'].seconds * 1000 +
+                  snapshotClass['beginDateTime'].nanoseconds / 1000000)
+              .round()))) {
+        return -3;
+      } else if (snapshotPerson.documents.length > 0) {
+        for (var i in snapshotPerson.documents) {
+          if (i.documentID == this.uid) {
+            return -5;
+          }
+        }
+        await updateClass(
+            classId, {'totalPerson': FieldValue.increment(1)}, null);
+        await classCollection
+            .document(classId)
+            .collection('person')
+            .document(this.uid)
+            .setData({'isChecked': false});
+        return 0;
+      } else {
+        await updateClass(
+            classId, {'totalPerson': FieldValue.increment(1)}, null);
+        await classCollection
+            .document(classId)
+            .collection('person')
+            .document(this.uid)
+            .setData({'isChecked': false});
+        return 0;
+      }
+    } catch (error) {
+      return -7;
     }
   }
 

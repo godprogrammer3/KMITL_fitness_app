@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class AdminRewardAddingPage extends StatefulWidget {
   final User user;
@@ -21,7 +22,9 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
   TextEditingController pointController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController detailController = TextEditingController();
-
+  bool _isLoading = false;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   _AdminRewardAddingPageState({this.user});
   pickImageFromGallery(ImageSource source) {
     setState(() {
@@ -70,6 +73,7 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
       },
     );
   }
+
   @override
   void dispose() {
     titleController.dispose();
@@ -78,13 +82,18 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
     detailController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.orange[900],
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -93,119 +102,174 @@ class _AdminRewardAddingPageState extends State<AdminRewardAddingPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Stack(alignment: Alignment.center, children: <Widget>[
-              showImage(),
-              IconButton(
-                icon: Icon(Icons.add_photo_alternate),
-                iconSize: 60.0,
-                color: Colors.white,
-                onPressed: () {
-                  pickImageFromGallery(ImageSource.gallery);
-                },
-              ),
-            ]),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: LoadingOverlay(
+          isLoading: _isLoading,
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      hintText: 'Title',
+                  Stack(alignment: Alignment.center, children: <Widget>[
+                    Center(
+                      child: Container(
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          child: showImage()),
                     ),
-                    controller: titleController,
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      hintText: 'Point',
+                    IconButton(
+                      icon: Icon(Icons.add_photo_alternate),
+                      iconSize: 60.0,
+                      color: Colors.white,
+                      onPressed: () {
+                        pickImageFromGallery(ImageSource.gallery);
+                      },
                     ),
-                    controller: pointController,
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      hintText: 'Quantity',
-                    ),
-                    controller: quantityController,
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 7,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      hintText: 'Detail',
-                    ),
-                    controller: detailController,
-                  ),
-                  SizedBox(height: 10),
-                  Center(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 2.5,
-                      height: 60,
-                      child: FlatButton(
-                          onPressed: () async {
-                            final rewardModel = RewardModel(uid: user.uid);
-                            Map<String, dynamic> data = {
-                              'title': titleController.text,
-                              'point': int.parse(pointController.text),
-                              'quantity': int.parse(quantityController.text),
-                              'detail': detailController.text,
-                            };
-                            final realImage = await imageFile;
-                            final result =
-                                await rewardModel.create(data, realImage);
-                            if (result == 0) {
-                              print('create reward success');
-                              Navigator.of(context).pop();
-                            } else {
-                              print('create reward failed');
+                  ]),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 10),
+                        TextFormField(
+                          maxLength: 50,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            hintText: 'Title',
+                          ),
+                          controller: titleController,
+                           validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Title is required';
+                            } else if (value.length < 3 || value.length > 50) {
+                              return 'Title must between 3 and 50 letter';
                             }
+                            return null;
                           },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100),
-                              side: BorderSide(color: Colors.transparent)),
-                          color: Colors.orange[900],
-                          child: Text(
-                            "CREATE",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          )),
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          maxLength: 50,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            hintText: 'Point',
+                          ),
+                          controller: pointController,
+                         
+                        ),
+                        SizedBox(height: 10),
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            hintText: 'Quantity',
+                          ),
+                          controller: quantityController,
+                        ),
+                        SizedBox(height: 10),
+                        TextField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 7,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            hintText: 'Detail',
+                          ),
+                          controller: detailController,
+                        ),
+                        SizedBox(height: 10),
+                        Center(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2.5,
+                            height: 60,
+                            child: FlatButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  final realImage = await imageFile;
+                                  if (realImage == null) {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text("Image must selected"),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                    return;
+                                  }
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  if (!_formKey.currentState.validate()) {
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Please fill up the form correctly"),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                    return;
+                                  }
+                                  final rewardModel =
+                                      RewardModel(uid: user.uid);
+                                  Map<String, dynamic> data = {
+                                    'title': titleController.text,
+                                    'point': int.parse(pointController.text),
+                                    'quantity':
+                                        int.parse(quantityController.text),
+                                    'detail': detailController.text,
+                                  };
+
+                                  final result =
+                                      await rewardModel.create(data, realImage);
+                                  if (result == 0) {
+                                    print('create reward success');
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    print('create reward failed');
+                                  }
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                    side:
+                                        BorderSide(color: Colors.transparent)),
+                                color: Colors.orange[900],
+                                child: Text(
+                                  "CREATE",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

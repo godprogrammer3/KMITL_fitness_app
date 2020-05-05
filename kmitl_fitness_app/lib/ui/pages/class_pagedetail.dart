@@ -194,61 +194,69 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold),
                                     ))
-                                : (class_.totalPerson >= class_.limitPerson)?
-                                  FlatButton(
-                                    disabledColor: Colors.grey,
-                                    onPressed:null,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100)),
-                                    child: Text(
-                                      'Class is full',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ))
-                                :
-                                FlatButton(
-                                    onPressed: () async {
-                                      final result = await showClassDialog(context);
-                                      if( result == 0){
-                                        Navigator.of(context).pop();
-                                      }else if( result == -2){
-                                         _scaffoldKey.currentState
-                                            .showSnackBar(SnackBar(
-                                          content: Text(
-                                              "Reserve class failed class is full"),
-                                          backgroundColor: Colors.red,
-                                        ));
-                                      }else if( result == -3 ||result == -4){
-                                         _scaffoldKey.currentState
-                                            .showSnackBar(SnackBar(
-                                          content: Text(
-                                              "Reserve class failed out of time"),
-                                          backgroundColor: Colors.red,
-                                        ));
-                                      }else if( result == -1 ){
-                                        return;
-                                      }else{
-                                          _scaffoldKey.currentState
-                                            .showSnackBar(SnackBar(
-                                          content: Text(
-                                              "Reserve class failed please try again"),
-                                          backgroundColor: Colors.red,
-                                        ));
-                                      }
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100)),
-                                    child: Text(
-                                      'Reserve',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    )),
+                                : (class_.totalPerson >= class_.limitPerson)
+                                    ? FlatButton(
+                                        disabledColor: Colors.grey,
+                                        onPressed: null,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100)),
+                                        child: Text(
+                                          'Class is full',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                    : FlatButton(
+                                        onPressed: () async {
+                                          final result =
+                                              await showClassDialog(context);
+                                          if (result == 0) {
+                                            Navigator.of(context).pop();
+                                          } else if (result == -2) {
+                                            _scaffoldKey.currentState
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Reserve class failed class is full"),
+                                              backgroundColor: Colors.red,
+                                            ));
+                                          } else if (result == -3 ||
+                                              result == -4) {
+                                            _scaffoldKey.currentState
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Reserve class failed out of time"),
+                                              backgroundColor: Colors.red,
+                                            ));
+                                          } else if (result == -1) {
+                                            return;
+                                          } else if (result == -6) {
+                                            _scaffoldKey.currentState
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Reserve class failed you are in yellow card status"),
+                                              backgroundColor: Colors.red,
+                                            ));
+                                          } else {
+                                            _scaffoldKey.currentState
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Reserve class failed please try again"),
+                                              backgroundColor: Colors.red,
+                                            ));
+                                          }
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100)),
+                                        child: Text(
+                                          'Reserve',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        )),
                           ),
                         );
                       }
@@ -273,7 +281,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
           _isLoading = true;
         });
         final result = await classModel.reserveClass(class_.id);
-         setState(() {
+        setState(() {
           _isLoading = false;
         });
         if (result == 0) {
@@ -282,7 +290,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
         } else {
           print('reserve class failed');
           print('error code: $result');
-           Navigator.of(context, rootNavigator: true).pop(result);
+          Navigator.of(context, rootNavigator: true).pop(result);
         }
       },
     );
