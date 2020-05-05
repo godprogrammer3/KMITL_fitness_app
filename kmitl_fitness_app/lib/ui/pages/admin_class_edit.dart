@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class AdminClassEdit extends StatelessWidget {
@@ -46,7 +47,9 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
   bool maxPicked = false;
   int _currentMax = 1;
   NumberPicker maxPicker;
-
+  bool _isLoading = false;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   void _initializeNumberPickers() {
     maxPicker = NumberPicker.integer(
         initialValue: _currentMax,
@@ -130,10 +133,14 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.orange[900],
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -143,283 +150,448 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
         elevation: 0.0,
       ),
       body: LayoutBuilder(builder: (context, constraint) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraint.maxHeight),
-            child: IntrinsicHeight(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Stack(
-                    alignment: Alignment.center,
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: LoadingOverlay(
+            isLoading: _isLoading,
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Row(
+                      Stack(
+                        alignment: Alignment.center,
                         children: <Widget>[
-                          Expanded(
-                            child: InkWell(
-                              onTap: getImage,
-                              child: _showImage(context),
-                            ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: InkWell(
+                                  onTap: getImage,
+                                  child: _showImage(context),
+                                ),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.add_photo_alternate, size: 70),
+                            color: Colors.white,
+                            onPressed: getImage,
                           ),
                         ],
                       ),
-                      IconButton(
-                        icon: Icon(Icons.add_photo_alternate, size: 70),
-                        color: Colors.white,
-                        onPressed: getImage,
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: 20, left: 30, right: 30, bottom: 20),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 0,
+                                  child: Container(
+                                    height: 70,
+                                    child: TextFormField(
+                                      maxLength: 30,
+                                      maxLines: 1,
+                                      controller: _title,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'Kanit',
+                                      ),
+                                      decoration: InputDecoration(
+                                        labelText: 'ชื่อคลาส',
+                                        labelStyle:
+                                            TextStyle(fontFamily: 'Kanit'),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                      ),
+                                      validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return 'Title is required';
+                                        } else if (value.length < 3 ||
+                                            value.length > 30) {
+                                          return 'Title must between 3 and 30 letter';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(MaterialCommunityIcons
+                                                .clock_outline),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              'เวลาเริ่ม: ' +
+                                                  startTime.format(context),
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: 'Kanit',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(MaterialCommunityIcons
+                                                .clock_check_outline),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              'เวลาสิ้นสุด: ' +
+                                                  endTime.format(context),
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: 'Kanit',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    RaisedButton(
+                                      child: Text(
+                                        'เลือกเวลา',
+                                        style: TextStyle(
+                                            fontFamily: 'Kanit',
+                                            fontSize: 20,
+                                            color: Colors.white),
+                                      ),
+                                      color: Colors.orange[900],
+                                      onPressed: () {
+                                        selectTime(context);
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      'จำนวนรับสูงสุด: ' +
+                                          (maxPicked || class_ != null
+                                              ? _currentMax.toString()
+                                              : 'โปรดระบุ'),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'Kanit',
+                                      ),
+                                    ),
+                                    RaisedButton(
+                                      child: Text(
+                                        'เปลี่ยน',
+                                        style: TextStyle(
+                                            fontFamily: 'Kanit',
+                                            fontSize: 20,
+                                            color: Colors.white),
+                                      ),
+                                      color: Colors.orange[900],
+                                      onPressed: () {
+                                        _showMaxPickerDialog();
+                                      },
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    maxLength: 200,
+                                    maxLines: 2,
+                                    controller: _description,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Kanit',
+                                    ),
+                                    decoration: InputDecoration(
+                                      labelText: 'รายละเอียด',
+                                      labelStyle: TextStyle(
+                                        fontFamily: 'Kanit',
+                                        fontSize: 20,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    validator: (String value) {
+                                      if (value.isEmpty) {
+                                        return 'Detail is required';
+                                      } else if (value.length < 3 ||
+                                          value.length > 200) {
+                                        return 'Detail must between 3 and 200 letter';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Center(
+                                  child: (class_ != null)
+                                      ? RaisedButton(
+                                          onPressed: () async {
+                                            if (!_formKey.currentState
+                                                .validate()) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please fill up the form correctly"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            }
+                                            if (startTime == endTime) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select valid start and end time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            } else if (endTime.hour <
+                                                startTime.hour) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select valid start and end time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            } else if (startTime.hour ==
+                                                    endTime.hour &&
+                                                endTime.minute -
+                                                        startTime.minute <=
+                                                    0) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select valid start and end time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            }
+                                            final nowTime = DateTime.now();
+                                            Map<String, dynamic> data = {
+                                              'title': _title.text,
+                                              'detail': _description.text,
+                                              'beginDateTime': DateTime(
+                                                  nowTime.year,
+                                                  nowTime.month,
+                                                  nowTime.day,
+                                                  startTime.hour,
+                                                  startTime.minute),
+                                              'endDateTime': DateTime(
+                                                  nowTime.year,
+                                                  nowTime.month,
+                                                  nowTime.day,
+                                                  endTime.hour,
+                                                  endTime.minute),
+                                              'limitPerson': _currentMax,
+                                            };
+                                            setState(() {
+                                              _isLoading = true;
+                                            });
+                                            final result =
+                                                await classModel.updateClass(
+                                                    class_.id, data, _image);
+                                            setState(() {
+                                              _isLoading = false;
+                                            });
+                                            if (result == 0) {
+                                              print('updated class complete');
+                                              Navigator.of(context).pop();
+                                            } else {
+                                              print('update class failed');
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Update class failed please try again"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                            }
+                                          },
+                                          color: Colors.orange[900],
+                                          child: Container(
+                                            height: 25,
+                                            width: 200,
+                                            child: Text(
+                                              'บันทึก',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Kanit'),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          padding: EdgeInsets.only(
+                                              top: 10, bottom: 10),
+                                        )
+                                      : RaisedButton(
+                                          onPressed: () async {
+                                            if (_image == null) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content:
+                                                    Text("Image must selected"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            }
+                                            if (!_formKey.currentState
+                                                .validate()) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please fill up the form correctly"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            }
+                                            if (startTime == endTime) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select valid start and end time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            } else if (endTime.hour <
+                                                startTime.hour) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select valid start and end time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            } else if (startTime.hour ==
+                                                    endTime.hour &&
+                                                endTime.minute -
+                                                        startTime.minute <=
+                                                    0) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select valid start and end time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            }
+                                            if (!maxPicked) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select max person in class"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            }
+                                            final nowTime = DateTime.now();
+                                            Map<String, dynamic> data = {
+                                              'title': _title.text,
+                                              'detail': _description.text,
+                                              'beginDateTime': DateTime(
+                                                  nowTime.year,
+                                                  nowTime.month,
+                                                  nowTime.day,
+                                                  startTime.hour,
+                                                  startTime.minute),
+                                              'endDateTime': DateTime(
+                                                  nowTime.year,
+                                                  nowTime.month,
+                                                  nowTime.day,
+                                                  endTime.hour,
+                                                  endTime.minute),
+                                              'limitPerson': _currentMax,
+                                              'isChecked': false,
+                                            };
+                                            setState(() {
+                                              _isLoading = true;
+                                            });
+                                            final result = await classModel
+                                                .creatClass(data, _image);
+                                            if (result == 0) {
+                                              print('create class success');
+                                              Navigator.of(context).pop();
+                                            } else {
+                                              print('create class failed');
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Create class failed please try again"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                            }
+                                          },
+                                          color: Colors.orange[900],
+                                          child: Container(
+                                            height: 25,
+                                            width: 200,
+                                            child: Text(
+                                              'สร้างคลาส',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Kanit'),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          padding: EdgeInsets.only(
+                                              top: 10, bottom: 10),
+                                        ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          top: 20, left: 30, right: 30, bottom: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 0,
-                            child: Container(
-                              height: 70,
-                              child: TextField(
-                                maxLength: 20,
-                                maxLines: 1,
-                                controller: _title,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Kanit',
-                                ),
-                                decoration: InputDecoration(
-                                  labelText: 'ชื่อคลาส',
-                                  labelStyle: TextStyle(fontFamily: 'Kanit'),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(
-                                          MaterialCommunityIcons.clock_outline),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        'เวลาเริ่ม: ' +
-                                            startTime.format(context),
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontFamily: 'Kanit',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(MaterialCommunityIcons
-                                          .clock_check_outline),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        'เวลาสิ้นสุด: ' +
-                                            endTime.format(context),
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontFamily: 'Kanit',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              RaisedButton(
-                                child: Text(
-                                  'เลือกเวลา',
-                                  style: TextStyle(
-                                      fontFamily: 'Kanit',
-                                      fontSize: 20,
-                                      color: Colors.white),
-                                ),
-                                color: Colors.orange[900],
-                                onPressed: () {
-                                  selectTime(context);
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: EdgeInsets.all(10),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'จำนวนรับสูงสุด: ' +
-                                    (maxPicked || class_ != null
-                                        ? _currentMax.toString()
-                                        : 'โปรดระบุ'),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Kanit',
-                                ),
-                              ),
-                              RaisedButton(
-                                child: Text(
-                                  'เปลี่ยน',
-                                  style: TextStyle(
-                                      fontFamily: 'Kanit',
-                                      fontSize: 20,
-                                      color: Colors.white),
-                                ),
-                                color: Colors.orange[900],
-                                onPressed: () {
-                                  _showMaxPickerDialog();
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: EdgeInsets.all(10),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Expanded(
-                            child: TextField(
-                              maxLength: 200,
-                              maxLines: 2,
-                              controller: _description,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'Kanit',
-                              ),
-                              decoration: InputDecoration(
-                                labelText: 'รายละเอียด',
-                                labelStyle: TextStyle(
-                                  fontFamily: 'Kanit',
-                                  fontSize: 20,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Center(
-                            child: (class_ != null)
-                                ? RaisedButton(
-                                    onPressed: () async {
-                                      final nowTime = DateTime.now();
-                                      Map<String, dynamic> data = {
-                                        'title': _title.text,
-                                        'detail': _description.text,
-                                        'beginDateTime': DateTime(
-                                            nowTime.year,
-                                            nowTime.month,
-                                            nowTime.day,
-                                            startTime.hour,
-                                            startTime.minute),
-                                        'endDateTime': DateTime(
-                                            nowTime.year,
-                                            nowTime.month,
-                                            nowTime.day,
-                                            endTime.hour,
-                                            endTime.minute),
-                                        'limitPerson': _currentMax,
-                                      };
-                                      await classModel.updateClass(
-                                          class_.id, data, _image);
-                                      print('updated class complete');
-                                      Navigator.of(context).pop();
-                                    },
-                                    color: Colors.orange[900],
-                                    child: Container(
-                                      height: 25,
-                                      width: 200,
-                                      child: Text(
-                                        'บันทึก',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                            fontFamily: 'Kanit'),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    padding:
-                                        EdgeInsets.only(top: 10, bottom: 10),
-                                  )
-                                : RaisedButton(
-                                    onPressed: () async {
-                                      final nowTime = DateTime.now();
-                                      Map<String, dynamic> data = {
-                                        'title': _title.text,
-                                        'detail': _description.text,
-                                        'beginDateTime': DateTime(
-                                            nowTime.year,
-                                            nowTime.month,
-                                            nowTime.day,
-                                            startTime.hour,
-                                            startTime.minute),
-                                        'endDateTime': DateTime(
-                                            nowTime.year,
-                                            nowTime.month,
-                                            nowTime.day,
-                                            endTime.hour,
-                                            endTime.minute),
-                                        'limitPerson': _currentMax,
-                                      };
-                                      await classModel.creatClass(data, _image);
-                                      print('create class complete');
-                                      Navigator.of(context).pop();
-                                    },
-                                    color: Colors.orange[900],
-                                    child: Container(
-                                      height: 25,
-                                      width: 200,
-                                      child: Text(
-                                        'สร้างคลาส',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                            fontFamily: 'Kanit'),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    padding:
-                                        EdgeInsets.only(top: 10, bottom: 10),
-                                  ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -447,21 +619,25 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                     } else {
                       return Container(
                         height: MediaQuery.of(context).size.height * 0.4,
-                        width: MediaQuery.of(context).size.width,
                         child: Image.network(
                           snapshot.data,
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.fill,
                         ),
                       );
                     }
                   },
                 )
-              : Image.file(_image));
+              : Image.file(_image, fit: BoxFit.fill));
     } else {
       return Container(
           height: 240,
           color: Colors.black38,
-          child: _image == null ? null : Image.file(_image));
+          child: _image == null
+              ? null
+              : Image.file(
+                  _image,
+                  fit: BoxFit.fill,
+                ));
     }
   }
 }

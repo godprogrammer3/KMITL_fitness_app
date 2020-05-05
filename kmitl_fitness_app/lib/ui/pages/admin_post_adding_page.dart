@@ -79,7 +79,7 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,color: Colors.grey),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.orange[900]),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -212,7 +212,7 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                                       _scaffoldKey.currentState
                                           .showSnackBar(SnackBar(
                                         content: Text(
-                                            "Please fill up the form the form correctly"),
+                                            "Please fill up the form correctly"),
                                         backgroundColor: Colors.red,
                                       ));
                                     }
