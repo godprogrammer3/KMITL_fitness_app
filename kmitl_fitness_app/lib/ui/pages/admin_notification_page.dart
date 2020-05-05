@@ -20,7 +20,7 @@ class AdminNotificationPageChild extends StatelessWidget {
   final Map<String, IconData> symbol = const {
     'class': Icons.schedule,
     'post': Icons.assignment,
-    'admin':Icons.assignment_ind
+    'admin': Icons.assignment_ind
   };
   @override
   Widget build(BuildContext context) {
@@ -47,6 +47,13 @@ class AdminNotificationPageChild extends StatelessWidget {
             } else if (snapshot.data == null) {
               return Center(child: LoadingWidget(height: 50, width: 50));
             } else {
+              if (snapshot.data.length == 0) {
+                return Center(
+                    child: Text(
+                  'Empty',
+                  style: TextStyle(fontSize: 30),
+                ));
+              }
               snapshot.data.sort();
               List reveseList = List.from(snapshot.data.reversed);
               return ListView.separated(
