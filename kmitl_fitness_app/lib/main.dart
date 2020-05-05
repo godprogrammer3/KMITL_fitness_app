@@ -78,6 +78,8 @@ class SelectPage extends StatelessWidget {
                       child:
                           Center(child: LoadingWidget(height: 50, width: 50))));
             } else if (snapshot.data == null) {
+              print('Its error here');
+              print(snapshot.error);
               return Scaffold(
                   body: SafeArea(
                       child:

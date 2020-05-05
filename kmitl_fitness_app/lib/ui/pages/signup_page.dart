@@ -234,6 +234,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                   uid: null,
                                   phoneNumber: null,
                                   type: 'email',
+                                  discount: -1.0,
                                 );
                                 setState(() => _isLoading = true);
                                 dynamic user = await authenModel.register(

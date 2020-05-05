@@ -51,7 +51,8 @@ class AuthenModel {
         'isHaveYellowCard': false,
         'point': 0,
         'phoneNumber': '',
-        'type':userData.type
+        'type':userData.type,
+        'discount':-1.0,
       });
       return User(uid: user.uid);
     } catch (error) {
@@ -125,7 +126,8 @@ class AuthenModel {
           'isHaveYellowCard': false,
           'point': 0,
           'phoneNumber': '',
-          'type':'google'
+          'type':'google',
+          'discount':-1.0,
         });
       }
       return 0;

@@ -337,7 +337,7 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                   elevation: 5.0,
                   child: Text("CANCEL"),
                   onPressed: () {
-                    Navigator.pop(context, -1);
+                    Navigator.of(context).pop(-1);
                   }),
               MaterialButton(
                   elevation: 5.0,
@@ -346,10 +346,11 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                     final result = await packageModel.delete(package.id);
                     if (result == 0) {
                       print('delete package success');
-                      Navigator.pop(context, 0);
+                      
+                      Navigator.of(context).pop(0);
                     } else {
                       print('delete package failed');
-                      Navigator.pop(context, -2);
+                      Navigator.of(context).pop(-2);
                     }
                   })
             ],

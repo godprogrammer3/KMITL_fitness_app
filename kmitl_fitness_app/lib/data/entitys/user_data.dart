@@ -14,6 +14,7 @@ class UserData {
   final String imageId;
   final String phoneNumber;
   final String type;
+  final double discount;
   UserData(
       {
       @required this.point,
@@ -29,5 +30,6 @@ class UserData {
       @required this.imageId,
       @required this.phoneNumber, 
       @required this.type, 
+      @required this.discount, 
   });
 }

@@ -38,7 +38,7 @@ class _FaceIdPageChildState extends State<FaceIdPageChild> {
   bool _isCanSave = false;
   bool _isLoading = false;
   _openCamera(BuildContext context) async {
-    var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+    var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (picture != null) {
       setState(() {
         _isLoading = true;
