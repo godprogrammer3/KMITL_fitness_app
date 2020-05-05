@@ -49,35 +49,41 @@ class RewardModel {
   }
 
   Future<int> delete(String id) async {
-    try{
+    try {
       await rewardCollection.document(id).delete();
       return 0;
-    }catch (error) {
+    } catch (error) {
       return -1;
     }
   }
 
   Future<int> redeem(String rewardId) async {
-    final snapshotReward = await rewardCollection.document(rewardId).get();
-    final userModel = UserModel(uid: this.uid);
-    final userData = await userModel.getUserData();
-    var persons;
-    if( snapshotReward['person'] != null){
-      persons = List<String>.from(snapshotReward['person']);
+    try {
+      final snapshotReward = await rewardCollection.document(rewardId).get();
+      final userModel = UserModel(uid: this.uid);
+      final userData = await userModel.getUserData();
+      var persons;
+      if (snapshotReward['person'] != null) {
+        persons = List<String>.from(snapshotReward['person']);
+      }
+      if (snapshotReward['point'] > userData.point) {
+        return -1;
+      } else if (snapshotReward['quantity'] <= 0) {
+        return -2;
+      } else if (snapshotReward['person'] != null &&
+          persons.contains(this.uid)) {
+        return -3;
+      }
+      await rewardCollection.document(rewardId).updateData({
+        'quantity': FieldValue.increment(-1),
+        'person': FieldValue.arrayUnion([this.uid])
+      });
+      await userModel.updateUserData(
+          {'point': userData.point - snapshotReward['point']}, null);
+      return 0;
+    } catch (error) {
+      return -4;
     }
-    if (snapshotReward['point'] > userData.point) {
-      return -1;
-    } else if (snapshotReward['quantity'] <= 0) {
-      return -2;
-    }else if (snapshotReward['person'] != null && persons.contains(this.uid)) {
-      return -3;
-    } 
-    await rewardCollection.document(rewardId).updateData({
-      'quantity': FieldValue.increment(-1),
-      'person': FieldValue.arrayUnion([this.uid])
-    });
-    await userModel.updateUserData({'point':userData.point-snapshotReward['point']},null);
-    return 0;
   }
 
   List<Reward> _rewardFromSnapshot(QuerySnapshot snapshot) {
@@ -97,7 +103,9 @@ class RewardModel {
                     doc.data['updatedTime'].nanoseconds / 1000000)
                 .round()),
         owner: doc.data['owner'],
-        person: doc.data['person']!=null?List<String>.from(doc.data['person']):null,
+        person: doc.data['person'] != null
+            ? List<String>.from(doc.data['person'])
+            : null,
       );
     }).toList();
   }

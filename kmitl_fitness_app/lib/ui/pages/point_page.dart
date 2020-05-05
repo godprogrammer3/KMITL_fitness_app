@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class PointPage extends StatefulWidget {
   final User user;
@@ -16,8 +17,9 @@ class PointPage extends StatefulWidget {
 class PointPageChild extends State<PointPage> {
   final User user;
   RewardModel rewardModel;
-  createAlertDialog(BuildContext context, String id, Reward reward) {
-    return showDialog(
+  Future<int> createAlertDialog(
+      BuildContext context, String id, Reward reward) async {
+    return await showDialog(
         context: context,
         builder: (context) {
           return Dialog(
@@ -27,20 +29,36 @@ class PointPageChild extends State<PointPage> {
             child: Container(
               height: 450,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Stack(
                     children: <Widget>[
-                      Center(
-                        child: Image(
-                          image: AssetImage('assets/images/5percent.jpg'),
-                        ),
-                      ),
+                      FutureBuilder(
+                          future: rewardModel.getUrlFromImageId(reward.id),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasError) {
+                              return Center(
+                                  child: LoadingWidget(height: 50, width: 50));
+                            } else if (snapshot.data == null) {
+                              return Center(
+                                  child: LoadingWidget(height: 50, width: 50));
+                            } else {
+                              return Center(
+                                child: Image.network(snapshot.data,
+                                    fit: BoxFit.fill),
+                              );
+                            }
+                          }),
                       Container(
                           margin: EdgeInsets.fromLTRB(280, 1, 1, 1),
                           child: IconButton(
-                              icon: Icon(Icons.close),
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.orange[900],
+                              ),
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.pop(context, -99);
                               }))
                     ],
                   ),
@@ -60,10 +78,11 @@ class PointPageChild extends State<PointPage> {
                         final result = await rewardModel.redeem(id);
                         if (result == 0) {
                           print('redeem reward success');
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(result);
                         } else {
                           print('redeem reward failed');
                           print('error code : $result');
+                          Navigator.of(context).pop(result);
                         }
                       },
                       shape: RoundedRectangleBorder(
@@ -84,6 +103,8 @@ class PointPageChild extends State<PointPage> {
         });
   }
 
+  bool _isLoading = false;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   PointPageChild({this.user});
 
   @override
@@ -95,6 +116,7 @@ class PointPageChild extends State<PointPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
@@ -111,103 +133,146 @@ class PointPageChild extends State<PointPage> {
         ),
         backgroundColor: Colors.orange[900],
       ),
-      body: StreamBuilder(
-          stream: rewardModel.rewards,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return Center(child: LoadingWidget(height: 50, width: 50));
-            } else if (snapshot.data == null) {
-              return Center(child: LoadingWidget(height: 50, width: 50));
-            } else {
-              if (snapshot.data.length == 0) {
-                return Center(
-                    child: Text(
-                  'Empty',
-                  style: TextStyle(fontSize: 30),
-                ));
-              }
-              snapshot.data.sort();
-              List<Widget> widgets = List<Widget>();
-              for (int i = 0; i < snapshot.data.length; i++) {
-                widgets.add(Card(
-                  elevation: 5.0,
-                  margin: EdgeInsets.all(5.0),
-                  child: InkWell(
-                    onTap: () {
-                      createAlertDialog(
-                          context, snapshot.data[i].id, snapshot.data[i]);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: FutureBuilder(
-                            future: rewardModel
-                                .getUrlFromImageId(snapshot.data[i].id),
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasError) {
-                                return Center(
-                                    child:
-                                        LoadingWidget(height: 50, width: 50));
-                              } else if (snapshot.data == null) {
-                                return Center(
-                                    child:
-                                        LoadingWidget(height: 50, width: 50));
-                              } else {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.12,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(snapshot.data),
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: LoadingOverlay(
+          isLoading: _isLoading,
+          child: StreamBuilder(
+              stream: rewardModel.rewards,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return Center(child: LoadingWidget(height: 50, width: 50));
+                } else if (snapshot.data == null) {
+                  return Center(child: LoadingWidget(height: 50, width: 50));
+                } else {
+                  if (snapshot.data.length == 0) {
+                    return Center(
+                        child: Text(
+                      'Empty',
+                      style: TextStyle(fontSize: 30),
+                    ));
+                  }
+                  snapshot.data.sort();
+                  List<Widget> widgets = List<Widget>();
+                  for (int i = 0; i < snapshot.data.length; i++) {
+                    widgets.add(Card(
+                      elevation: 5.0,
+                      margin: EdgeInsets.all(5.0),
+                      child: InkWell(
+                        onTap: () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          final result = await createAlertDialog(
+                              context, snapshot.data[i].id, snapshot.data[i]);
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          if (result == 0) {
+                            Navigator.of(context).pop();
+                          } else if (result == -1) {
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content: Text("Redeem failed point not enough"),
+                              backgroundColor: Colors.red,
+                            ));
+                          } else if (result == -2) {
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content:
+                                  Text("Redeem failed reward out of stock"),
+                              backgroundColor: Colors.red,
+                            ));
+                          } else if (result == -3) {
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content:
+                                  Text("Redeem failed you already redeem"),
+                              backgroundColor: Colors.red,
+                            ));
+                          }else if(result == -99){
+                            return;
+                          }else{
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content:
+                                  Text("Redeem failed please try again"),
+                              backgroundColor: Colors.red,
+                            ));
+                          }
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: FutureBuilder(
+                                future: rewardModel
+                                    .getUrlFromImageId(snapshot.data[i].id),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Center(
+                                        child: LoadingWidget(
+                                            height: 50, width: 50));
+                                  } else if (snapshot.data == null) {
+                                    return Center(
+                                        child: LoadingWidget(
+                                            height: 50, width: 50));
+                                  } else {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.12,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(snapshot.data),
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(snapshot.data[i].title,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              subtitle: Text("ใช้  " +
+                                  snapshot.data[i].point.toString() +
+                                  " point"),
+                            ),
+                          ],
                         ),
-                        ListTile(
-                          title: Text(snapshot.data[i].title,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          subtitle: Text("ใช้  " +
-                              snapshot.data[i].point.toString() +
-                              " point"),
+                      ),
+                    ));
+                  }
+                  return Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            child: SingleChildScrollView(
+                                child: Column(
+                              children: <Widget>[
+                                GridView.count(
+                                  physics: ScrollPhysics(),
+                                  primary: true,
+                                  shrinkWrap: true,
+                                  crossAxisCount: 2,
+                                  children: widgets,
+                                ),
+                              ],
+                            )),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ));
-              }
-              return Container(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        child: SingleChildScrollView(
-                            child: Column(
-                          children: <Widget>[
-                            GridView.count(
-                              physics: ScrollPhysics(),
-                              primary: true,
-                              shrinkWrap: true,
-                              crossAxisCount: 2,
-                              children: widgets,
-                            ),
-                          ],
-                        )),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-          }),
+                  );
+                }
+              }),
+        ),
+      ),
     );
   }
 }
