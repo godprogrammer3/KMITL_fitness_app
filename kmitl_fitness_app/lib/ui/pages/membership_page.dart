@@ -103,7 +103,7 @@ class _MembershipPageState extends State<MembershipPage> {
                                       child: Text(
                                         '฿' +
                                             snapshot.data[index].price
-                                                .toString(),
+                                               .toStringAsFixed(2),
                                         style: TextStyle(
                                             fontFamily: 'Kanit',
                                             fontSize: 25,
@@ -121,7 +121,7 @@ class _MembershipPageState extends State<MembershipPage> {
                                     Text(
                                       '฿' +
                                           snapshot.data[index].pricePerDay
-                                              .toString() +
+                                              .toStringAsFixed(2) +
                                           ' ต่อวัน',
                                       style: TextStyle(
                                           fontFamily: 'Kanit', fontSize: 12),
@@ -156,8 +156,8 @@ class _MembershipPageState extends State<MembershipPage> {
                                             child: Text(
                                           'คุณมีส่วนลด ' +
                                               snapshotUser.data.discount
-                                                  .toString() +
-                                              '%\nเหลือ ${priceAfterDiscount[index]} บาท',
+                                                  .toStringAsFixed(2) +
+                                              '%\nเหลือ ${priceAfterDiscount[index].toStringAsFixed(2)} บาท',
                                           style: TextStyle(
                                             fontSize: 17,
                                             fontFamily: 'Kanit',

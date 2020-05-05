@@ -182,31 +182,6 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        keyboardType: TextInputType.numberWithOptions(
-                            signed: false, decimal: true),
-                        controller: _pricePerDayController,
-                        decoration: InputDecoration(
-                          labelText: 'Price per day',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                        ),
-                        inputFormatters: [
-                          WhitelistingTextInputFormatter(RegExp(r"[0-9.]"))
-                        ],
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Price per day is required';
-                          } else if (double.tryParse(value) == null) {
-                            return 'Input a valid price per day';
-                          }
-                          return null;
-                        },
-                      ),
                       SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -216,27 +191,41 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                             width: 140,
                             child: FlatButton(
                                 onPressed: () async {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  final result =
+                                  final resultDialog =
                                       await createAlertDialog(context);
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                  if (result == 0) {
-                                    print('delete package success');
-                                    Navigator.of(context).pop();
-                                  } else if (result == -1) {
-                                    return;
-                                  } else {
-                                    print('delete package failed');
-                                    _scaffoldKey.currentState
-                                        .showSnackBar(SnackBar(
-                                      content: Text(
-                                          "Deletete package failed please try again"),
-                                      backgroundColor: Colors.red,
-                                    ));
+                                  if (resultDialog == 0) {
+                                    if (user.uid != package.owner) {
+                                      _scaffoldKey.currentState
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                            "Update package failed you are not owner"),
+                                        backgroundColor: Colors.red,
+                                      ));
+                                      return;
+                                    }
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    final result =
+                                        await packageModel.delete(package.id);
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    if (result == 0) {
+                                      print('delete package success');
+                                      Navigator.of(context).pop();
+                                    } else {
+                                      print('delete package failed');
+                                      if (user.uid != package.owner) {
+                                        _scaffoldKey.currentState
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              "Update package failed please try again"),
+                                          backgroundColor: Colors.red,
+                                        ));
+                                        return;
+                                      }
+                                    }
                                   }
                                 },
                                 shape: RoundedRectangleBorder(
@@ -257,6 +246,15 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                             width: 140,
                             child: FlatButton(
                                 onPressed: () async {
+                                  if (user.uid != package.owner) {
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Update package failed you are not owner"),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                    return;
+                                  }
                                   if (!_formKey.currentState.validate()) {
                                     _scaffoldKey.currentState
                                         .showSnackBar(SnackBar(
@@ -276,8 +274,7 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                                         int.parse(_totalDayController.text),
                                     'price':
                                         double.parse(_priceController.text),
-                                    'pricePerDay': double.parse(
-                                        _pricePerDayController.text),
+                                    'pricePerDay': double.parse(_priceController.text)/int.parse(_totalDayController.text),
                                   };
                                   setState(() {
                                     _isLoading = true;
@@ -289,7 +286,11 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                                   });
                                   if (result == 0) {
                                     print('update package success');
-                                    Navigator.of(context).pop();
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text("Update package success"),
+                                      backgroundColor: Colors.green,
+                                    ));
                                   } else {
                                     print('update package faild');
                                     _scaffoldKey.currentState
@@ -343,15 +344,7 @@ class _AdminPackageEditingPageState extends State<AdminPackageEditingPage> {
                   elevation: 5.0,
                   child: Text("DELETE"),
                   onPressed: () async {
-                    final result = await packageModel.delete(package.id);
-                    if (result == 0) {
-                      print('delete package success');
-                      
-                      Navigator.of(context).pop(0);
-                    } else {
-                      print('delete package failed');
-                      Navigator.of(context).pop(-2);
-                    }
+                    Navigator.of(context).pop(0);
                   })
             ],
           );

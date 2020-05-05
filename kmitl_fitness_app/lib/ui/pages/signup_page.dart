@@ -61,6 +61,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         width: 280,
                         height: 77,
                         child: TextFormField(
+                          maxLength: 30,
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.person),
                             hintText: "First Name",
@@ -89,6 +90,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                         width: 280,
                         height: 77,
                         child: TextFormField(
+                          maxLength: 30,
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.person),
                             hintText: "Last Name",
@@ -151,17 +153,17 @@ class _SignupPageChildState extends State<SignupPageChild> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
                             suffixIcon: IconButton(
-                            onPressed: (){
-                              setState(() {
-                                _isHidden = !_isHidden;
-                              });
-                            },
-                            icon: _isHidden
-                                ? Icon(Icons.visibility_off)
-                                : Icon(Icons.visibility),
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                          ),
+                              onPressed: () {
+                                setState(() {
+                                  _isHidden = !_isHidden;
+                                });
+                              },
+                              icon: _isHidden
+                                  ? Icon(Icons.visibility_off)
+                                  : Icon(Icons.visibility),
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                            ),
                             hintText: "Password (6 or more characters)",
                             hintStyle: TextStyle(
                               color: Colors.grey,

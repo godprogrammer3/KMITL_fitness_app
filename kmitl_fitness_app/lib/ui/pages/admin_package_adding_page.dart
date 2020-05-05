@@ -170,33 +170,8 @@ class _AdminPackageAddingPageState extends State<AdminPackageAddingPage> {
                         validator: (String value) {
                           if (value.isEmpty) {
                             return 'Price is required';
-                          }else if(double.tryParse(value)==null){
+                          } else if (double.tryParse(value) == null) {
                             return 'Input a valid price';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        keyboardType: TextInputType.numberWithOptions(
-                            signed: false, decimal: true),
-                        controller: _pricePerDayController,
-                        decoration: InputDecoration(
-                          labelText: 'Price per day',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                        ),
-                        inputFormatters: [
-                          WhitelistingTextInputFormatter(RegExp(r"[0-9.]"))
-                        ],
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Price per day is required';
-                          }else if(double.tryParse(value)==null){
-                            return 'Input a valid price per day';
                           }
                           return null;
                         },
@@ -224,7 +199,8 @@ class _AdminPackageAddingPageState extends State<AdminPackageAddingPage> {
                                 'totalDay': int.parse(_totalDayController.text),
                                 'price': double.parse(_priceController.text),
                                 'pricePerDay':
-                                    double.parse(_pricePerDayController.text),
+                                    double.parse(_priceController.text) /
+                                        double.parse(_priceController.text),
                               };
                               setState(() {
                                 _isLoading = true;

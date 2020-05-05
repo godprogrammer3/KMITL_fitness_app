@@ -107,7 +107,7 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
                                         child: Text(
                                           '฿' +
                                               snapshot.data[index].price
-                                                  .toString(),
+                                                  .toStringAsFixed(2),
                                           style: TextStyle(
                                               fontFamily: 'Kanit',
                                               fontSize: 30,
@@ -125,7 +125,7 @@ class _AdminPackagePageState extends State<AdminPackagePage> {
                                       Text(
                                         '฿' +
                                             snapshot.data[index].pricePerDay
-                                                .toString() +
+                                                .toStringAsFixed(2) +
                                             'ต่อวัน',
                                         style: TextStyle(
                                             fontFamily: 'Kanit', fontSize: 12),
