@@ -112,20 +112,19 @@ class ClassModel {
     } else if (snapshotClass['totalPerson'] >= snapshotClass['limitPerson']) {
       return -2;
     } else if (DateTime.now()
-            .difference(DateTime.fromMillisecondsSinceEpoch(
+            .isAfter(DateTime.fromMillisecondsSinceEpoch(
                 (snapshotClass['beginDateTime'].seconds * 1000 +
                         snapshotClass['beginDateTime'].nanoseconds / 1000000)
                     .round()))
-            .inHours >=
-        0) {
+             ) {
       return -3;
     } else if (DateTime.now()
             .difference(DateTime.fromMillisecondsSinceEpoch(
                 (snapshotClass['beginDateTime'].seconds * 1000 +
                         snapshotClass['beginDateTime'].nanoseconds / 1000000)
                     .round()))
-            .inHours >
-        -2) {
+            .inMinutes >
+        -30) {
       return -4;
     } else if (snapshotPerson.documents.length > 0) {
       for (var i in snapshotPerson.documents) {
@@ -173,8 +172,8 @@ class ClassModel {
                 (snapshotClass['beginDateTime'].seconds * 1000 +
                         snapshotClass['beginDateTime'].nanoseconds / 1000000)
                     .round()))
-            .inHours >
-        -2) {
+            .inMinutes >
+        -30) {
       print(DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(
           (snapshotClass['beginDateTime'].seconds * 1000 +
                   snapshotClass['beginDateTime'].nanoseconds / 1000000)

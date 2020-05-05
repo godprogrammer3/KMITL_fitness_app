@@ -23,6 +23,8 @@ class _LoginPageStateChild extends State<LoginPageChild> {
   AuthenModel authenModel = AuthenModel();
   TextEditingController email = TextEditingController(),
       password = TextEditingController();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   void _toggleVisibility() {
     setState(() {
       _isHidden = !_isHidden;
@@ -43,6 +45,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key:_scaffoldKey,
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
@@ -127,7 +130,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                               email.text = email.text.trimRight();
 
                               if (email.text == '' || password.text == '') {
-                                Scaffold.of(context).showSnackBar(SnackBar(
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content:
                                       Text("User or password field is empty."),
                                   backgroundColor: Colors.red,
@@ -142,7 +145,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                                 setState(() => _isLoading = false);
                               }
                               if (user == null) {
-                                Scaffold.of(context).showSnackBar(SnackBar(
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text(
                                       "Sorry Incorect username or password please try again."),
                                   backgroundColor: Colors.red,

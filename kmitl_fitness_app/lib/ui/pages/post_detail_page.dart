@@ -13,7 +13,7 @@ class PostDetailPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.orange[900],),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -37,9 +37,14 @@ class PostDetailPage extends StatelessWidget {
                 } else if (snapshot.data == null) {
                   return Center(child: LoadingWidget(height: 50, width: 50));
                 } else {
-                  return Image.network(
-                    snapshot.data,
-                    fit: BoxFit.cover,
+                  return Center(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height*0.4,
+                      child: Image.network(
+                        snapshot.data,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   );
                 }
               },
