@@ -162,19 +162,20 @@ class EditProfilePageChild extends State<EditProfilePage> {
   Widget _buildBirthDay(String str) {
     return TextFormField(
       initialValue: str ?? '',
-      decoration: InputDecoration(labelText: 'Birth Day (mm/dd/1yyy)'),
+      decoration: InputDecoration(labelText: 'Birth Day (1yyy-MM-dd)'),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Birth Day is Required';
         }
-
-        if (!RegExp(
-                r"^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$")
-            .hasMatch(value)) {
-          return 'Please enter a valid Birth Day';
+        try{
+          final birthDate = DateTime.parse(value);
+          if(DateTime.now().isBefore(birthDate)){
+            return 'Please enter a valid Birth Day';
+          }
+          return null;
+        }catch(error){
+            return 'Please enter a valid Birth Day';
         }
-
-        return null;
       },
       onSaved: (String value) {
         _birthDate = value;
