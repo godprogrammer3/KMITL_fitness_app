@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f2a2281-3bfb-432f-9680-2a09a5d56649" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/kmitl_fitness_app/test/test_gitkraken" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_edit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_edit.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,6 +13,13 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_29" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -27,9 +35,14 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.completion" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/kmitl_fitness_app/assets/images" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\camp2\Documents\GitHub\KMITL_fitness_app\kmitl_fitness_app\assets\images" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">

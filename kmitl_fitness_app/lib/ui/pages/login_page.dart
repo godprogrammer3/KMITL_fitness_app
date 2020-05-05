@@ -23,6 +23,8 @@ class _LoginPageStateChild extends State<LoginPageChild> {
   AuthenModel authenModel = AuthenModel();
   TextEditingController email = TextEditingController(),
       password = TextEditingController();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   void _toggleVisibility() {
     setState(() {
       _isHidden = !_isHidden;
@@ -31,10 +33,10 @@ class _LoginPageStateChild extends State<LoginPageChild> {
 
   @override
   void dispose() {
-    if (email == null) {
+    if (email != null) {
       email.dispose();
     }
-    if (password == null) {
+    if (password != null) {
       password.dispose();
     }
     super.dispose();
@@ -43,6 +45,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key:_scaffoldKey,
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
@@ -122,17 +125,27 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                       width: 300,
                       height: 50,
                       child: Builder(
-                             builder: (BuildContext context) => FlatButton(
-                             onPressed: () async {
+                        builder: (BuildContext context) => FlatButton(
+                            onPressed: () async {
+                              email.text = email.text.trimRight();
+
+                              if (email.text == '' || password.text == '') {
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  content:
+                                      Text("User or password field is empty."),
+                                  backgroundColor: Colors.red,
+                                ));
+                                return;
+                              }
                               setState(() => _isLoading = true);
                               final user =
                                   await authenModel.signInWithEmailAndPassword(
                                       email.text, password.text);
-                              if(this.mounted){
+                              if (this.mounted) {
                                 setState(() => _isLoading = false);
                               }
                               if (user == null) {
-                                Scaffold.of(context).showSnackBar(SnackBar(
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text(
                                       "Sorry Incorect username or password please try again."),
                                   backgroundColor: Colors.red,
@@ -183,17 +196,51 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                       width: 300,
                       height: 50,
                       child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            final result = await authenModel.loginWithGoogle();
+                            if (this.mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            } else {
+                              _isLoading = false;
+                            }
+                            if (result == 0) {
+                              print('login with google success');
+                            } else {
+                              print('login with google failed');
+                               Scaffold.of(context).showSnackBar(SnackBar(
+                                  content:
+                                      Text("Log in with google account failed!"),
+                                  backgroundColor: Colors.red,
+                                ));
+                            }
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(100),
-                              side: BorderSide(color: Colors.transparent)),
-                          color: Colors.blue[900],
-                          child: Text(
-                            "LOGIN WITH FACEBOOK",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                              side: BorderSide(color: Colors.grey)),
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/google_logo.png',
+                                height: 30.0,
+                                width: 30.0,
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Text(
+                                "LOGIN WITH GOOGLE",
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           )),
                     ),
                     SizedBox(height: 10),

@@ -11,45 +11,49 @@ class TreadmillModel {
       Firestore.instance.collection('treadmill_queue');
   TreadmillModel({@required this.uid});
   Future<int> enQueue() async {
-    final snapshots = await treadmillQueueCollection.getDocuments();
-    if (snapshots.documents.length == 0) {
-      final treadmillStatusSnapshot =
-          await treadmillStatusCollection.getDocuments();
-      for (var i = 0; i < treadmillStatusSnapshot.documents.length; i++) {
-        if (treadmillStatusSnapshot.documents[i]['user'] == this.uid) {
+    try {
+      final snapshots = await treadmillQueueCollection.getDocuments();
+      if (snapshots.documents.length == 0) {
+        final treadmillStatusSnapshot =
+            await treadmillStatusCollection.getDocuments();
+        for (var i = 0; i < treadmillStatusSnapshot.documents.length; i++) {
+          if (treadmillStatusSnapshot.documents[i]['user'] == this.uid) {
+            return -1;
+          }
+          if (treadmillStatusSnapshot.documents[i]['user'] == '') {
+            await treadmillStatusCollection
+                .document(i.toString())
+                .updateData({'user': this.uid});
+            return 0;
+          }
+        }
+        final userModel = UserModel(uid: this.uid);
+        final userData = await userModel.getUserData();
+        await treadmillQueueCollection.document(this.uid).setData({
+          'queueNumber': 0,
+          'firstName': userData.firstName,
+        });
+        return 0;
+      } else {
+        final snapshotCheck =
+            await treadmillQueueCollection.document(this.uid).get();
+        if (snapshotCheck.exists) {
           return -1;
         }
-        if (treadmillStatusSnapshot.documents[i]['user'] == '') {
-          await treadmillStatusCollection
-              .document(i.toString())
-              .updateData({'user': this.uid});
-          return 0;
-        }
+        final userModel = UserModel(uid: this.uid);
+        final userData = await userModel.getUserData();
+        final query = treadmillQueueCollection
+            .orderBy('queueNumber', descending: true)
+            .limit(1);
+        final snapshots = await query.getDocuments();
+        await treadmillQueueCollection.document(this.uid).setData({
+          'queueNumber': snapshots.documents[0]['queueNumber'] + 1,
+          'firstName': userData.firstName,
+        });
+        return 1;
       }
-      final databaseModel = DatabaseModel(uid: this.uid);
-      final userData = await databaseModel.getUserData();
-      await treadmillQueueCollection.document(this.uid).setData({
-        'queueNumber': 0,
-        'firstName': userData.firstName,
-      });
-      return 0;
-    } else {
-      final snapshotCheck =
-          await treadmillQueueCollection.document(this.uid).get();
-      if (snapshotCheck.exists) {
-        return -1;
-      }
-      final databaseModel = DatabaseModel(uid: this.uid);
-      final userData = await databaseModel.getUserData();
-      final query = treadmillQueueCollection
-          .orderBy('queueNumber', descending: true)
-          .limit(1);
-      final snapshots = await query.getDocuments();
-      await treadmillQueueCollection.document(this.uid).setData({
-        'queueNumber': snapshots.documents[0]['queueNumber'] + 1,
-        'firstName': userData.firstName,
-      });
-      return 1;
+    } catch (error) {
+      return -1;
     }
   }
 
@@ -81,17 +85,22 @@ class TreadmillModel {
         .getDocuments();
     await treadmillStatusCollection
         .document(snapshotQueueMeStatus.documents[0].documentID)
-        .updateData({'isAvailable': true, 'user': ''});
+        .updateData({'isAvailable': true, 'user': '', 'startTime': -1});
     return 0;
   }
 
   Future<int> cancel() async {
-    final snapshotMe = await treadmillQueueCollection.document(this.uid).get();
-    if (!snapshotMe.exists) {
-      return -1;
+    try {
+      final snapshotMe =
+          await treadmillQueueCollection.document(this.uid).get();
+      if (!snapshotMe.exists) {
+        return -1;
+      }
+      await treadmillQueueCollection.document(this.uid).delete();
+      return 0;
+    } catch (error) {
+      return -2;
     }
-    await treadmillQueueCollection.document(this.uid).delete();
-    return 0;
   }
 
   Future<int> done() async {
@@ -101,7 +110,7 @@ class TreadmillModel {
     if (snapshotMe.documents.length != 0) {
       await treadmillStatusCollection
           .document(snapshotMe.documents[0].documentID)
-          .updateData({'isAvailable': true, 'user': ''});
+          .updateData({'isAvailable': true, 'user': '', 'startTime': -1});
       return 0;
     } else {
       return -1;

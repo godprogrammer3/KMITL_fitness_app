@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
-
-
-import 'pages.dart';
+import 'package:kmitl_fitness_app/models/models.dart';
+import 'package:kmitl_fitness_app/ui/pages/pages.dart';
+import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 
 class ClassPage extends StatelessWidget {
   final User user;
@@ -23,10 +24,16 @@ class ClassPageChild extends StatefulWidget {
 }
 
 class _ClassPageStateChild extends State<ClassPageChild> {
-  final List<String> items = List<String>.generate(20, (i) => "Class: ${++i}");
   final User user;
-
+  ClassModel classModel;
   _ClassPageStateChild({this.user});
+
+  @override
+  void initState() {
+    super.initState();
+    classModel = ClassModel(uid: user.uid);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,66 +47,143 @@ class _ClassPageStateChild extends State<ClassPageChild> {
           IconButton(
             icon: Icon(Icons.notifications),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return NotificationPage();
-                }));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return NotificationPage(user: user);
+              }));
             },
             color: Colors.white,
           )
         ],
         backgroundColor: Colors.orange[900],
       ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (contex, index) {
-          return SizedBox(
-            height: 240,
-            child: Card(
-              child: InkWell(
-                onTap: () => {},
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      height: 150.0,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/YogaEx.jpg'),
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text("${items[index]}",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text('วันที่ 26/03/2020'),
-                              Spacer()
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text('เวลา 16:00 - 17:00'),
-                              Spacer()
-                            ],
-                          ),
-                        ]
-                      ),
+      body: Container(
+        child: StreamBuilder(
+          stream: classModel.classes,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: LoadingWidget(height: 50, width: 50));
+            } else if (snapshot.data == null) {
+              return Center(child: LoadingWidget(height: 50, width: 50));
+            } else {
+              if (snapshot.data.length == 0) {
+                return Center(
+                    child: Text(
+                  'Empty',
+                  style: TextStyle(fontSize: 30),
+                ));
+              }
+              snapshot.data.sort();
+              List<Class> reveseList = List.from(snapshot.data.reversed);
+              return ListView.builder(
+                itemCount: reveseList.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: EdgeInsets.only(
+                        left: 20, top: 10, right: 20, bottom: 10),
+                    elevation: 5,
+                    child: InkWell(
                       onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ClassPageDetail(),));
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ClassPageDetail(
+                              user: user, class_: reveseList[index]),
+                        ));
                       },
+                      child: Stack(
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FutureBuilder(
+                                future: classModel
+                                    .getUrlFromImageId(reveseList[index].id),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Center(
+                                        child: LoadingWidget(
+                                            height: 50, width: 50));
+                                  } else if (snapshot.data == null) {
+                                    return Center(
+                                        child: LoadingWidget(
+                                            height: 50, width: 50));
+                                  } else {
+                                    return Container(
+                                      height: 150.0,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(snapshot.data),
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                              ListTile(
+                                title: Text(
+                                  reveseList[index].title,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  DateFormat('kk:mm').format(
+                                          reveseList[index].beginDateTime) +
+                                      ' - ' +
+                                      DateFormat('kk:mm').format(
+                                          reveseList[index].endDateTime) +
+                                      ' น.',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                trailing: Text('Created By: ' +
+                                    reveseList[index].ownerFirstname),
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            top: 100,
+                            right: 20,
+                            child: Card(
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: reveseList[index].totalPerson >=
+                                          reveseList[index].limitPerson
+                                      ? Colors.red
+                                      : Colors.lightGreenAccent[700],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                      reveseList[index].totalPerson.toString() +
+                                          '/' +
+                                          reveseList[index]
+                                              .limitPerson
+                                              .toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }

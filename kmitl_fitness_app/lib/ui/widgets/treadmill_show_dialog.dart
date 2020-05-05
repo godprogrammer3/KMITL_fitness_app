@@ -64,9 +64,12 @@ class _TreadmillShowDialogState extends State<TreadmillShowDialog>
   void initState() {
     super.initState();
     treadmillModel = TreadmillModel(uid: user.uid);
-    final totalSecond = 30-DateTime.now().difference(startTime).inSeconds;
+    var totalSecond = 30-DateTime.now().difference(startTime).inSeconds;
     print("totalSecond : ");
     print(totalSecond);
+    if(totalSecond < 0 ){
+      totalSecond = 0;
+    }
     _current = totalSecond;
     _start = totalSecond;
     countDownTimer = CountdownTimer(
@@ -148,8 +151,8 @@ class _TreadmillShowDialogState extends State<TreadmillShowDialog>
             height: MediaQuery.of(context).size.height * 0.3,
             child: Stack(children: <Widget>[
               Positioned(
-                top: 50,
-                left: 50,
+                top: 30,
+                left: 70,
                 child: SizedBox(
                   height: 150,
                   width: 150,
@@ -163,8 +166,8 @@ class _TreadmillShowDialogState extends State<TreadmillShowDialog>
                 ),
               ),
               Positioned(
-                top: 107,
-                left: 107,
+                top: 90,
+                left: 130,
                 child: Text(
                   _current.toString(),
                   style: TextStyle(fontSize: 30),

@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-class Post{
+class Post implements Comparable {
   final String id;
   final String title;
-  final String imageId;
+  final String imageUrl;
   final String detail;
   final String owner;
   final DateTime createdTime;
@@ -11,10 +11,14 @@ class Post{
   Post({
     @required this.id, 
     @required this.title, 
-    @required this.imageId, 
+    @required this.imageUrl, 
     @required this.detail, 
     @required this.owner, 
     @required this.createdTime, 
     @required this.updatedTime
   });
+  @override
+  int compareTo(other) {
+    return createdTime.compareTo(other.createdTime);
+  }
 }

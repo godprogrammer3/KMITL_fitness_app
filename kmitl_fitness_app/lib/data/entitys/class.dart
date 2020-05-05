@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Class{
+class Class implements Comparable {
   final String id;
   final String title;
   final String detail;
@@ -12,6 +12,8 @@ class Class{
   final DateTime updatedTime;
   final int limitPerson;
   final int totalPerson;
+  final String ownerFirstname;
+  final bool isChecked;
   Class({
     @required this.id, 
     @required this.title, 
@@ -24,5 +26,11 @@ class Class{
     @required this.owner,
     @required this.limitPerson, 
     @required this.totalPerson, 
+    @required this.ownerFirstname, 
+    @required this.isChecked, 
   });
+  @override
+  int compareTo(other) {
+    return createdTime.compareTo(other.createdTime);
+  }
 }
