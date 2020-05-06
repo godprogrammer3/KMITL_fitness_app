@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
@@ -12,9 +13,100 @@ class TreadmillPage extends StatelessWidget {
   final User user;
   const TreadmillPage({Key key, this.user}) : super(key: key);
 
-  @override
+ @override
   Widget build(BuildContext context) {
-    return TreadmillPageChild(user: user);
+    return FutureBuilder(
+        future: UserModel(uid: user.uid).getUserData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: Text(
+                    'Class',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.notifications),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return NotificationPage(user: user);
+                        }));
+                      },
+                      color: Colors.white,
+                    )
+                  ],
+                  backgroundColor: Colors.orange[900],
+                ),
+                body: Center(
+                    child:
+                        Center(child: LoadingWidget(height: 50, width: 50))));
+          } else if (snapshot.data == null) {
+            return Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: Text(
+                    'Class',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.notifications),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return NotificationPage(user: user);
+                        }));
+                      },
+                      color: Colors.white,
+                    )
+                  ],
+                  backgroundColor: Colors.orange[900],
+                ),
+                body: Center(
+                    child:
+                        Center(child: LoadingWidget(height: 50, width: 50))));
+          } else {
+            final expireDate = DateTime.parse(DateFormat('yyyy-MM-dd')
+                .format(snapshot.data.membershipExpireDate));
+            final currentDate =
+                DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+            final bool isNotExpired = currentDate.isBefore(expireDate);
+            if (isNotExpired) {
+              return TreadmillPageChild(user: user);
+            } else {
+              return Scaffold(
+                  appBar: AppBar(
+                    centerTitle: true,
+                    title: Text(
+                      'Class',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    actions: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.notifications),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return NotificationPage(user: user);
+                          }));
+                        },
+                        color: Colors.white,
+                      )
+                    ],
+                    backgroundColor: Colors.orange[900],
+                  ),
+                  body: Center(
+                      child: Text(
+                    'You not in membership',
+                    style: TextStyle(fontSize: 20),
+                  )));
+            }
+          }
+        });
   }
 }
 
