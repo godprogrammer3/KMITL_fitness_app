@@ -320,9 +320,9 @@ packages:
   introduction_screen:
     dependency: "direct main"
     description:
-      name: introduction_screen
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "lib/introduction_screen-1.0.8"
+      relative: true
+    source: path
     version: "1.0.8"
   js:
     dependency: transitive
