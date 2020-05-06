@@ -5,6 +5,7 @@ import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 import 'package:cache_image/cache_image.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class ProfilePage extends StatelessWidget {
   final User user;
@@ -27,6 +28,8 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
   final authenModel = AuthenModel();
   final User user;
   UserModel userModel;
+  bool _isLoading = false;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   _ProfilePageStateChild({this.user});
   @override
   void initState() {
@@ -37,6 +40,7 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -72,175 +76,214 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                 final currentDate = DateTime.parse(
                     DateFormat('yyyy-MM-dd').format(DateTime.now()));
                 final bool isNotExpired = currentDate.isBefore(expireDate);
-                return SingleChildScrollView(
-                  child: Center(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.grey,
-                            child: ClipOval(
-                              child: SizedBox(
-                                width: 180.0,
-                                height: 180.0,
-                                child: (snapshot.data.imageId != null)
-                                    ? FutureBuilder(
-                                        future: userModel.getUrlFromImageId(
-                                            snapshot.data.imageId),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot snapshot) {
-                                          if (snapshot.hasError) {
-                                            return Center(
-                                                child: Center(
-                                                    child: LoadingWidget(
-                                                        height: 50,
-                                                        width: 50)));
-                                          } else if (snapshot.data == null) {
-                                            return Center(
-                                                child: Center(
-                                                    child: LoadingWidget(
-                                                        height: 50,
-                                                        width: 50)));
-                                          } else {
-                                            return Image(
-                                              fit: BoxFit.fill,
-                                              image: CacheImage(snapshot.data),
-                                            );
-                                          }
-                                        })
-                                    : Icon(
-                                        Icons.person,
-                                        color: Colors.white,
-                                        size: 100,
-                                      ),
-                              ),
-                            )),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Spacer(),
-                          Text(
-                            snapshot.data.firstName,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            snapshot.data.lastName,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                            ),
-                          ),
-                          Spacer(),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        isNotExpired
-                            ? "Membership valid until " +
-                                DateFormat('dd/MM/yyyy')
-                                    .format(snapshot.data.membershipExpireDate)
-                            : 'No membership or expired',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: LoadingOverlay(
+                    isLoading: _isLoading,
+                    child: SingleChildScrollView(
+                      child: Center(
+                          child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.stars,
-                            size: 30,
-                            color: Colors.orange[900],
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: CircleAvatar(
+                                radius: 60,
+                                backgroundColor: Colors.grey,
+                                child: ClipOval(
+                                  child: SizedBox(
+                                    width: 180.0,
+                                    height: 180.0,
+                                    child: (snapshot.data.imageId != null)
+                                        ? FutureBuilder(
+                                            future: userModel.getUrlFromImageId(
+                                                snapshot.data.imageId),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Center(
+                                                    child: Center(
+                                                        child: LoadingWidget(
+                                                            height: 50,
+                                                            width: 50)));
+                                              } else if (snapshot.data ==
+                                                  null) {
+                                                return Center(
+                                                    child: Center(
+                                                        child: LoadingWidget(
+                                                            height: 50,
+                                                            width: 50)));
+                                              } else {
+                                                return Image(
+                                                  fit: BoxFit.fill,
+                                                  image:
+                                                      CacheImage(snapshot.data),
+                                                );
+                                              }
+                                            })
+                                        : Icon(
+                                            Icons.person,
+                                            color: Colors.white,
+                                            size: 100,
+                                          ),
+                                  ),
+                                )),
                           ),
+                          Row(
+                            children: <Widget>[
+                              Spacer(),
+                              Text(
+                                snapshot.data.firstName,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                snapshot.data.lastName,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                ),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                          SizedBox(height: 10),
                           Text(
-                            snapshot.data.point.toString(),
+                            isNotExpired
+                                ? "Membership valid until " +
+                                    DateFormat('dd/MM/yyyy').format(
+                                        snapshot.data.membershipExpireDate)
+                                : 'No membership or expired',
                             style: TextStyle(
-                              color: Colors.grey[900],
-                              fontSize: 25,
+                              color: Colors.grey[600],
+                              fontSize: 15,
                             ),
-                          )
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.stars,
+                                size: 30,
+                                color: Colors.orange[900],
+                              ),
+                              Text(
+                                snapshot.data.point.toString(),
+                                style: TextStyle(
+                                  color: Colors.grey[900],
+                                  fontSize: 25,
+                                ),
+                              )
+                            ],
+                          ),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return PointPage(user: user);
+                              }));
+                            },
+                            child: Text("Reward",
+                                style: TextStyle(
+                                    color: Colors.grey[900], fontSize: 15)),
+                          ),
+                          isNotExpired
+                              ? Container()
+                              : FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return MembershipPage(user: user);
+                                    }));
+                                  },
+                                  child: Text("Membership",
+                                      style: TextStyle(
+                                          color: Colors.grey[900],
+                                          fontSize: 15)),
+                                ),
+                          (snapshot.data.type != 'google')
+                              ? FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return PasswordPage(user: user);
+                                    }));
+                                  },
+                                  child: Text("Change Password",
+                                      style: TextStyle(
+                                          color: Colors.grey[900],
+                                          fontSize: 15)),
+                                )
+                              : Container(),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return TutorialPage();
+                              }));
+                            },
+                            child: Text("Tutorial",
+                                style: TextStyle(
+                                    color: Colors.grey[900], fontSize: 15)),
+                          ),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return AboutPage(user: user);
+                              }));
+                            },
+                            child: Text("About",
+                                style: TextStyle(
+                                    color: Colors.grey[900], fontSize: 15)),
+                          ),
+                          FlatButton(
+                            onPressed: () async {
+                              final userModel = UserModel(uid: user.uid);
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              final result1 = await userModel
+                                  .updateUserData({'isSignedIn': false}, null);
+                              if (result1 == 0) {
+                                final result2 = await authenModel.signOut();
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                if (result2 != 0) {
+                                  _scaffoldKey.currentState
+                                      .showSnackBar(SnackBar(
+                                    content:
+                                        Text("Logout failed please try again"),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                }
+                              } else {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  content:
+                                      Text("Logout failed please try again"),
+                                  backgroundColor: Colors.red,
+                                ));
+                              }
+                            },
+                            child: Text("Logout",
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 15)),
+                          ),
                         ],
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return PointPage(user: user);
-                          }));
-                        },
-                        child: Text("Reward",
-                            style: TextStyle(
-                                color: Colors.grey[900], fontSize: 15)),
-                      ),
-                      isNotExpired
-                          ? Container()
-                          : FlatButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return MembershipPage(user: user);
-                                }));
-                              },
-                              child: Text("Membership",
-                                  style: TextStyle(
-                                      color: Colors.grey[900], fontSize: 15)),
-                            ),
-                      (snapshot.data.type != 'google')
-                          ? FlatButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return PasswordPage(user:user);
-                                }));
-                              },
-                              child: Text("Change Password",
-                                  style: TextStyle(
-                                      color: Colors.grey[900], fontSize: 15)),
-                            )
-                          : Container(),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return TutorialPage();
-                          }));
-                        },
-                        child: Text("Tutorial",
-                            style: TextStyle(
-                                color: Colors.grey[900], fontSize: 15)),
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return AboutPage(user: user);
-                          }));
-                        },
-                        child: Text("About",
-                            style: TextStyle(
-                                color: Colors.grey[900], fontSize: 15)),
-                      ),
-                      FlatButton(
-                        onPressed: () async {
-                          final userModel = UserModel(uid: user.uid);
-                          await userModel
-                              .updateUserData({'isSignedIn': false}, null);
-                          await authenModel.signOut();
-                        },
-                        child: Text("Logout",
-                            style: TextStyle(color: Colors.red, fontSize: 15)),
-                      ),
-                    ],
-                  )),
+                      )),
+                    ),
+                  ),
                 );
               }
             }));

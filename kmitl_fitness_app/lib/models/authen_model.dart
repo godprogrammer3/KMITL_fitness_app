@@ -62,12 +62,13 @@ class AuthenModel {
   }
 
   // sign out
-  Future signOut() async {
+  Future<int> signOut() async {
     try {
-      return await _auth.signOut();
+      await _auth.signOut();
+      return 0;
     } catch (error) {
       print(error.toString());
-      return null;
+      return -1;
     }
   }
 
