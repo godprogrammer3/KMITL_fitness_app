@@ -163,7 +163,12 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                       });
                                       if (result == 0) {
                                         print('cancel class success');
-                                        Navigator.of(context).pop();
+                                         _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Cancel class success"),
+                                                backgroundColor: Colors.green,
+                                              ));
                                       } else if (result == -3) {
                                         print('cancel class failed');
                                         print('error code : $result');
@@ -210,41 +215,57 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                         ))
                                     : FlatButton(
                                         onPressed: () async {
-                                          final result =
+                                          final resultDialog =
                                               await showClassDialog(context);
-                                          if (result == 0) {
-                                            Navigator.of(context).pop();
-                                          } else if (result == -2) {
-                                            _scaffoldKey.currentState
-                                                .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  "Reserve class failed class is full"),
-                                              backgroundColor: Colors.red,
-                                            ));
-                                          } else if (result == -3 ||
-                                              result == -4) {
-                                            _scaffoldKey.currentState
-                                                .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  "Reserve class failed out of time"),
-                                              backgroundColor: Colors.red,
-                                            ));
-                                          } else if (result == -1) {
-                                            return;
-                                          } else if (result == -6) {
-                                            _scaffoldKey.currentState
-                                                .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  "Reserve class failed you are in yellow card status"),
-                                              backgroundColor: Colors.red,
-                                            ));
-                                          } else {
-                                            _scaffoldKey.currentState
-                                                .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  "Reserve class failed please try again"),
-                                              backgroundColor: Colors.red,
-                                            ));
+                                          if (resultDialog == 0) {
+                                            setState(() {
+                                              _isLoading = true;
+                                            });
+                                            final result = await classModel
+                                                .reserveClass(class_.id);
+                                            setState(() {
+                                              _isLoading = false;
+                                            });
+                                            if (result == 0) {
+                                              print('reserve class success');
+                                              print('reserve class failed');
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Reserve class success"),
+                                                backgroundColor: Colors.green,
+                                              ));
+                                            } else if (result == -2) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Reserve class failed class is full"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                            } else if (result == -3 ||
+                                                result == -4) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Reserve class failed out of time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                            } else if (result == -6) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Reserve class failed you are in yellow card status"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                            } else {
+                                              print('reserve class failed');
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Reserve class failed please try again"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                            }
                                           }
                                         },
                                         shape: RoundedRectangleBorder(
@@ -277,21 +298,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
     Widget continueButton = FlatButton(
       child: Text("CONFIRM"),
       onPressed: () async {
-        setState(() {
-          _isLoading = true;
-        });
-        final result = await classModel.reserveClass(class_.id);
-        setState(() {
-          _isLoading = false;
-        });
-        if (result == 0) {
-          print('reserve class success');
-          Navigator.of(context, rootNavigator: true).pop(result);
-        } else {
-          print('reserve class failed');
-          print('error code: $result');
-          Navigator.of(context, rootNavigator: true).pop(result);
-        }
+        Navigator.of(context, rootNavigator: true).pop(0);
       },
     );
     AlertDialog alert = AlertDialog(
