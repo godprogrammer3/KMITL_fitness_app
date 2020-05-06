@@ -56,7 +56,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
               child: LoadingOverlay(
                 isLoading: _isLoading,
                 child: Form(
-                  key:_formKey,
+                  key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -87,8 +87,8 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                             fillColor: Colors.grey[200],
                           ),
                           controller: email,
-                          validator: (value){
-                            if(value.length == 0){
+                          validator: (value) {
+                            if (value.length == 0) {
                               return 'Email is required';
                             }
                             return null;
@@ -124,8 +124,8 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                           ),
                           obscureText: _isHidden,
                           controller: password,
-                          validator: (value){
-                            if(value.length == 0){
+                          validator: (value) {
+                            if (value.length == 0) {
                               return 'Password is required';
                             }
                             return null;
@@ -141,11 +141,11 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                         child: Builder(
                           builder: (BuildContext context) => FlatButton(
                               onPressed: () async {
-                                if(!_formKey.currentState.validate()){
+                                if (!_formKey.currentState.validate()) {
                                   _scaffoldKey.currentState
                                       .showSnackBar(SnackBar(
-                                    content: Text(
-                                        "Please enter the form correcty."),
+                                    content:
+                                        Text("Please enter the form correcty."),
                                     backgroundColor: Colors.red,
                                   ));
                                   return;
@@ -268,29 +268,28 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                               ],
                             )),
                       ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Don't have an account?"),
-                        Container(
-                          width: 60,
-                          child: RawMaterialButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => SignupPage(),
-                              ));
-                            },
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Don't have an account?"),
+                          Container(
+                            width: 60,
+                            child: RawMaterialButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => SignupPage(),
+                                ));
+                              },
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              child: Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                ),
                               ),
-
-
                             ),
                           ),
                         ],
