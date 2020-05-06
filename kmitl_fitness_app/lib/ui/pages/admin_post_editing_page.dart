@@ -68,9 +68,9 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                   return Center(child: LoadingWidget(height: 50, width: 50));
                 } else {
                   return Image(
-                        fit: BoxFit.fill,
-                        image: CacheImage(snapshot.data),
-                      );
+                    fit: BoxFit.fill,
+                    image: CacheImage(snapshot.data),
+                  );
                 }
               });
         }
@@ -137,6 +137,7 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                       children: <Widget>[
                         SizedBox(height: 10),
                         TextFormField(
+                          maxLength: 50,
                           controller: _titleController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -156,9 +157,10 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                         ),
                         SizedBox(height: 10),
                         TextFormField(
+                          maxLength: 1000,
                           controller: _detailController,
                           keyboardType: TextInputType.multiline,
-                          maxLines: 10,
+                          maxLines: 8,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -169,13 +171,14 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Detail is required';
-                            } else if (value.length < 3 || value.length > 500) {
-                              return 'Detail must between 3 and 500 letter';
+                            } else if (value.length < 3 ||
+                                value.length > 1000) {
+                              return 'Detail must between 3 and 1000 letter';
                             }
                             return null;
                           },
                         ),
-                        SizedBox(height: 10),
+                        //SizedBox(height: 10),
                       ],
                     ),
                   ),

@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f2a2281-3bfb-432f-9680-2a09a5d56649" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_edit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_edit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_post_adding_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_post_adding_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_post_editing_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_post_editing_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/class_pagedetail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/class_pagedetail.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,7 +15,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_29" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_29_google_play" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>

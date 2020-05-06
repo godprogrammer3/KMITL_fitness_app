@@ -79,7 +79,7 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,color: Colors.orange[900]),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.orange[900]),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -120,6 +120,7 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                       children: <Widget>[
                         SizedBox(height: 10),
                         TextFormField(
+                          maxLength: 50,
                           controller: _titleController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -140,9 +141,10 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                         ),
                         SizedBox(height: 10),
                         TextFormField(
+                          maxLength: 1000,
                           controller: _detailController,
                           keyboardType: TextInputType.multiline,
-                          maxLines: 10,
+                          maxLines: 8,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -154,13 +156,14 @@ class _AdminPostAddingPageState extends State<AdminPostAddingPage> {
                           validator: (String value) {
                             if (value.isEmpty) {
                               return 'Detail is required';
-                            } else if (value.length < 3 || value.length > 500) {
-                              return 'Detail must between 3 and 500 letter';
+                            } else if (value.length < 3 ||
+                                value.length > 1000) {
+                              return 'Detail must between 3 and 1000 letter';
                             }
                             return null;
                           },
                         ),
-                        SizedBox(height: 20),
+                        //SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[

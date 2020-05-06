@@ -252,7 +252,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                               _scaffoldKey.currentState
                                                   .showSnackBar(SnackBar(
                                                 content: Text(
-                                                    "Reserve class failed, out of time"),
+                                                    "Reserve class failed, please reserve before class started"),
                                                 backgroundColor: Colors.red,
                                               ));
                                             } else if (result == -6) {
@@ -309,9 +309,20 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text("Confirm Reservation"),
+      title: Text(
+        "Confirm Reservation?",
+        style: TextStyle(
+          fontFamily: 'kanit',
+          fontSize: 20,
+        ),
+      ),
       content: Text(
-          """ยืนยันการจองคลาสนี้ หรือไม่?\nหากท่านไม่มาเข้าคลาสตามที่กำหนดท่านจะถูกติดสถานะใบเหลือง\n\n*สามารถยกเลิกการจองก่อนเริ่มคลาสอย่างน้อย 30 นาที"""),
+        "ยืนยันการจองคลาสนี้ หรือไม่?\nหากท่านไม่มาเข้าร่วมตามเวลาที่กำหนดท่านจะถูกติดสถานะใบเหลือง\n\n* สามารถยกเลิกการจองก่อนเริ่มคลาสอย่างน้อย 30 นาที",
+        style: TextStyle(
+          fontFamily: 'kanit',
+          fontSize: 18,
+        ),
+      ),
       actions: [
         cancelButton,
         continueButton,
