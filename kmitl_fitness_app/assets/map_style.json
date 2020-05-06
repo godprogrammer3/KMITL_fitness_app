@@ -1,0 +1,30 @@
+[
+  {
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#ff8040"
+      },
+      {
+        "lightness": 50
+      }
+    ]
+  },
+  {
+    "featureType": "poi.business",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  }
+]

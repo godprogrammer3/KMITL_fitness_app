@@ -46,11 +46,18 @@ class _AboutPageChildState extends State<AboutPageChild> {
         ),
       ));
     });
+    _setMapStyle();
+  }
+
+  void _setMapStyle() async {
+    String style = await DefaultAssetBundle.of(context)
+        .loadString('assets/map_style.json');
+    _mapController.setMapStyle(style);
   }
 
   String phoneNumber = 'tel:0837476791';
-  String instagram = 'https://www.instagram.com/puriwatwijitthunyaroj';
-  String facebook = 'https://www.facebook.com';
+  String instagram = 'https://www.instagram.com/kmitl_fitness_center/';
+  String facebook = 'https://www.facebook.com/kmitlfitness';
   String line = 'https://line.me/th';
 
   Future<void> _launchInApp(String url) async {
@@ -89,7 +96,8 @@ class _AboutPageChildState extends State<AboutPageChild> {
               height: 30,
             ),
             CircleAvatar(
-              backgroundImage: AssetImage('assets/images/flutter.jpg'),
+              backgroundImage: AssetImage('assets/images/icon.png'),
+              backgroundColor: Colors.white,
               radius: 75,
             ),
             SizedBox(
@@ -106,7 +114,7 @@ class _AboutPageChildState extends State<AboutPageChild> {
               height: 20,
             ),
             Text(
-              'About us...',
+              'Contact us...',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black54,

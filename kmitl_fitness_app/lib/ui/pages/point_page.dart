@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
@@ -45,8 +46,10 @@ class PointPageChild extends State<PointPage> {
                                   child: LoadingWidget(height: 50, width: 50));
                             } else {
                               return Center(
-                                child: Image.network(snapshot.data,
-                                    fit: BoxFit.fill),
+                                child: Image(
+                                  fit: BoxFit.fill,
+                                  image: CacheImage(snapshot.data),
+                                ),
                               );
                             }
                           }),

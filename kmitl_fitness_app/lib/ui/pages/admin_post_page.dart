@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
@@ -98,7 +99,7 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
-                                AdminPostEditingPage(post: reveseList[index]),
+                                AdminPostEditingPage(post: reveseList[index],user:user),
                           ));
                         },
                         child: Column(
@@ -118,7 +119,7 @@ class _AdminPostPageStateChild extends State<AdminPostPageChild> {
                                     height: 150.0,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: NetworkImage(snapshot.data),
+                                        image: CacheImage(snapshot.data),
                                         fit: BoxFit.fitWidth,
                                       ),
                                     ),

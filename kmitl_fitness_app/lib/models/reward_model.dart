@@ -85,15 +85,18 @@ class RewardModel {
       } else {
         if (userData.discount >= 0) {
           return -5;
-        }else if (snapshotReward['point'] > userData.point) {
+        } else if (snapshotReward['point'] > userData.point) {
           return -1;
         }
-        final result = await userModel.updateUserData({'discount':snapshotReward['percent'],'point': userData.point - snapshotReward['point']}, null);
-       if( result == 0){
-         return 0;
-       }else{
-         return -4;
-       }
+        final result = await userModel.updateUserData({
+          'discount': snapshotReward['percent'],
+          'point': userData.point - snapshotReward['point']
+        }, null);
+        if (result == 0) {
+          return 0;
+        } else {
+          return -4;
+        }
       }
     } catch (error) {
       return -4;
@@ -136,6 +139,49 @@ class RewardModel {
       return url;
     } catch (error) {
       return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getPersons(String id) async {
+    try {
+      List<Map<String, dynamic>> result = List<Map<String, dynamic>>();
+      final snapshotReward = await rewardCollection.document(id).get();
+      if (snapshotReward['person'] != null) {
+        for (var i in snapshotReward['person']) {
+            final UserData userData =
+          await UserModel(uid: i).getUserData();
+          if (snapshotReward['checkedPerson'] != null) {
+            if (snapshotReward['checkedPerson'].contains(i)) {
+              result.add({'uid': i, 'isChecked': true,'firstName':userData.firstName});
+            } else {
+              result.add({'uid': i, 'isChecked': false,'firstName':userData.firstName});
+            }
+          } else {
+            result.add({'uid': i, 'isChecked': false,'firstName':userData.firstName});
+          }
+        }
+      }
+      return result;
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+  Future<int> checkPersons(
+      String id, List<Map<String, dynamic>> persons) async {
+    try {
+      for (var i in persons) {
+        if (i['isChecked']) {
+          await rewardCollection.document(id).updateData({
+            'checkedPerson': FieldValue.arrayUnion([i['uid']]),
+          });
+        }
+      }
+      return 0;
+    } catch (error) {
+      print(error);
+      return -1;
     }
   }
 }

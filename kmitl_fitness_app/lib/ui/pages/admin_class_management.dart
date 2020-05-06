@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
@@ -100,7 +101,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                                       height: 150.0,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image: NetworkImage(snapshot.data),
+                                          image: CacheImage(snapshot.data),
                                           fit: BoxFit.fitWidth,
                                         ),
                                       ),

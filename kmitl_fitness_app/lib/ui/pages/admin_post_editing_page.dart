@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -9,11 +10,11 @@ import 'package:loading_overlay/loading_overlay.dart';
 
 class AdminPostEditingPage extends StatefulWidget {
   final Post post;
-
-  const AdminPostEditingPage({Key key, this.post}) : super(key: key);
+  final User user;
+  const AdminPostEditingPage({Key key, this.post, this.user}) : super(key: key);
   @override
   _AdminPostEditingPageState createState() =>
-      _AdminPostEditingPageState(post: post);
+      _AdminPostEditingPageState(post: post, user: user);
 }
 
 class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
@@ -25,7 +26,8 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
   bool _isLoading = false;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  _AdminPostEditingPageState({this.post});
+  final User user;
+  _AdminPostEditingPageState({this.post, this.user});
 
   pickImageFromGallery(ImageSource source) {
     setState(() {
@@ -65,10 +67,10 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                 } else if (snapshot.data == null) {
                   return Center(child: LoadingWidget(height: 50, width: 50));
                 } else {
-                  return Image.network(
-                    snapshot.data,
-                    fit: BoxFit.fitWidth,
-                  );
+                  return Image(
+                        fit: BoxFit.fill,
+                        image: CacheImage(snapshot.data),
+                      );
                 }
               });
         }
@@ -91,7 +93,10 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,color: Colors.orange[900],),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.orange[900],
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -113,8 +118,8 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
               children: <Widget>[
                 Stack(alignment: Alignment.center, children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.height*0.4,
-                    child: showImage()),
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: showImage()),
                   IconButton(
                     icon: Icon(Icons.add_photo_alternate),
                     iconSize: 60.0,
@@ -193,16 +198,33 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
           height: 60,
           child: FlatButton(
               onPressed: () async {
-                setState(() {
-                  _isLoading = true;
-                });
-                final result = await showPopup(context, post.id);
-                if(result == 0){
-                  Navigator.of(context).pop();
+                final resultDialog = await showPopup(context, post.id);
+                if (resultDialog == 0) {
+                  if (user.uid != post.owner) {
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text("Delete post failed you are not owner"),
+                      backgroundColor: Colors.red,
+                    ));
+                    return;
+                  }
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  final result = await postModel.deletePost(post.id);
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  if (result == 0) {
+                    print('delete class success');
+                    Navigator.of(context).pop();
+                  } else {
+                    print('delete class faild');
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text("Delete post failed please try again."),
+                      backgroundColor: Colors.red,
+                    ));
+                  }
                 }
-                setState(() {
-                  _isLoading = false;
-                });
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
@@ -221,6 +243,13 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
           height: 60,
           child: FlatButton(
               onPressed: () async {
+                if (user.uid != post.owner) {
+                  _scaffoldKey.currentState.showSnackBar(SnackBar(
+                    content: Text("Update post failed you are not owner"),
+                    backgroundColor: Colors.red,
+                  ));
+                  return;
+                }
                 if (_formKey.currentState.validate()) {
                   Map<String, dynamic> data = {
                     'title': _titleController.text,
@@ -237,7 +266,10 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                   });
                   if (result == 0) {
                     print('update post success');
-                    Navigator.of(context).pop();
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text("Update post success"),
+                      backgroundColor: Colors.green,
+                    ));
                   } else {
                     print('update post failed');
                     _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -300,18 +332,7 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                   fontSize: 20, fontFamily: 'Kanit', color: Colors.orange[900]),
             ),
             onPressed: () async {
-              final result = await postModel.deletePost(postId);
-              if (result == 0) {
-                print('delete class success');
-                Navigator.of(context).pop(0);
-              } else {
-                print('delete class faild');
-                _scaffoldKey.currentState.showSnackBar(SnackBar(
-                  content: Text("Delete post failed please try again."),
-                  backgroundColor: Colors.red,
-                ));
-                Navigator.of(context).pop(-1);
-              }
+              Navigator.of(context).pop(0);
             },
           ),
         ],

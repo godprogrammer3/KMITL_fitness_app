@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
@@ -74,9 +75,9 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                     return Container(
                       height: MediaQuery.of(context).size.height * 0.4,
                       width: MediaQuery.of(context).size.width,
-                      child: Image.network(
-                        snapshot.data,
+                      child: Image(
                         fit: BoxFit.fill,
+                        image: CacheImage(snapshot.data),
                       ),
                     );
                   }
@@ -179,10 +180,7 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                   ),
                   RaisedButton(
                     onPressed: () async {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      final result = await showDialog(
+                      final resultDialog = await showDialog(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                           shape: RoundedRectangleBorder(
@@ -218,30 +216,40 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                                     color: Colors.orange[900]),
                               ),
                               onPressed: () async {
-                                final result = await ClassModel(uid: user.uid)
-                                    .deleteClass(class_.id);
-                                if (result == 0) {
-                                  print('delete class success');
-                                  Navigator.of(context).pop(0);
-                                } else {
-                                  print('delete class faild');
-                                  Navigator.of(context).pop(-2);
-                                }
+                                Navigator.of(context).pop(0);
                               },
                             ),
                           ],
                         ),
                       );
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      if (result == 0) {
-                        Navigator.of(context).pop(-1);
-                      } else if (result == -2) {
-                        _scaffoldKey.currentState.showSnackBar(SnackBar(
-                          content: Text("Delete class failed please try again"),
-                          backgroundColor: Colors.red,
-                        ));
+                      if (resultDialog == 0) {
+                        if (user.uid != class_.owner) {
+                          _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            content:
+                                Text("Delete class failed you are not owner"),
+                            backgroundColor: Colors.red,
+                          ));
+                          return;
+                        }
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        final result = await ClassModel(uid: user.uid)
+                            .deleteClass(class_.id);
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        if (result == 0) {
+                          print('delete class success');
+                          Navigator.of(context).pop();
+                        } else {
+                          print('delete class faild');
+                          _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            content:
+                                Text("Delete class failed please try again"),
+                            backgroundColor: Colors.red,
+                          ));
+                        }
                       }
                     },
                     color: Colors.red,

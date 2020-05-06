@@ -118,7 +118,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
             context: context,
             builder: (context) => TreadmillShowDialog(
               key: this._popupKey,
-              title: 'Treadmill is ready!',
+              title: 'Treadmill No. ${int.parse(i.id)+1} is ready!',
               user: this.user,
               startTime: i.startTime,
               isCanSkip: _isCanSkip,

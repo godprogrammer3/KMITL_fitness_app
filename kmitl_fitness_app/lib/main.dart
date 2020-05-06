@@ -103,6 +103,7 @@ class SelectPage extends StatelessWidget {
       }
     } catch (error) {
       resfreshStream.add(-1);
+      print('error bottom');
       return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
