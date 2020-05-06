@@ -86,11 +86,14 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildName(String str) {
     return TextFormField(
+      maxLength: 30,
       initialValue: str,
-      decoration: InputDecoration(labelText: 'Name'),
+      decoration: InputDecoration(labelText: 'First Name'),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Name is Required';
+          return 'First name is required';
+        } else if (value.length < 2 || value.length > 30) {
+          return 'First name must between 2 and 30 letter';
         }
         return null;
       },
@@ -102,11 +105,14 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildLastName(String str) {
     return TextFormField(
+      maxLength: 30,
       initialValue: str,
       decoration: InputDecoration(labelText: 'Last Name'),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Last Name is Required';
+          return 'Last name is required';
+        } else if (value.length < 2 || value.length > 30) {
+          return 'Last name must between 2 and 30 letter';
         }
         return null;
       },
@@ -141,6 +147,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
 
   Widget _buildPhoneNumber(String str) {
     return TextFormField(
+      maxLength: 10,
       initialValue: str ?? '',
       decoration: InputDecoration(labelText: 'Phone Number'),
       keyboardType:
@@ -152,7 +159,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
         if (!RegExp(r'(^(?:[+0]9)?[0-9]{9,10}$)').hasMatch(value)) {
           return 'Please enter a valid Phone Number';
         }
-        if(value.length < 9 || value.length > 10){
+        if (value.length < 9 || value.length > 10) {
           return 'Phone number must 9 or 10 digits';
         }
         return null;
