@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -66,10 +67,10 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
                 } else if (snapshot.data == null) {
                   return Center(child: LoadingWidget(height: 50, width: 50));
                 } else {
-                  return Image.network(
-                    snapshot.data,
-                    fit: BoxFit.fitWidth,
-                  );
+                  return Image(
+                        fit: BoxFit.fill,
+                        image: CacheImage(snapshot.data),
+                      );
                 }
               });
         }

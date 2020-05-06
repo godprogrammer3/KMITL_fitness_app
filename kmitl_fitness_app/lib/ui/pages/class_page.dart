@@ -4,7 +4,7 @@ import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
-
+import 'package:cache_image/cache_image.dart';
 class ClassPage extends StatelessWidget {
   final User user;
   ClassPage({Key key, this.user}) : super(key: key);
@@ -112,7 +112,7 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                                       height: 150.0,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image: NetworkImage(snapshot.data),
+                                          image: CacheImage(snapshot.data),
                                           fit: BoxFit.fitWidth,
                                         ),
                                       ),

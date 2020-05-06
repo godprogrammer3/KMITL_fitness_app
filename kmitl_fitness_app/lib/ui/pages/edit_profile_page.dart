@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -304,9 +305,10 @@ class EditProfilePageChild extends State<EditProfilePage> {
                                                           imageFile,
                                                           fit: BoxFit.fill);
                                                     } else {
-                                                      return Image.network(
-                                                        snapshot.data,
+                                                      return Image(
                                                         fit: BoxFit.fill,
+                                                        image: CacheImage(
+                                                            snapshot.data),
                                                       );
                                                     }
                                                   }

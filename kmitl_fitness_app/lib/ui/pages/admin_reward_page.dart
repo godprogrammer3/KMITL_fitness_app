@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/admin_reward_adding_page.dart';
@@ -95,7 +96,7 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                                               0.12,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image: NetworkImage(snapshot.data),
+                                          image: CacheImage(snapshot.data),
                                           fit: BoxFit.fitWidth,
                                         ),
                                       ),

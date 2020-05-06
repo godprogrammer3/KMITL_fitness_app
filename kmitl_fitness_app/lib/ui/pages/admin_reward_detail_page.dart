@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,7 +108,10 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                         child: Center(
                             child: LoadingWidget(height: 50, width: 50)));
                   } else {
-                    return Image.network(snapshot.data);
+                    return Image(
+                      image: CacheImage(snapshot.data),
+                    );
+                    ;
                   }
                 }),
           ]);
@@ -325,7 +329,6 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                                               return AdminRewardUserList(
                                                   user: user, reward: reward);
                                             }));
-                                           
                                           },
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -352,14 +355,14 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
                                       final resultDialog =
                                           await createAlertDialog(context);
                                       if (resultDialog == 0) {
-                                        if(user.uid != reward.owner){
+                                        if (user.uid != reward.owner) {
                                           _scaffoldKey.currentState
                                               .showSnackBar(SnackBar(
                                             content: Text(
                                                 "Delete reward failed you are not owner"),
                                             backgroundColor: Colors.red,
                                           ));
-                                          return ;
+                                          return;
                                         }
                                         setState(() {
                                           _isLoading = false;

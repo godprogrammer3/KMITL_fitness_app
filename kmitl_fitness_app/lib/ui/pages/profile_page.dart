@@ -4,6 +4,7 @@ import 'package:kmitl_fitness_app/data/entitys/user.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+import 'package:cache_image/cache_image.dart';
 
 class ProfilePage extends StatelessWidget {
   final User user;
@@ -104,8 +105,10 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                                         height: 50,
                                                         width: 50)));
                                           } else {
-                                            return Image.network(snapshot.data,
-                                                fit: BoxFit.fill);
+                                            return Image(
+                                              fit: BoxFit.fill,
+                                              image: CacheImage(snapshot.data),
+                                            );
                                           }
                                         })
                                     : Icon(
@@ -191,19 +194,19 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                   style: TextStyle(
                                       color: Colors.grey[900], fontSize: 15)),
                             ),
-                      (snapshot.data.type != 'google')?
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return PasswordPage();
-                          }));
-                        },
-                        child: Text("Password",
-                            style: TextStyle(
-                                color: Colors.grey[900], fontSize: 15)),
-                      )
-                      :Container(),
+                      (snapshot.data.type != 'google')
+                          ? FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return PasswordPage();
+                                }));
+                              },
+                              child: Text("Password",
+                                  style: TextStyle(
+                                      color: Colors.grey[900], fontSize: 15)),
+                            )
+                          : Container(),
                       FlatButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(

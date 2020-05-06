@@ -4,7 +4,7 @@ import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-
+import 'package:cache_image/cache_image.dart';
 class ClassPageDetail extends StatelessWidget {
   final User user;
   final Class class_;
@@ -82,8 +82,10 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                       return Center(
                         child: Container(
                             height: MediaQuery.of(context).size.height * 0.4,
-                            child: Image.network(snapshot.data,
-                                fit: BoxFit.cover)),
+                            child: Image(
+                        fit: BoxFit.cover,
+                        image: CacheImage(snapshot.data),
+                      ),),
                       );
                     }
                   },
