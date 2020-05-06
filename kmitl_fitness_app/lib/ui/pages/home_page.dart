@@ -3,7 +3,7 @@ import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
-
+import 'package:cache_image/cache_image.dart';
 class HomePage extends StatelessWidget {
   final User user;
   HomePage({Key key, this.user}) : super(key: key);
@@ -151,7 +151,7 @@ class _HomePageStateChild extends State<HomePageChild> {
 
   ImageProvider buildImage(AsyncSnapshot snapshot){
     try{ 
-      return NetworkImage(snapshot.data);
+      return CacheImage(snapshot.data);
     }catch(error){
       return AssetImage('assets/images/flutter.png');
     }

@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
@@ -74,9 +75,9 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                     return Container(
                       height: MediaQuery.of(context).size.height * 0.4,
                       width: MediaQuery.of(context).size.width,
-                      child: Image.network(
-                        snapshot.data,
+                      child: Image(
                         fit: BoxFit.fill,
+                        image: CacheImage(snapshot.data),
                       ),
                     );
                   }
@@ -222,13 +223,13 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                         ),
                       );
                       if (resultDialog == 0) {
-                        if(user.uid != class_.owner){
-                           _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        if (user.uid != class_.owner) {
+                          _scaffoldKey.currentState.showSnackBar(SnackBar(
                             content:
                                 Text("Delete class failed you are not owner"),
                             backgroundColor: Colors.red,
                           ));
-                          return ;
+                          return;
                         }
                         setState(() {
                           _isLoading = true;

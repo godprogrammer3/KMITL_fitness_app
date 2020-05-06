@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
+import 'package:cache_image/cache_image.dart';
 
 class PostDetailPage extends StatelessWidget {
   final Post post;
@@ -13,7 +14,10 @@ class PostDetailPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,color: Colors.orange[900],),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.orange[900],
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -39,10 +43,10 @@ class PostDetailPage extends StatelessWidget {
                 } else {
                   return Center(
                     child: Container(
-                      height: MediaQuery.of(context).size.height*0.4,
-                      child: Image.network(
-                        snapshot.data,
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: Image(
                         fit: BoxFit.cover,
+                        image: CacheImage(snapshot.data),
                       ),
                     ),
                   );

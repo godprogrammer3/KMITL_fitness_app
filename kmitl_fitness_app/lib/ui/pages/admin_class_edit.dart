@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -366,14 +367,14 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                   child: (class_ != null)
                                       ? RaisedButton(
                                           onPressed: () async {
-                                            if(user.uid != class_.owner){
+                                            if (user.uid != class_.owner) {
                                               _scaffoldKey.currentState
                                                   .showSnackBar(SnackBar(
                                                 content: Text(
                                                     "Update class failed you are not owner"),
                                                 backgroundColor: Colors.red,
                                               ));
-                                              return ;
+                                              return;
                                             }
                                             if (!_formKey.currentState
                                                 .validate()) {
@@ -633,9 +634,9 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                     } else {
                       return Container(
                         height: MediaQuery.of(context).size.height * 0.4,
-                        child: Image.network(
-                          snapshot.data,
+                        child: Image(
                           fit: BoxFit.fill,
+                          image: CacheImage(snapshot.data),
                         ),
                       );
                     }
