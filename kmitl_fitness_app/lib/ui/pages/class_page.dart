@@ -5,6 +5,7 @@ import 'package:kmitl_fitness_app/ui/pages/pages.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:cache_image/cache_image.dart';
+
 class ClassPage extends StatelessWidget {
   final User user;
   ClassPage({Key key, this.user}) : super(key: key);
@@ -124,9 +125,9 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                                 title: Text(
                                   reveseList[index].title,
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                  ),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      fontFamily: 'Kanit'),
                                 ),
                                 subtitle: Text(
                                   DateFormat('kk:mm').format(
@@ -136,11 +137,12 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                                           reveseList[index].endDateTime) +
                                       ' น.',
                                   style: TextStyle(
-                                    fontSize: 18,
-                                  ),
+                                      fontSize: 18, fontFamily: 'Kanit'),
                                 ),
-                                trailing: Text('Created By: ' +
-                                    reveseList[index].ownerFirstname),
+                                trailing: Text(
+                                  'Created By: ' +
+                                      reveseList[index].ownerFirstname,
+                                ),
                               ),
                             ],
                           ),

@@ -143,10 +143,10 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                       SizedBox(height: 10),
                       Text(
                         isNotExpired
-                            ? "Membership before " +
+                            ? "Membership valid until " +
                                 DateFormat('dd/MM/yyyy')
                                     .format(snapshot.data.membershipExpireDate)
-                            : 'You not in membership or expired',
+                            : 'No membership or expired',
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 15,
@@ -202,7 +202,7 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                                   return PasswordPage(user:user);
                                 }));
                               },
-                              child: Text("Password",
+                              child: Text("Change Password",
                                   style: TextStyle(
                                       color: Colors.grey[900], fontSize: 15)),
                             )

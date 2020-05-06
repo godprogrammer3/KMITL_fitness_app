@@ -70,7 +70,10 @@ class PostDetailPage extends StatelessWidget {
               child: Text(
                 post.detail,
                 style: TextStyle(
-                    color: Colors.black, fontSize: 14, fontFamily: 'Kanit'),
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontFamily: 'Kanit',
+                ),
               ),
             ),
           ],

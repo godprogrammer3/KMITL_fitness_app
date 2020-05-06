@@ -5,6 +5,7 @@ import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:kmitl_fitness_app/ui/widgets/widgets.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:cache_image/cache_image.dart';
+
 class ClassPageDetail extends StatelessWidget {
   final User user;
   final Class class_;
@@ -81,11 +82,12 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                     } else {
                       return Center(
                         child: Container(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            child: Image(
-                        fit: BoxFit.cover,
-                        image: CacheImage(snapshot.data),
-                      ),),
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          child: Image(
+                            fit: BoxFit.cover,
+                            image: CacheImage(snapshot.data),
+                          ),
+                        ),
                       );
                     }
                   },
@@ -95,21 +97,22 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                   child: Text(
                     class_.title,
                     style: TextStyle(
+                        fontFamily: 'Kanit',
                         color: Colors.black,
                         fontSize: 36,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-                  child: Text(
-                    'วันที่ ' +
-                        DateFormat('dd/MM/yyyy').format(class_.beginDateTime),
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
+//                Padding(
+//                  padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+//                  child: Text(
+//                    'วันที่ ' +
+//                        DateFormat('dd/MM/yyyy').format(class_.beginDateTime),
+//                    style: TextStyle(
+//                      fontSize: 16,
+//                    ),
+//                  ),
+//                ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
                   child: Text(
@@ -119,7 +122,8 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                         DateFormat('kk:mm').format(class_.endDateTime) +
                         ' น.',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 22,
+                      fontFamily: 'Kanit',
                     ),
                   ),
                 ),
@@ -128,8 +132,8 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                   child: Text(
                     class_.detail,
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 18,
+                      fontFamily: 'Kanit',
                     ),
                   ),
                 ),
@@ -165,19 +169,18 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                       });
                                       if (result == 0) {
                                         print('cancel class success');
-                                         _scaffoldKey.currentState
-                                                  .showSnackBar(SnackBar(
-                                                content: Text(
-                                                    "Cancel class success"),
-                                                backgroundColor: Colors.green,
-                                              ));
+                                        _scaffoldKey.currentState
+                                            .showSnackBar(SnackBar(
+                                          content: Text("Cancel class success"),
+                                          backgroundColor: Colors.green,
+                                        ));
                                       } else if (result == -3) {
                                         print('cancel class failed');
                                         print('error code : $result');
                                         _scaffoldKey.currentState
                                             .showSnackBar(SnackBar(
                                           content: Text(
-                                              "Cancle class failed out of time"),
+                                              "Cancel class failed, class is starting in less than 30 minutes"),
                                           backgroundColor: Colors.red,
                                         ));
                                       } else {
@@ -186,7 +189,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                         _scaffoldKey.currentState
                                             .showSnackBar(SnackBar(
                                           content: Text(
-                                              "Cancle class failed please try again"),
+                                              "Cancel class failed please try again"),
                                           backgroundColor: Colors.red,
                                         ));
                                       }
@@ -197,9 +200,9 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                     child: Text(
                                       'Cancel',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
                                     ))
                                 : (class_.totalPerson >= class_.limitPerson)
                                     ? FlatButton(
@@ -249,14 +252,14 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                               _scaffoldKey.currentState
                                                   .showSnackBar(SnackBar(
                                                 content: Text(
-                                                    "Reserve class failed out of time"),
+                                                    "Reserve class failed, out of time"),
                                                 backgroundColor: Colors.red,
                                               ));
                                             } else if (result == -6) {
                                               _scaffoldKey.currentState
                                                   .showSnackBar(SnackBar(
                                                 content: Text(
-                                                    "Reserve class failed you are in yellow card status"),
+                                                    "Reserve class failed, you are in yellow card status"),
                                                 backgroundColor: Colors.red,
                                               ));
                                             } else {
@@ -264,7 +267,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                               _scaffoldKey.currentState
                                                   .showSnackBar(SnackBar(
                                                 content: Text(
-                                                    "Reserve class failed please try again"),
+                                                    "Reserve class failed, please try again"),
                                                 backgroundColor: Colors.red,
                                               ));
                                             }
@@ -276,9 +279,9 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
                                         child: Text(
                                           'Reserve',
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                          ),
                                         )),
                           ),
                         );
