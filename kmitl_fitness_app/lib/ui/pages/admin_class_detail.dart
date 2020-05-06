@@ -91,9 +91,9 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                     Text(
                       class_.title,
                       style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'kanit'),
                     ),
                     SizedBox(
                       height: 10,
@@ -119,7 +119,7 @@ class _AdminClassDetailChildState extends State<AdminClassDetailChild> {
                   child: Text(
                     class_.detail,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       fontFamily: 'Kanit',
                     ),
                   ),

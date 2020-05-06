@@ -62,6 +62,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                             width: 280,
                             height: 77,
                             child: TextFormField(
+                              maxLength: 30,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 hintText: "First Name",
@@ -91,6 +92,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                             width: 280,
                             height: 77,
                             child: TextFormField(
+                              maxLength: 30,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 hintText: "Last Name",
