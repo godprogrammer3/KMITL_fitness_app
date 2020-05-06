@@ -300,15 +300,20 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Text(
-                                      'จำนวนรับสูงสุด: ' +
-                                          (maxPicked || class_ != null
-                                              ? _currentMax.toString()
-                                              : 'โปรดระบุ'),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'Kanit',
-                                      ),
+                                    Row(
+                                      children: <Widget>[
+                                        Icon(Icons.people),
+                                        Text(
+                                          ' จำนวนรับสูงสุด: ' +
+                                              (maxPicked || class_ != null
+                                                  ? _currentMax.toString()
+                                                  : 'โปรดระบุ'),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Kanit',
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     RaisedButton(
                                       child: Text(
@@ -486,8 +491,8 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                             if (_image == null) {
                                               _scaffoldKey.currentState
                                                   .showSnackBar(SnackBar(
-                                                content:
-                                                    Text("Image must selected"),
+                                                content: Text(
+                                                    "Image must be selected"),
                                                 backgroundColor: Colors.red,
                                               ));
                                               return;
