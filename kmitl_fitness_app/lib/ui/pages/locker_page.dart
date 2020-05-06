@@ -128,8 +128,8 @@ class _LockerPageStateChild extends State<LockerPageChild> {
   void checkPincode(String lockerId) async {
     final response = await dialogService
         .showDialog(dialogType: InputTextDialog(), parameters: {
-      'title': 'Please enter pincode.',
-      'textInButton': 'submit',
+      'title': 'Please Enter Pin Code',
+      'textInButton': 'Submit',
       'content': TextFormField(
         textAlign: TextAlign.center,
         keyboardType:
@@ -252,11 +252,11 @@ class _LockerPageStateChild extends State<LockerPageChild> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
           Text(
-            "Select a locker to use",
+            "Choose your locker",
             style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 15,
-                fontWeight: FontWeight.bold),
+              color: Colors.grey[700],
+              fontSize: 18,
+            ),
           ),
           SizedBox(height: 20),
           Container(
@@ -294,11 +294,15 @@ class _LockerPageStateChild extends State<LockerPageChild> {
                             child: Column(children: <Widget>[
                               Icon(
                                 Icons.lock,
+                                size: 40,
                                 color: lockers[index].user != ''
                                     ? Colors.black
                                     : Colors.green,
                               ),
-                              Text('No ' + (index + 1).toString() + '.'),
+                              Text(
+                                'No. ' + (index + 1).toString(),
+                                style: TextStyle(color: Colors.black87),
+                              ),
                             ]),
                           );
                         }));
