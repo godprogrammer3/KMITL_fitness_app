@@ -95,6 +95,8 @@ class EditProfilePageChild extends State<EditProfilePage> {
           return 'First name is required';
         } else if (value.length < 2 || value.length > 30) {
           return 'First name must between 2 and 30 letter';
+        }else if(!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$").hasMatch(value)){
+          return 'Invalid first name';
         }
         return null;
       },
@@ -114,6 +116,8 @@ class EditProfilePageChild extends State<EditProfilePage> {
           return 'Last name is required';
         } else if (value.length < 2 || value.length > 30) {
           return 'Last name must between 2 and 30 letter';
+        }else if(!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$").hasMatch(value)){
+          return 'Invalid last name';
         }
         return null;
       },
