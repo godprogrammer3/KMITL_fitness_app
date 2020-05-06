@@ -268,12 +268,14 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                               ],
                             )),
                       ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Don't have an account ?"),
-                          FlatButton(
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Don't have an account?"),
+                        Container(
+                          width: 60,
+                          child: RawMaterialButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => SignupPage(),
@@ -282,11 +284,13 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                             splashColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             child: Text(
-                              "SIGN UP",
+                              "Sign Up",
                               style: TextStyle(
                                 color: Colors.blue,
                                 decoration: TextDecoration.underline,
                               ),
+
+
                             ),
                           ),
                         ],
