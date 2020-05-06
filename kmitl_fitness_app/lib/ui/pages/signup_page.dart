@@ -79,7 +79,8 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                 } else if (value.length < 2 ||
                                     value.length > 30) {
                                   return 'First name must between 2 and 30 letter';
-                                }else if(!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$").hasMatch(value)){
+                                } else if (!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$")
+                                    .hasMatch(value)) {
                                   return 'First name is invalid';
                                 }
                                 return null;
@@ -111,7 +112,8 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                 } else if (value.length < 2 ||
                                     value.length > 30) {
                                   return 'Last name must between 2 and 30 letter';
-                                }else if(!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$").hasMatch(value)){
+                                } else if (!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$")
+                                    .hasMatch(value)) {
                                   return 'Last name is invalid';
                                 }
                                 return null;
@@ -244,25 +246,48 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                       discount: -1.0,
                                     );
                                     setState(() => _isLoading = true);
-                                    dynamic user = await authenModel.register(
-                                        userData, password.text);
-                                    if (this.mounted) {
-                                      setState(() => _isLoading = false);
-                                    }
-                                    if (user != null) {
-                                      Navigator.of(context).pop();
-                                    } else {
+                                    try {
+                                      dynamic user = await authenModel.register(
+                                          userData, password.text);
+                                      if (this.mounted) {
+                                        setState(() => _isLoading = false);
+                                      }
+                                      if (user != null) {
+                                        Navigator.of(context).pop();
+                                      } else {
+                                        Scaffold.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              "Sorry can't create account please try again."),
+                                          backgroundColor: Colors.red,
+                                        ));
+                                        return ;
+                                      }
+                                    } catch (error) {
+                                      if (this.mounted) {
+                                        setState(() => _isLoading = false);
+                                      }
+                                      print(error);
+                                      if(error.toString() == 'Exception: ERROR_EMAIL_ALREADY_IN_USE'){
+                                         Scaffold.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              "This e-mail has been taken by another account."),
+                                          backgroundColor: Colors.red,
+                                        ));
+                                        return ;
+                                      }
                                       Scaffold.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(
-                                            "Sorry can't create account please try again."),
-                                        backgroundColor: Colors.red,
-                                      ));
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              "Sorry can't create account please try again."),
+                                          backgroundColor: Colors.red,
+                                        ));
                                     }
                                   } else {
                                     Scaffold.of(context).showSnackBar(SnackBar(
                                       content: Text(
-                                          "Please fill up the form the form correctly"),
+                                          "Please fill up the form correctly"),
                                       backgroundColor: Colors.red,
                                     ));
                                   }

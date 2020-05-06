@@ -35,7 +35,7 @@ class AuthenModel {
   }
 
   // register with email and password
-  Future register(UserData userData, String password) async {
+  Future<User> register(UserData userData, String password) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: userData.email, password: password);
@@ -56,7 +56,9 @@ class AuthenModel {
       });
       return User(uid: user.uid);
     } catch (error) {
-      print(error.toString());
+      if(error.code == 'ERROR_EMAIL_ALREADY_IN_USE'){
+        throw Exception('ERROR_EMAIL_ALREADY_IN_USE');
+      }
       return null;
     }
   }
