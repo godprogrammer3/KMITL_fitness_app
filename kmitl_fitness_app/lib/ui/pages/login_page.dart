@@ -144,8 +144,8 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                                 if (!_formKey.currentState.validate()) {
                                   _scaffoldKey.currentState
                                       .showSnackBar(SnackBar(
-                                    content:
-                                        Text("Please enter the form correcty."),
+                                    content: Text(
+                                        "Please fill up the form correctly"),
                                     backgroundColor: Colors.red,
                                   ));
                                   return;
@@ -155,7 +155,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                                   _scaffoldKey.currentState
                                       .showSnackBar(SnackBar(
                                     content: Text(
-                                        "User or password field is empty."),
+                                        "Email Address or Password field is empty."),
                                     backgroundColor: Colors.red,
                                   ));
                                   return;
@@ -171,7 +171,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                                   _scaffoldKey.currentState
                                       .showSnackBar(SnackBar(
                                     content: Text(
-                                        "Sorry incorrect email or password please try again."),
+                                        "Sorry incorrect email or password, please try again"),
                                     backgroundColor: Colors.red,
                                   ));
                                 }
@@ -184,7 +184,7 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                                 "LOGIN",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold),
                               )),
                         ),
@@ -256,13 +256,13 @@ class _LoginPageStateChild extends State<LoginPageChild> {
                                   width: 30.0,
                                 ),
                                 SizedBox(
-                                  width: 30,
+                                  width: 35,
                                 ),
                                 Text(
-                                  "LOGIN WITH GOOGLE",
+                                  "Sign in with Google",
                                   style: TextStyle(
                                       color: Colors.black87,
-                                      fontSize: 16,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],
