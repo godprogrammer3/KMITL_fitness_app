@@ -406,11 +406,16 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
                                                   : Colors.white,
                                           elevation: 1,
                                           child: ListTile(
-                                            title: Text((index + 1).toString() +
-                                                ' ' +
-                                                asyncSnapshot
-                                                    .data[index].firstName),
+                                            title: Text(
+                                              asyncSnapshot
+                                                  .data[index].firstName,
+                                              style: TextStyle(fontSize: 20),
+                                            ),
                                             leading: Icon(Icons.face),
+                                            trailing: Text(
+                                              'Queue ' + (index + 1).toString(),
+                                              style: TextStyle(fontSize: 20),
+                                            ),
                                           ),
                                         );
                                       },
