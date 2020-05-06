@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key key}) : super(key: key);
@@ -81,6 +79,8 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                 } else if (value.length < 2 ||
                                     value.length > 30) {
                                   return 'First name must between 2 and 30 letter';
+                                }else if(!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$").hasMatch(value)){
+                                  return 'First name is invalid';
                                 }
                                 return null;
                               },
@@ -111,6 +111,8 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                 } else if (value.length < 2 ||
                                     value.length > 30) {
                                   return 'Last name must between 2 and 30 letter';
+                                }else if(!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$").hasMatch(value)){
+                                  return 'Last name is invalid';
                                 }
                                 return null;
                               },
