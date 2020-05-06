@@ -199,7 +199,7 @@ class _ProfilePageStateChild extends State<ProfilePageChild> {
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  return PasswordPage();
+                                  return PasswordPage(user:user);
                                 }));
                               },
                               child: Text("Password",

@@ -7,9 +7,12 @@ import 'package:loading_overlay/loading_overlay.dart';
 class PasswordPage extends StatelessWidget {
   final User user;
   PasswordPage({Key key, this.user}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
+    print('User ');
+    print(user);
     return PasswordPageChild(user: user);
   }
 }
@@ -206,9 +209,18 @@ class _PasswordPageStateChild extends State<PasswordPageChild> {
                               _isLoading = false;
                             });
                             print('change password success');
-                            Navigator.of(context).pop();
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            content: Text(
+                                "Change password success"),
+                            backgroundColor: Colors.green,
+                          ));
                           } catch (error) {
                             print('change password failed');
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            content: Text(
+                                "Change password failed please try again"),
+                            backgroundColor: Colors.red,
+                          ));
                           }
                         } else {
                           setState(() {

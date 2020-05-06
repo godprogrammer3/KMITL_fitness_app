@@ -206,9 +206,17 @@ class _AdminPasswordPageStateChild extends State<AdminPasswordPageChild> {
                               _isLoading = false;
                             });
                             print('change password success');
-                            Navigator.of(context).pop();
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content: Text("Change password success"),
+                              backgroundColor: Colors.green,
+                            ));
                           } catch (error) {
                             print('change password failed');
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content: Text(
+                                  "Change password failed please try again"),
+                              backgroundColor: Colors.red,
+                            ));
                           }
                         } else {
                           setState(() {
