@@ -159,13 +159,22 @@ class _AboutPageChildState extends State<AboutPageChild> {
               height: 200,
               width: 350,
               //color: Colors.black54,
-              decoration: BoxDecoration(border: Border.all()),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black26, width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 3,
+                      spreadRadius: 1,
+                      offset: Offset(3, 3),
+                    )
+                  ]),
               child: GoogleMap(
                 onMapCreated: _onMapCreated,
                 markers: _markers,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(13.72872538, 100.77528226),
-                  zoom: 17,
+                  zoom: 15,
                 ),
               ),
             ),
