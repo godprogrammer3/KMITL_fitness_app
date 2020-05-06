@@ -24,7 +24,7 @@ class LockerPage extends StatelessWidget {
                 appBar: AppBar(
                   centerTitle: true,
                   title: Text(
-                    'Class',
+                    'Locker',
                     style: TextStyle(color: Colors.white),
                   ),
                   actions: <Widget>[
@@ -49,7 +49,7 @@ class LockerPage extends StatelessWidget {
                 appBar: AppBar(
                   centerTitle: true,
                   title: Text(
-                    'Class',
+                    'Locker',
                     style: TextStyle(color: Colors.white),
                   ),
                   actions: <Widget>[
@@ -79,31 +79,42 @@ class LockerPage extends StatelessWidget {
               return LockerPageChild(user: user);
             } else {
               return Scaffold(
-                  appBar: AppBar(
-                    centerTitle: true,
-                    title: Text(
-                      'Class',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    actions: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.notifications),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return NotificationPage(user: user);
-                          }));
-                        },
-                        color: Colors.white,
-                      )
-                    ],
-                    backgroundColor: Colors.orange[900],
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: Text(
+                    'Locker',
+                    style: TextStyle(color: Colors.white),
                   ),
-                  body: Center(
-                      child: Text(
-                    'You not in membership',
-                    style: TextStyle(fontSize: 20),
-                  )));
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.notifications),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return NotificationPage(user: user);
+                        }));
+                      },
+                      color: Colors.white,
+                    )
+                  ],
+                  backgroundColor: Colors.orange[900],
+                ),
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Exclusive feature!\n',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        'Please purchase a membership',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             }
           }
         });

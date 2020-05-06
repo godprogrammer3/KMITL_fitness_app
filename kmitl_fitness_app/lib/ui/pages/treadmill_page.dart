@@ -13,7 +13,7 @@ class TreadmillPage extends StatelessWidget {
   final User user;
   const TreadmillPage({Key key, this.user}) : super(key: key);
 
- @override
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: UserModel(uid: user.uid).getUserData(),
@@ -24,7 +24,7 @@ class TreadmillPage extends StatelessWidget {
                 appBar: AppBar(
                   centerTitle: true,
                   title: Text(
-                    'Class',
+                    'Treadmill',
                     style: TextStyle(color: Colors.white),
                   ),
                   actions: <Widget>[
@@ -49,7 +49,7 @@ class TreadmillPage extends StatelessWidget {
                 appBar: AppBar(
                   centerTitle: true,
                   title: Text(
-                    'Class',
+                    'Treadmill',
                     style: TextStyle(color: Colors.white),
                   ),
                   actions: <Widget>[
@@ -79,31 +79,42 @@ class TreadmillPage extends StatelessWidget {
               return TreadmillPageChild(user: user);
             } else {
               return Scaffold(
-                  appBar: AppBar(
-                    centerTitle: true,
-                    title: Text(
-                      'Class',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    actions: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.notifications),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return NotificationPage(user: user);
-                          }));
-                        },
-                        color: Colors.white,
-                      )
-                    ],
-                    backgroundColor: Colors.orange[900],
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: Text(
+                    'Treadmill',
+                    style: TextStyle(color: Colors.white),
                   ),
-                  body: Center(
-                      child: Text(
-                    'You not in membership',
-                    style: TextStyle(fontSize: 20),
-                  )));
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.notifications),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return NotificationPage(user: user);
+                        }));
+                      },
+                      color: Colors.white,
+                    )
+                  ],
+                  backgroundColor: Colors.orange[900],
+                ),
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Exclusive feature!\n',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        'Please purchase a membership',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             }
           }
         });
@@ -210,7 +221,7 @@ class _TreadmillPageStateChild extends State<TreadmillPageChild> {
             context: context,
             builder: (context) => TreadmillShowDialog(
               key: this._popupKey,
-              title: 'Treadmill No. ${int.parse(i.id)+1} is ready!',
+              title: 'Treadmill No. ${int.parse(i.id) + 1} is ready!',
               user: this.user,
               startTime: i.startTime,
               isCanSkip: _isCanSkip,
