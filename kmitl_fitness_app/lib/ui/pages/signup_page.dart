@@ -78,10 +78,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                   return 'First name is required';
                                 } else if (value.length < 2 ||
                                     value.length > 30) {
-                                  return 'First name must between 2 and 30 letter';
+                                  return 'First name must be between 2 and 30 letters';
                                 } else if (!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$")
                                     .hasMatch(value)) {
-                                  return 'First name is invalid';
+                                  return 'First name must contain only letters';
                                 }
                                 return null;
                               },
@@ -111,10 +111,10 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                   return 'Last name is required';
                                 } else if (value.length < 2 ||
                                     value.length > 30) {
-                                  return 'Last name must between 2 and 30 letter';
+                                  return 'Last name must be between 2 and 30 letters';
                                 } else if (!RegExp(r"^[\u0E00-\u0E7Fa-zA-Z]+$")
                                     .hasMatch(value)) {
-                                  return 'Last name is invalid';
+                                  return 'Last name must contain only letters';
                                 }
                                 return null;
                               },
@@ -186,8 +186,8 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                 if (value.isEmpty) {
                                   return 'Password is required';
                                 }
-                                if (value.length < 6) {
-                                  return 'Password must longer than 5 letters';
+                                if (value.length < 8) {
+                                  return 'Password must contains at least 8 characters';
                                 }
                                 return null;
                               },
@@ -216,7 +216,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                   return 'Confirm password is required';
                                 }
                                 if (value != password.text) {
-                                  return 'Confirm password must same as password';
+                                  return 'Passwords do not match, try again';
                                 }
                                 return null;
                               },
@@ -261,28 +261,29 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                               "Sorry can't create account please try again."),
                                           backgroundColor: Colors.red,
                                         ));
-                                        return ;
+                                        return;
                                       }
                                     } catch (error) {
                                       if (this.mounted) {
                                         setState(() => _isLoading = false);
                                       }
                                       print(error);
-                                      if(error.toString() == 'Exception: ERROR_EMAIL_ALREADY_IN_USE'){
-                                         Scaffold.of(context)
+                                      if (error.toString() ==
+                                          'Exception: ERROR_EMAIL_ALREADY_IN_USE') {
+                                        Scaffold.of(context)
                                             .showSnackBar(SnackBar(
                                           content: Text(
-                                              "This e-mail has been taken by another account."),
+                                              "This Email has been taken by another account."),
                                           backgroundColor: Colors.red,
                                         ));
-                                        return ;
+                                        return;
                                       }
                                       Scaffold.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text(
-                                              "Sorry can't create account please try again."),
-                                          backgroundColor: Colors.red,
-                                        ));
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                            "Sorry can't create account please try again."),
+                                        backgroundColor: Colors.red,
+                                      ));
                                     }
                                   } else {
                                     Scaffold.of(context).showSnackBar(SnackBar(
