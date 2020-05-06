@@ -103,8 +103,8 @@ class _TutorialPageChildState extends State<TutorialPageChild> {
         ),
         PageViewModel(
           title: "Face Recognition Treadmill!",
-          body:"length is too long that make crash",
-              //"When it's time for your queue, go up to the specified Treadmill in 30 seconds and scan your face. This ensure that nobody else could take your queue!",
+          body:
+              "When it's time for your queue, go up to the specified Treadmill in 30 seconds and scan your face. This ensure that nobody else could take your queue!",
           image: _buildImage('treadmill_timer'),
           decoration: pageDecoration,
         ),
