@@ -30,11 +30,12 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
   List<TimeAttendanceChartData> _listData, _savelistData;
   String fillterType = 'รวมทั้งหมด';
   int fillterYear = -1, fillterMonth = -1, fillterDay = -1;
+  List<Map<String, dynamic>> listYear, listMonth, listDay;
   int sum = 0;
   _AdminUserLogPageStateChild({this.user});
   void _processChart() {
     if (fillterType == 'รวมทั้งหมด') {
-      sum =0;
+      sum = 0;
       for (var i in _savelistData) {
         sum += i.totalPerson;
       }
@@ -68,7 +69,7 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
         if (i.date.year == fillterYear &&
             i.date.month == fillterMonth &&
             i.date.day == fillterDay) {
-          sum +=  i.totalPerson;
+          sum += i.totalPerson;
           break;
         }
       }
@@ -78,25 +79,70 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
     }
   }
 
+  void _updateList(String caller) {
+    listYear = List<Map<String, dynamic>>();
+    Set<int> setYear = Set<int>();
+    for (var i in _savelistData) {
+      setYear.add(i.date.year);
+    }
+    final sortListYear = setYear.toList();
+    sortListYear.sort();
+    if (fillterYear < 0) {
+      fillterYear = sortListYear.last;
+    }
+    for (var i in sortListYear) {
+      listYear.add({
+        'display': i.toString(),
+        'value': i,
+      });
+    }
+    listMonth = List<Map<String, dynamic>>();
+    Set<int> setMonth = Set<int>();
+    for (var i in _savelistData) {
+      if (i.date.year == fillterYear) {
+        setMonth.add(i.date.month);
+      }
+    }
+    final sortListMonth = setMonth.toList();
+    sortListMonth.sort();
+    if (fillterMonth < 0 || caller == 'year') {
+      fillterMonth = sortListMonth.last;
+    }
+    for (var i in sortListMonth) {
+      listMonth.add({
+        'display': i.toString(),
+        'value': i,
+      });
+    }
+    listDay = List<Map<String, dynamic>>();
+    Set<int> setDay = Set<int>();
+    for (var i in _savelistData) {
+      if (i.date.year == fillterYear && i.date.month == fillterMonth) {
+        setDay.add(i.date.day);
+      }
+    }
+    final sortListDay = setDay.toList();
+    sortListDay.sort();
+    if (fillterDay < 0 || caller == 'month' || caller == 'year') {
+      fillterDay = sortListDay.last;
+    }
+    for (var i in sortListDay) {
+      listDay.add({
+        'display': i.toString(),
+        'value': i,
+      });
+    }
+    setState(() {
+      setYear = setYear;
+      setMonth = setMonth;
+      setDay = setDay;
+    });
+  }
+
   Widget _buildFillter(BuildContext context) {
+    _updateList('builder');
     if (fillterType != 'รวมทั้งหมด') {
       if (fillterType == 'รายปี') {
-        List<Map<String, dynamic>> listYear = List<Map<String, dynamic>>();
-        Set<int> setYear = Set<int>();
-        for (var i in _savelistData) {
-          setYear.add(i.date.year);
-        }
-        final sortListYear = setYear.toList();
-        sortListYear.sort();
-        if (fillterYear < 0) {
-          fillterYear = sortListYear.last;
-        }
-        for (var i in sortListYear) {
-          listYear.add({
-            'display': i.toString(),
-            'value': i,
-          });
-        }
         return Row(
           children: <Widget>[
             Expanded(
@@ -118,38 +164,6 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
           ],
         );
       } else if (fillterType == 'รายเดือน') {
-        List<Map<String, dynamic>> listYear = List<Map<String, dynamic>>();
-        Set<int> setYear = Set<int>();
-        for (var i in _savelistData) {
-          setYear.add(i.date.year);
-        }
-        final sortListYear = setYear.toList();
-        sortListYear.sort();
-        if (fillterYear < 0) {
-          fillterYear = sortListYear.last;
-        }
-        for (var i in sortListYear) {
-          listYear.add({
-            'display': i.toString(),
-            'value': i,
-          });
-        }
-        List<Map<String, dynamic>> listMonth = List<Map<String, dynamic>>();
-        Set<int> setMonth = Set<int>();
-        for (var i in _savelistData) {
-          setMonth.add(i.date.month);
-        }
-        final sortListMonth = setMonth.toList();
-        sortListMonth.sort();
-        if (fillterMonth < 0) {
-          fillterMonth = sortListMonth.last;
-        }
-        for (var i in sortListMonth) {
-          listMonth.add({
-            'display': i.toString(),
-            'value': i,
-          });
-        }
         return Row(
           children: <Widget>[
             Expanded(
@@ -161,6 +175,7 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
                   setState(() {
                     fillterMonth = value;
                   });
+                  _updateList('month');
                   _processChart();
                 },
                 dataSource: listMonth,
@@ -177,6 +192,7 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
                   setState(() {
                     fillterYear = value;
                   });
+                  _updateList('year');
                   _processChart();
                 },
                 dataSource: listYear,
@@ -187,54 +203,6 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
           ],
         );
       } else {
-        List<Map<String, dynamic>> listYear = List<Map<String, dynamic>>();
-        Set<int> setYear = Set<int>();
-        for (var i in _savelistData) {
-          setYear.add(i.date.year);
-        }
-        final sortListYear = setYear.toList();
-        sortListYear.sort();
-        if (fillterYear < 0) {
-          fillterYear = sortListYear.last;
-        }
-        for (var i in sortListYear) {
-          listYear.add({
-            'display': i.toString(),
-            'value': i,
-          });
-        }
-        List<Map<String, dynamic>> listMonth = List<Map<String, dynamic>>();
-        Set<int> setMonth = Set<int>();
-        for (var i in _savelistData) {
-          setMonth.add(i.date.month);
-        }
-        final sortListMonth = setMonth.toList();
-        sortListMonth.sort();
-        if (fillterMonth < 0) {
-          fillterMonth = sortListMonth.last;
-        }
-        for (var i in sortListMonth) {
-          listMonth.add({
-            'display': i.toString(),
-            'value': i,
-          });
-        }
-        List<Map<String, dynamic>> listDay = List<Map<String, dynamic>>();
-        Set<int> setDay = Set<int>();
-        for (var i in _savelistData) {
-          setDay.add(i.date.day);
-        }
-        final sortListDay = setDay.toList();
-        sortListDay.sort();
-        if (fillterDay < 0) {
-          fillterDay = sortListDay.last;
-        }
-        for (var i in sortListDay) {
-          listDay.add({
-            'display': i.toString(),
-            'value': i,
-          });
-        }
         return Row(
           children: <Widget>[
             Expanded(
@@ -247,6 +215,7 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
                   setState(() {
                     fillterDay = value;
                   });
+                  _updateList('day');
                   _processChart();
                 },
                 dataSource: listDay,
@@ -264,6 +233,7 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
                   setState(() {
                     fillterMonth = value;
                   });
+                  _updateList('month');
                   _processChart();
                 },
                 dataSource: listMonth,
@@ -281,6 +251,7 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
                   setState(() {
                     fillterYear = value;
                   });
+                  _updateList('year');
                   _processChart();
                 },
                 dataSource: listYear,
@@ -308,13 +279,13 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
               Center(
                 child: Text(
                   'จำนวนคนเข้าใช้',
-                 style: TextStyle(fontSize: 30, fontFamily: 'Kanit'),
+                  style: TextStyle(fontSize: 30, fontFamily: 'Kanit'),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0.0),
                 child: Container(
-                  height: MediaQuery.of(context).size.height*0.35,
+                  height: MediaQuery.of(context).size.height * 0.35,
                   child: FutureBuilder(
                       future:
                           TimeAttendanceModel().getAllTimeAttendanceChartData(),
@@ -395,7 +366,7 @@ class _AdminUserLogPageStateChild extends State<AdminUserLogPageChild> {
                     textField: 'display',
                     valueField: 'value',
                   ),
-                  _buildFillter(context),
+                  (_listData != null) ? _buildFillter(context) : Container(),
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Text(
