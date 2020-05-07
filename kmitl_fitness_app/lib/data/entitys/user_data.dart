@@ -15,6 +15,7 @@ class UserData {
   final String phoneNumber;
   final String type;
   final double discount;
+  final String statusInFitness;
   UserData(
       {
       @required this.point,
@@ -31,5 +32,6 @@ class UserData {
       @required this.phoneNumber, 
       @required this.type, 
       @required this.discount, 
+      @required this.statusInFitness, 
   });
 }

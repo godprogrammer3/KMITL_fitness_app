@@ -244,6 +244,7 @@ class _SignupPageChildState extends State<SignupPageChild> {
                                       phoneNumber: null,
                                       type: 'email',
                                       discount: -1.0,
+                                      statusInFitness: 'out',
                                     );
                                     setState(() => _isLoading = true);
                                     try {

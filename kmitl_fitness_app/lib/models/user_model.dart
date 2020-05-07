@@ -77,6 +77,7 @@ class UserModel {
         type: snapshot['type'],
        
         discount: snapshot['discount']+.0,
+        statusInFitness: snapshot['statusInFitness'],
       );
     } catch (error) {
       print(error);

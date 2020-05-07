@@ -75,7 +75,8 @@ class TreadmillPage extends StatelessWidget {
             final currentDate =
                 DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
             final bool isNotExpired = currentDate.isBefore(expireDate);
-            if (isNotExpired) {
+            final bool isInFitness = snapshot.data.statusInFitness == 'in';
+            if (isNotExpired && isInFitness) {
               return TreadmillPageChild(user: user);
             } else {
               return Scaffold(
@@ -104,11 +105,11 @@ class TreadmillPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Exclusive feature!\n',
+                        (isInFitness)?'Exclusive feature!\n':'You are not in fitness!',
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(
-                        'Please purchase a membership',
+                        (isInFitness)?'Please purchase a membership':'Please be in fitness before use',
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
