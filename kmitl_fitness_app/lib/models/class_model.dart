@@ -26,6 +26,7 @@ class ClassModel {
       await document.updateData({
         'createdTime': FieldValue.serverTimestamp(),
         'updatedTime': FieldValue.serverTimestamp(),
+        'imageId':classData['imageId'],
       });
       StorageUploadTask uploadTask =
           storageReference.child(classData['imageId']).putFile(imageFile);
