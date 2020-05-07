@@ -2,6 +2,7 @@ import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
@@ -11,7 +12,6 @@ import 'package:loading_overlay/loading_overlay.dart';
 
 class EditProfilePage extends StatefulWidget {
   final User user;
-
   const EditProfilePage({Key key, this.user}) : super(key: key);
   @override
   State<StatefulWidget> createState() => EditProfilePageChild(user: user);
@@ -175,27 +175,42 @@ class EditProfilePageChild extends State<EditProfilePage> {
       },
     );
   }
-
-  Widget _buildBirthDay(String str) {
-    return TextFormField(
-      initialValue: str ?? '',
-      decoration: InputDecoration(labelText: 'Birth Day (1yyy-MM-dd)'),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Birth Day is Required';
+  String showText;
+  Future<int> chooseDate(BuildContext context)async{
+      DateTime chooseDateTime = await showDatePicker(
+        context: context, 
+        initialDate: DateTime(DateTime.now().year-1), 
+        firstDate: DateTime(DateTime.now().year-100), 
+      lastDate: DateTime.now());
+      print(chooseDateTime);
+      if( chooseDateTime != null){
+        setState(() {
+          _birthDate = DateFormat('dd/MM/yyyy').format(chooseDateTime);
+          showText = _birthDate;
+        });
+        print(_birthDate);
+        return 0;
+      }else{
+        return -1;
+      }
+  }
+  Widget _buildBirthDay(String str,BuildContext context) {
+    if(_birthDate!=null && _birthDate != ''){
+      showText = str;
+    }else{
+      showText = 'Not already choose';
+    }
+    return ListTile(
+      leading: Icon(Icons.date_range),
+      title: Text('Birth day '+showText),
+      trailing: Icon(Icons.keyboard_arrow_down),
+      onTap: () async {
+        final result = await chooseDate(context);
+        if(result == 0){
+          setState(() {
+            _birthDate = _birthDate;
+          });
         }
-        try {
-          final birthDate = DateTime.parse(value);
-          if (DateTime.now().isBefore(birthDate)) {
-            return 'Please enter a valid Birth Day';
-          }
-          return null;
-        } catch (error) {
-          return 'Please enter a valid Birth Day';
-        }
-      },
-      onSaved: (String value) {
-        _birthDate = value;
       },
     );
   }
@@ -269,7 +284,9 @@ class EditProfilePageChild extends State<EditProfilePage> {
                       _lastName = snapshot.data.lastName;
                       _email = snapshot.data.email;
                       _phoneNumber = snapshot.data.phoneNumber ?? '';
-                      _birthDate = snapshot.data.birthDate ?? '';
+                      if(_birthDate == null){
+                        _birthDate = snapshot.data.birthDate ?? '';
+                      }
                       return Form(
                           key: _formKey,
                           child: Column(
@@ -339,7 +356,7 @@ class EditProfilePageChild extends State<EditProfilePage> {
                               SizedBox(height: 10.0),
                               _buildPhoneNumber(snapshot.data.phoneNumber),
                               SizedBox(height: 10.0),
-                              _buildBirthDay(snapshot.data.birthDate),
+                              _buildBirthDay( _birthDate,context),
                               (snapshot.data.type != 'google')
                                   ? _buildCurrentPassword()
                                   : Container(),
