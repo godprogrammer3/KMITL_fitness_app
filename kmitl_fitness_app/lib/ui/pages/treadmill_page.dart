@@ -105,15 +105,15 @@ class TreadmillPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        (isInFitness && isNotExpired)
-                            ? 'Membership Only!\n'
-                            : 'You are not in KMITL Fitness Center!\n',
+                        (isNotExpired)
+                            ? 'You are not in KMITL Fitness Center!\n'
+                            : 'Membership Only!\n',
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(
-                        (isInFitness)
-                            ? 'Please purchase a membership first'
-                            : 'Please be in the fitness center to access',
+                        (isNotExpired)
+                            ? 'Please be in the fitness center to access'
+                            : 'Please purchase a membership first',
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
