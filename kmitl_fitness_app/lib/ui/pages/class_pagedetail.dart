@@ -71,7 +71,7 @@ class _ClassPageDetailStateChild extends State<ClassPageDetailChild> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 FutureBuilder(
-                  future: classModel.getUrlFromImageId(class_.id),
+                  future: classModel.getUrlFromImageId(class_.imageId),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasError) {
                       return Center(

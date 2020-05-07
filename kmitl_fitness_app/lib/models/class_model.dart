@@ -5,13 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
-
+import 'package:uuid/uuid.dart';
 class ClassModel {
   final String uid;
   final CollectionReference classCollection =
       Firestore.instance.collection('class');
   StorageReference storageReference =
       FirebaseStorage.instance.ref().child('class');
+  var uuid = Uuid();
   ClassModel({@required this.uid});
 
   Future<int> creatClass(Map<String, dynamic> classData, File imageFile) async {
@@ -21,12 +22,13 @@ class ClassModel {
       final userData = await UserModel(uid: this.uid).getUserData();
       classData['ownerFirstname'] = userData.firstName;
       final document = await classCollection.add(classData);
+      classData['imageId'] = uuid.v4();
       await document.updateData({
         'createdTime': FieldValue.serverTimestamp(),
         'updatedTime': FieldValue.serverTimestamp(),
       });
       StorageUploadTask uploadTask =
-          storageReference.child(document.documentID).putFile(imageFile);
+          storageReference.child(classData['imageId']).putFile(imageFile);
       await uploadTask.onComplete;
       return 0;
     } catch (error) {
@@ -37,10 +39,12 @@ class ClassModel {
   Future<int> updateClass(
       String classId, Map<String, dynamic> updateData, File imageFile) async {
     try {
+      
       updateData['updatedTime'] = FieldValue.serverTimestamp();
       if (imageFile != null) {
-        StorageUploadTask uploadTask =
-            storageReference.child(classId).putFile(imageFile);
+        updateData['imageId'] = uuid.v4();
+        StorageUploadTask uploadTask = 
+            storageReference.child(updateData['imageId']).putFile(imageFile);
         await uploadTask.onComplete;
       }
       await classCollection.document(classId).updateData(updateData);
@@ -201,7 +205,7 @@ class ClassModel {
       return Class(
         id: doc.documentID,
         title: doc.data['title'],
-        imageId: doc.documentID,
+        imageId: (doc.data['imageId']!=null)?doc.data['imageId']:doc.documentID,
         detail: doc.data['detail'],
         owner: doc.data['owner'],
         createdTime: DateTime.fromMillisecondsSinceEpoch(
@@ -248,5 +252,42 @@ class ClassModel {
         .document(this.uid)
         .get();
     return snapshotThisPerson.exists;
+  }
+
+  Future<Class> getData(String id) async {
+    try{
+      final snaphot = await classCollection.document(id).get();
+      return Class(
+        id: snaphot.documentID,
+        title: snaphot.data['title'],
+        imageId: (snaphot.data['imageId']!=null)?snaphot.data['imageId']:snaphot.documentID,
+        detail: snaphot.data['detail'],
+        owner: snaphot.data['owner'],
+        createdTime: DateTime.fromMillisecondsSinceEpoch(
+            (snaphot.data['createdTime'].seconds * 1000 +
+                    snaphot.data['createdTime'].nanoseconds / 1000000)
+                .round()),
+        updatedTime: DateTime.fromMillisecondsSinceEpoch(
+            (snaphot.data['updatedTime'].seconds * 1000 +
+                    snaphot.data['updatedTime'].nanoseconds / 1000000)
+                .round()),
+        beginDateTime: DateTime.fromMillisecondsSinceEpoch(
+            (snaphot.data['beginDateTime'].seconds * 1000 +
+                    snaphot.data['beginDateTime'].nanoseconds / 1000000)
+                .round()),
+        endDateTime: DateTime.fromMillisecondsSinceEpoch(
+            (snaphot.data['endDateTime'].seconds * 1000 +
+                    snaphot.data['endDateTime'].nanoseconds / 1000000)
+                .round()),
+        limitPerson: snaphot.data['limitPerson'],
+        totalPerson: snaphot.data['totalPerson'],
+        ownerFirstname: snaphot.data['ownerFirstname'],
+        isChecked: snaphot.data['isChecked'],
+      );
+    }catch(error){
+      print(error);
+      return null;
+    }
+    
   }
 }

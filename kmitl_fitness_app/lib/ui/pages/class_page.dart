@@ -199,7 +199,7 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                             children: [
                               FutureBuilder(
                                 future: classModel
-                                    .getUrlFromImageId(reveseList[index].id),
+                                    .getUrlFromImageId(reveseList[index].imageId),
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasError) {
