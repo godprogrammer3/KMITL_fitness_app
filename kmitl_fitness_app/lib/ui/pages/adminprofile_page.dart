@@ -84,7 +84,7 @@ class _AdminProfilePageStateChild extends State<AdminProfilePageChild> {
                             builder: (context) => AdminPasswordPage(user: user),
                           ));
                         },
-                        child: Text("Password",
+                        child: Text("Change Password",
                             style: TextStyle(
                                 color: Colors.grey[900], fontSize: 15)),
                       ),
