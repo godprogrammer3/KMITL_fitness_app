@@ -35,7 +35,7 @@ class PointPageChild extends State<PointPage> {
                   Stack(
                     children: <Widget>[
                       FutureBuilder(
-                          future: rewardModel.getUrlFromImageId(reward.id),
+                          future: rewardModel.getUrlFromImageId(reward.imageId),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             if (snapshot.hasError) {
@@ -46,9 +46,12 @@ class PointPageChild extends State<PointPage> {
                                   child: LoadingWidget(height: 50, width: 50));
                             } else {
                               return Center(
-                                child: Image(
-                                  fit: BoxFit.fill,
-                                  image: CacheImage(snapshot.data),
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height*0.4,
+                                  child: Image(
+                                    fit: BoxFit.fill,
+                                    image: CacheImage(snapshot.data),
+                                  ),
                                 ),
                               );
                             }
@@ -215,7 +218,7 @@ class PointPageChild extends State<PointPage> {
                             Expanded(
                               child: FutureBuilder(
                                 future: rewardModel
-                                    .getUrlFromImageId(snapshot.data[i].id),
+                                    .getUrlFromImageId(snapshot.data[i].imageId),
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasError) {

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
-
+import 'package:uuid/uuid.dart';
 class PostModel {
   final String uid;
   final CollectionReference postCollection =
@@ -12,18 +12,19 @@ class PostModel {
   StorageReference storageReference =
       FirebaseStorage.instance.ref().child('post');
   PostModel({@required this.uid});
-
+  var uuid = Uuid();
   Future<int> creatPost(Map<String, dynamic> postData, File imageFile) async {
     try {
       postData['owner'] = this.uid;
       final document = await postCollection.add(postData);
+      postData['imageId'] = uuid.v4();
       await document.updateData({
         'createdTime': FieldValue.serverTimestamp(),
         'updatedTime': FieldValue.serverTimestamp(),
-        'imageId': document.documentID
+        'imageId': postData['imageId'],
       });
       StorageUploadTask uploadTask =
-          storageReference.child(document.documentID).putFile(imageFile);
+          storageReference.child(postData['imageId']).putFile(imageFile);
       await uploadTask.onComplete;
       return 0;
     } catch (error) {
@@ -36,8 +37,9 @@ class PostModel {
     try {
       updateData['updatedTime'] = FieldValue.serverTimestamp();
       if (imageFile != null) {
+        updateData['imageId'] = uuid.v4();
         StorageUploadTask uploadTask =
-            storageReference.child(postId).putFile(imageFile);
+            storageReference.child( updateData['imageId']).putFile(imageFile);
         await uploadTask.onComplete;
       }
       await postCollection.document(postId).updateData(updateData);
@@ -49,7 +51,7 @@ class PostModel {
 
   Future<int> deletePost(String postId) async {
     await postCollection.document(postId).delete();
-    await storageReference.child(postId).delete();
+    //await storageReference.child(postId).delete();
     return 0;
   }
 

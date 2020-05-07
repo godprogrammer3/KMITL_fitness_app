@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
 import 'package:kmitl_fitness_app/models/models.dart';
-
+import 'package:uuid/uuid.dart';
 class RewardModel {
   final CollectionReference rewardCollection =
       Firestore.instance.collection('reward');
@@ -14,17 +14,19 @@ class RewardModel {
   StorageReference storageReference =
       FirebaseStorage.instance.ref().child('reward');
   RewardModel({@required this.uid});
-
+  var uuid = Uuid();
   Future<int> create(Map<String, dynamic> rewardData, File imageFile) async {
     try {
       rewardData['owner'] = this.uid;
       final document = await rewardCollection.add(rewardData);
+      rewardData['imageId'] = uuid.v4();
       await document.updateData({
         'createdTime': FieldValue.serverTimestamp(),
         'updatedTime': FieldValue.serverTimestamp(),
+        'imageId': rewardData['imageId'],
       });
       StorageUploadTask uploadTask =
-          storageReference.child(document.documentID).putFile(imageFile);
+          storageReference.child(rewardData['imageId']).putFile(imageFile);
       await uploadTask.onComplete;
       return 0;
     } catch (error) {
@@ -37,8 +39,9 @@ class RewardModel {
     try {
       updateData['updatedTime'] = FieldValue.serverTimestamp();
       if (imageFile != null) {
+        updateData['imageId'] = uuid.v4();
         StorageUploadTask uploadTask =
-            storageReference.child(rewardId).putFile(imageFile);
+            storageReference.child(updateData['imageId']).putFile(imageFile);
         await uploadTask.onComplete;
       }
       await rewardCollection.document(rewardId).updateData(updateData);
@@ -125,6 +128,7 @@ class RewardModel {
             : null,
         type: doc.data['type'],
         percent: doc.data['percent'],
+        imageId: (doc.data['imageId'] != null)?doc.data['imageId']:doc.documentID,
       );
     }).toList();
   }

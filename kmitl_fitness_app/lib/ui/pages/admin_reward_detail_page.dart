@@ -97,7 +97,7 @@ class _AdminRewardDetailPageState extends State<AdminRewardDetailPage> {
               height: MediaQuery.of(context).size.height / 2.5,
             ),
             FutureBuilder(
-                future: rewardModel.getUrlFromImageId(reward.id),
+                future: rewardModel.getUrlFromImageId(reward.imageId),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasError) {
                     return Center(

@@ -60,7 +60,7 @@ class _AdminPostEditingPageState extends State<AdminPostEditingPage> {
           ]);
         } else {
           return FutureBuilder(
-              future: PostModel(uid: post.owner).getUrlFromImageId(post.id),
+              future: PostModel(uid: post.owner).getUrlFromImageId(post.imageUrl),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   return Center(child: LoadingWidget(height: 50, width: 50));

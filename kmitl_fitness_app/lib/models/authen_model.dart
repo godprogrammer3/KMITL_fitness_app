@@ -51,12 +51,12 @@ class AuthenModel {
         'isHaveYellowCard': false,
         'point': 0,
         'phoneNumber': '',
-        'type':userData.type,
-        'discount':-1.0,
+        'type': userData.type,
+        'discount': -1.0,
       });
       return User(uid: user.uid);
     } catch (error) {
-      if(error.code == 'ERROR_EMAIL_ALREADY_IN_USE'){
+      if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
         throw Exception('ERROR_EMAIL_ALREADY_IN_USE');
       }
       return null;
@@ -106,7 +106,14 @@ class AuthenModel {
         'email',
         'https://www.googleapis.com/auth/contacts.readonly'
       ]);
-      GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+      GoogleSignInAccount googleSignInAccount;
+      try {
+        googleSignInAccount = await googleSignIn.signIn();
+      } catch (error) {
+        print(error);
+        return -1;
+      }
+
       final googleAuth = await googleSignInAccount.authentication;
       final googleAuthCred = GoogleAuthProvider.getCredential(
           idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
@@ -115,8 +122,10 @@ class AuthenModel {
       var graphResponse = await http.get(
           'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleAuth.accessToken}');
       Map<String, dynamic> profile = json.decode(graphResponse.body);
-      final snapshot =
-          await Firestore.instance.collection('userdata').document(user.uid).get();
+      final snapshot = await Firestore.instance
+          .collection('userdata')
+          .document(user.uid)
+          .get();
       if (!snapshot.exists) {
         await UserModel(uid: user.uid).setUserData({
           'firstName': profile['given_name'] ?? '',
@@ -129,8 +138,8 @@ class AuthenModel {
           'isHaveYellowCard': false,
           'point': 0,
           'phoneNumber': '',
-          'type':'google',
-          'discount':-1.0,
+          'type': 'google',
+          'discount': -1.0,
         });
       }
       return 0;
@@ -139,7 +148,7 @@ class AuthenModel {
     }
   }
 
-  Future<FirebaseUser> getCurrentUser()async{
+  Future<FirebaseUser> getCurrentUser() async {
     return _auth.currentUser();
   }
 }

@@ -78,7 +78,7 @@ class AdminRewardPageChild extends State<AdminRewardPage> {
                             Expanded(
                               child: FutureBuilder(
                                 future: rewardModel
-                                    .getUrlFromImageId(snapshot.data[i].id),
+                                    .getUrlFromImageId(snapshot.data[i].imageId),
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasError) {

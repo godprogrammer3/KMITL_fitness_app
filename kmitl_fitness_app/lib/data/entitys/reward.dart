@@ -11,6 +11,7 @@ class Reward implements Comparable {
   final List<String> person;
   final String type;
   final double percent;
+  final imageId;
   Reward({
     @required this.id, 
     @required this.title, 
@@ -23,6 +24,7 @@ class Reward implements Comparable {
     @required this.person,
     @required this.type, 
     @required this.percent, 
+    @required this.imageId,
   });
    @override
   int compareTo(other) {
