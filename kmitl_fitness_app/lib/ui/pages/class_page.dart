@@ -198,8 +198,8 @@ class _ClassPageStateChild extends State<ClassPageChild> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               FutureBuilder(
-                                future: classModel
-                                    .getUrlFromImageId(reveseList[index].imageId),
+                                future: classModel.getUrlFromImageId(
+                                    reveseList[index].imageId),
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasError) {
