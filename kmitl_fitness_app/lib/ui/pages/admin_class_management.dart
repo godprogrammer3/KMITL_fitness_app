@@ -89,7 +89,7 @@ class _AdminClassManagementChildState extends State<AdminClassManagementChild> {
                             children: [
                               FutureBuilder(
                                 future: classModel
-                                    .getUrlFromImageId(reveseList[index].id),
+                                    .getUrlFromImageId(reveseList[index].imageId),
                                 builder: (BuildContext context,
                                     AsyncSnapshot snapshot) {
                                   if (snapshot.hasError) {

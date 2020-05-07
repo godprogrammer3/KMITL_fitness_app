@@ -628,7 +628,7 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
           child: _image == null
               ? FutureBuilder(
                   future:
-                      ClassModel(uid: user.uid).getUrlFromImageId(class_.id),
+                      ClassModel(uid: user.uid).getUrlFromImageId(class_.imageId),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasError) {
                       return Center(
