@@ -101,11 +101,11 @@ class ClassPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Exclusive feature!\n',
+                        'Membership Only!\n',
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(
-                        'Please purchase a membership',
+                        'Please purchase a membership first',
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
