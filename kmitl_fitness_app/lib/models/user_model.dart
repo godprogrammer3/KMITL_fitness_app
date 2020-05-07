@@ -4,11 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kmitl_fitness_app/data/entitys/entitys.dart';
+import 'package:uuid/uuid.dart';
 
 class UserModel {
   final String uid;
   UserModel({@required this.uid});
-
+  var uuid = Uuid();
   final CollectionReference userDataCollection =
       Firestore.instance.collection('userdata');
   final StorageReference storageReference =
@@ -21,10 +22,10 @@ class UserModel {
       Map<String, dynamic> updateData, File imageFile) async {
     try {
       if (imageFile != null) {
+        updateData['imageId'] = uuid.v4();
         StorageUploadTask uploadTask =
-            storageReference.child(this.uid).putFile(imageFile);
+            storageReference.child(updateData['imageId']).putFile(imageFile);
         await uploadTask.onComplete;
-        updateData['imageId'] = this.uid;
       }
       await userDataCollection.document(uid).updateData(updateData);
       return 0;
