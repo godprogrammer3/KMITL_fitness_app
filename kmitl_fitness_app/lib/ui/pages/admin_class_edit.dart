@@ -536,6 +536,26 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                                 backgroundColor: Colors.red,
                                               ));
                                               return;
+                                            } else if (DateTime.now().hour >
+                                                startTime.hour) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select valid start and end time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
+                                            } else if (DateTime.now().hour ==
+                                                    startTime.hour &&
+                                                DateTime.now().minute >=
+                                                    startTime.minute) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Please select valid start and end time"),
+                                                backgroundColor: Colors.red,
+                                              ));
+                                              return;
                                             }
                                             if (!maxPicked) {
                                               _scaffoldKey.currentState
@@ -546,6 +566,9 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
                                               ));
                                               return;
                                             }
+                                            print('Debug');
+                                            print(DateTime.now().hour);
+                                            print(startTime.hour);
                                             final nowTime = DateTime.now();
                                             Map<String, dynamic> data = {
                                               'title': _title.text,
@@ -627,8 +650,8 @@ class _AdminClassEditChildState extends State<AdminClassEditChild> {
           color: Colors.black38,
           child: _image == null
               ? FutureBuilder(
-                  future:
-                      ClassModel(uid: user.uid).getUrlFromImageId(class_.imageId),
+                  future: ClassModel(uid: user.uid)
+                      .getUrlFromImageId(class_.imageId),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasError) {
                       return Center(
