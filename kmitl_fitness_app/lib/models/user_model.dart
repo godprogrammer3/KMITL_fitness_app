@@ -75,8 +75,7 @@ class UserModel {
         imageId: snapshot['imageId'],
         phoneNumber: snapshot['phoneNumber'],
         type: snapshot['type'],
-       
-        discount: snapshot['discount']+.0,
+        discount: snapshot['discount'] + .0,
         statusInFitness: snapshot['statusInFitness'],
       );
     } catch (error) {
