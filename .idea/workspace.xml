@@ -2,19 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f2a2281-3bfb-432f-9680-2a09a5d56649" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/KMITL_fitness_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KMITL_fitness_app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[Pixel_2_API_26]" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -37,8 +35,8 @@
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../flutter/bin/cache/dart-sdk" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -87,6 +85,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="AVDManager/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611915082579" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1611921593583">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611921593583" />
     <state width="1400" height="278" key="GridCell.Tab.0.bottom" timestamp="1611919186344">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -103,9 +105,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1400" height="278" key="GridCell.Tab.0.right/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611919186343" />
-    <state x="461" y="165" key="SettingsEditor" timestamp="1611915480116">
+    <state x="461" y="165" key="SettingsEditor" timestamp="1611921595783">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="165" key="SettingsEditor/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611915480116" />
+    <state x="461" y="165" key="SettingsEditor/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611921595783" />
   </component>
 </project>
