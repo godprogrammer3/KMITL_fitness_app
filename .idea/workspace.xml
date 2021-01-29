@@ -2,17 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f2a2281-3bfb-432f-9680-2a09a5d56649" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/KMITL_fitness_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KMITL_fitness_app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/admin_class_detail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/signup_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/lib/ui/pages/signup_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kmitl_fitness_app/pubspec.yaml" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_29_google_play" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -23,19 +25,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IgnoredFileRootStore">
-    <option name="generatedRoots">
-      <set>
-        <option value="C:\Users\camp2\Documents\GitHub\KMITL_fitness_app\.idea" />
-      </set>
-    </option>
-  </component>
   <component name="ProjectId" id="1ZTosF4YfCSPBgymtBpgYoNXIK7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/kmitl_fitness_app/assets/images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
@@ -43,18 +45,6 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\camp2\Documents\GitHub\KMITL_fitness_app\kmitl_fitness_app\assets\images" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" temporary="true" nameIsGenerated="true">
@@ -85,12 +75,37 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="92" y="92" width="1736" height="856" key="AVDManager" timestamp="1611915082579">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="AVDManager/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611915082579" />
+    <state width="1400" height="278" key="GridCell.Tab.0.bottom" timestamp="1611919186344">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1400" height="278" key="GridCell.Tab.0.bottom/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611919186344" />
+    <state width="1400" height="278" key="GridCell.Tab.0.center" timestamp="1611919186343">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1400" height="278" key="GridCell.Tab.0.center/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611919186343" />
+    <state width="1400" height="278" key="GridCell.Tab.0.left" timestamp="1611919186343">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1400" height="278" key="GridCell.Tab.0.left/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611919186343" />
+    <state width="1400" height="278" key="GridCell.Tab.0.right" timestamp="1611919186343">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1400" height="278" key="GridCell.Tab.0.right/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611919186343" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1611915480116">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="165" key="SettingsEditor/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1611915480116" />
   </component>
 </project>
